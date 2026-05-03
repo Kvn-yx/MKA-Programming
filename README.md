@@ -1,42 +1,7 @@
-<p align="center">
+# 🏛️ University of the Armed Forces (ESPE)
 
-&#x20; <h1 align="center">MKA-Programming</h1>
+## 👥 Members
 
-</p>
-
-
-
-```text
-
-╔══════════════════════════════════════════════════════╗
-
-║                    MKA-PROGRAMMING                   ║
-
-╚══════════════════════════════════════════════════════╝
-
-
-
-> whoami
-
-Kevin Vinicio Alban Cabezas
-
-
-
-> info --institution ESPE
-
-Carrera       : Ingeniería de Software
-
-País          : Ecuador
-
-Intereses     : Desarrollo de Software, Ciberseguridad, Matemáticas
-
-
-
-> git status
-
-On branch: main
-
-Your branch is up to date.
-
-Project Status: Active and Building 🚀
-
+* **Mateo Artieda**
+* **Kevin Albán**
+* **Anthony Aimacaña**
