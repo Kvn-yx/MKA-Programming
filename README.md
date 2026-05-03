@@ -1,5 +1,9 @@
-#University of the Armed Forces (ESPE)
-##Members:
-#Mateo Artieda
-#Kevin Albán
-#Anthony Aimacaña
+# 🏛️ University of the Armed Forces (ESPE)
+
+## 👥 Members
+
+```text
+> team --list
+- Mateo Artieda
+- Kevin Albán
+- Anthony Aimacaña
