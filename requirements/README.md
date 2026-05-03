@@ -1,114 +1,114 @@
-# Especificación de Requisitos del Sistema
+# System Requirements Specification
 
 ## Coffee Shop Management System
 
 ---
 
-## 1. Introducción
+## 1. Introduction
 
-### 1.1 Propósito
-Este documento describe los requisitos funcionales y no funcionales del sistema de gestión para una cafetería. Su objetivo es definir claramente el comportamiento esperado del sistema para desarrollo, validación y mantenimiento.
+### 1.1 Purpose
+This document describes the functional and non-functional requirements of the management system for a coffee shop. Its objective is to clearly define the expected behavior of the system for development, validation, and maintenance.
 
-### 1.2 Alcance
-El sistema permitirá:
-* Gestión de pedidos
-* Procesamiento de pagos
-* Control de inventario
-* Interacción entre empleados, clientes y proveedores
+### 1.2 Scope
+The system will allow:
+* Order management
+* Payment processing
+* Inventory control
+* Interaction between employees, customers, and suppliers
 
-### 1.3 Definiciones
-* **Pedido (Order):** Conjunto de productos solicitados por un cliente.
-* **Item:** Producto individual dentro de un pedido.
-* **Inventario:** Control de stock de productos.
+### 1.3 Definitions
+* **Order:** Set of products requested by a customer.
+* **Item:** Individual product within an order.
+* **Inventory:** Product stock control.
 
 ---
 
-## 2. Descripción General
+## 2. General Description
 
-### 2.1 Perspectiva del sistema
-Sistema centralizado que interactúa con:
-* Clientes
-* Empleados (Cajero, Barista)
-* Proveedores
+### 2.1 System Perspective
+Centralized system that interacts with:
+* Customers
+* Employees (Cashier, Barista)
+* Suppliers
 
-### 2.2 Actores del sistema
-* Cliente
-* Cajero
+### 2.2 System Actors
+* Customer
+* Cashier
 * Barista
-* Proveedor
+* Supplier
 
-### 2.3 Suposiciones
-* El sistema será usado en una cafetería física.
-* Los pagos pueden ser en efectivo, tarjeta o gift card.
-
----
-
-## 3. Requisitos Funcionales
-
-### 3.1 Gestión de pedidos
-* **RF-01: Crear pedido** - El sistema debe permitir al cliente realizar un pedido.
-* **RF-02: Agregar productos** - El sistema debe permitir añadir productos a un pedido especificando la cantidad.
-* **RF-03: Calcular total** - El sistema debe calcular automáticamente el total del pedido.
-* **RF-04: Consultar estado** - El cliente puede ver el estado del pedido.
-
-### 3.2 Gestión de pagos
-* **RF-05: Procesar pago** - El cajero debe poder procesar pagos.
-* **RF-06: Validar pago** - El sistema debe validar el método de pago.
-* **RF-07: Generar recibo** - El sistema debe generar un comprobante del pago.
-* **RF-08: Aplicar descuento (opcional)** - El sistema puede aplicar descuentos a pedidos.
-
-### 3.3 Preparación de pedidos
-* **RF-09: Ver pedidos** - El barista debe visualizar pedidos pendientes.
-* **RF-10: Preparar producto** - El barista debe preparar los productos solicitados.
-* **RF-11: Actualizar estado** - El sistema debe actualizar el estado del pedido.
-
-### 3.4 Inventario
-* **RF-12: Actualizar inventario** - El sistema debe actualizar stock al vender productos.
-* **RF-13: Consultar stock** - El sistema debe permitir consultar disponibilidad.
-
-### 3.5 Proveedores
-* **RF-14: Registrar suministro** - El proveedor puede suministrar productos.
-* **RF-15: Actualizar stock** - El sistema debe incrementar inventario al recibir productos.
+### 2.3 Assumptions
+* The system will be used in a physical coffee shop.
+* Payments can be made in cash, by card, or with a gift card.
 
 ---
 
-## 4. Requisitos No Funcionales
+## 3. Functional Requirements
 
-* **4.1 Rendimiento:** El sistema debe responder en menos de 2 segundos en operaciones comunes.
-* **4.2 Usabilidad:** Interfaz simple, intuitiva y accesible para usuarios sin conocimientos técnicos.
-* **4.3 Seguridad:** Validación de pagos y protección de datos de clientes.
-* **4.4 Disponibilidad:** El sistema debe estar disponible durante el horario de operación.
-* **4.5 Escalabilidad:** Debe soportar múltiples pedidos simultáneamente.
+### 3.1 Order Management
+* **FR-01: Create order** - The system must allow the customer to place an order.
+* **FR-02: Add products** - The system must allow adding products to an order, specifying the quantity.
+* **FR-03: Calculate total** - The system must automatically calculate the total of the order.
+* **FR-04: Check status** - The customer can view the status of the order.
+
+### 3.2 Payment Management
+* **FR-05: Process payment** - The cashier must be able to process payments.
+* **FR-06: Validate payment** - The system must validate the payment method.
+* **FR-07: Generate receipt** - The system must generate a payment receipt.
+* **FR-08: Apply discount (optional)** - The system can apply discounts to orders.
+
+### 3.3 Order Preparation
+* **FR-09: View orders** - The barista must visualize pending orders.
+* **FR-10: Prepare product** - The barista must prepare the requested products.
+* **FR-11: Update status** - The system must update the order status.
+
+### 3.4 Inventory
+* **FR-12: Update inventory** - The system must update stock when selling products.
+* **FR-13: Check stock** - The system must allow checking availability.
+
+### 3.5 Suppliers
+* **FR-14: Register supply** - The supplier can supply products.
+* **FR-15: Update stock** - The system must increase inventory upon receiving products.
 
 ---
 
-## 5. Reglas de Negocio
+## 4. Non-Functional Requirements
 
-* **RN-01:** Un pedido debe tener al menos un producto.
-* **RN-02:** Un pedido debe pagarse antes de completarse.
-* **RN-03:** El inventario no puede ser negativo.
-* **RN-04:** Cada pedido pertenece a un solo cliente.
-* **RN-05:** Un producto debe tener precio mayor a 0.
+* **4.1 Performance:** The system must respond in less than 2 seconds for common operations.
+* **4.2 Usability:** Simple, intuitive interface, accessible to users without technical knowledge.
+* **4.3 Security:** Payment validation and customer data protection.
+* **4.4 Availability:** The system must be available during operating hours.
+* **4.5 Scalability:** Must support multiple concurrent orders.
 
 ---
 
-## 6. Casos de Uso (Resumen)
+## 5. Business Rules
 
-| Actor | Caso de uso |
+* **BR-01:** An order must have at least one product.
+* **BR-02:** An order must be paid before completion.
+* **BR-03:** Inventory cannot be negative.
+* **BR-04:** Each order belongs to a single customer.
+* **BR-05:** A product must have a price greater than 0.
+
+---
+
+## 6. Use Cases (Summary)
+
+| Actor | Use Case |
 | :--- | :--- |
-| Cliente | Realizar pedido |
-| Cliente | Consultar estado |
-| Cajero | Procesar pago |
-| Barista | Preparar pedido |
-| Proveedor | Suministrar productos |
+| Customer | Place order |
+| Customer | Check status |
+| Cashier | Process payment |
+| Barista | Prepare order |
+| Supplier | Supply products |
 
 ---
 
-## 7. Restricciones
-* El sistema debe ejecutarse en entorno local o web.
-* Debe ser compatible con dispositivos básicos (PC o tablet).
+## 7. Constraints
+* The system must run in a local or web environment.
+* It must be compatible with basic devices (PC or tablet).
 
-## 8. Futuras mejoras
-* Integración con app móvil.
-* Sistema de notificaciones.
-* Programa de fidelización avanzado.
+## 8. Future Enhancements
+* Integration with a mobile app.
+* Notification system.
+* Advanced loyalty program.
