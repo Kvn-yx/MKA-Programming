@@ -1,4 +1,4 @@
-*University of the Armed Forces (ESPE)*
+#University of the Armed Forces (ESPE)
 **Members:
 *Mateo Artieda
 *Kevin Albán
