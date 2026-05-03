@@ -2,8 +2,6 @@
 
 ## 👥 Members
 
-```text
-> team --list
-- Mateo Artieda
-- Kevin Albán
-- Anthony Aimacaña
+* **Mateo Artieda**
+* **Kevin Albán**
+* **Anthony Aimacaña**
