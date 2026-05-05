@@ -3,142 +3,130 @@
 
 ---
 
+## Document Control
+
+| Version | Date | Author | Description of Changes |
+| :--- | :--- | :--- | :--- |
+| 1.0.0 | 2026-05-04 | Anthony Aimacaña | Initial Enterprise SRS Draft & Architectural Guidelines |
+
+---
+
 ## 1. Introduction
 
 ### 1.1 Purpose
-The purpose of this Software Requirements Specification (SRS) is to provide a comprehensive and detailed description of the NebulaX Coffee Shop Management System. It serves as the single source of truth for stakeholders, developers, and QA engineers regarding the system's functional capabilities, constraints, and non-functional guarantees. 
+The purpose of this Software Requirements Specification (SRS) is to provide a comprehensive, detailed, and unequivocal description of the NebulaX Coffee Shop Management System. This document serves as the definitive source of truth for all stakeholders, software engineers, and Quality Assurance (QA) personnel regarding the system's functional capabilities, operational constraints, and non-functional guarantees.
 
 ### 1.2 Scope
-The system is an enterprise-grade Point of Sale (POS) and internal management platform designed for physical coffee shop locations. It covers:
-* **Order & Checkout Lifecycle:** Order creation, modification, tax/discount calculation, and multi-modal payment processing.
-* **Production Workflow:** Real-time synchronization of orders to Barista/Chef queues.
-* **Inventory Control:** Automated stock deduction via precise recipe mapping.
-* **Floor & HR Management:** Table assignments, employee roles, and shift operations.
+The system is an enterprise-grade Point of Sale (POS) and internal management platform architected specifically for physical coffee shop operations. The core modules encompass:
+* **Order & Checkout Lifecycle:** End-to-end order creation, modification, dynamic tax/discount calculations, and multi-modal secure payment processing.
+* **Production Workflow:** Real-time, event-driven synchronization of orders to Kitchen/Barista Display Systems (KDS).
+* **Inventory Control:** Automated, recipe-driven stock deduction to ensure precise inventory parity.
+* **Floor & Human Resources Management:** Dynamic table assignment, role-based access control, and shift operations management.
 
-The system will *not* currently handle payroll generation, advanced corporate accounting, or a consumer-facing mobile app (planned for Phase 2).
+*Exclusions:* The system currently excludes automated payroll generation, advanced corporate general ledger accounting, and consumer-facing mobile applications.
 
 ### 1.3 Glossary & Definitions
-* **POS (Point of Sale):** Hardware/software system where sales are completed.
-* **Product:** A sellable item (e.g., "Latte").
-* **Ingredient:** A raw material tracked in the inventory (e.g., "Milk", "Coffee Beans").
-* **Recipe (`ProductIngredient`):** The mapping of precise ingredient quantities required to produce one Product.
-* **Tokenization:** Process of replacing sensitive payment data (like a credit card number) with a unique identification symbol (token) for secure processing.
+| Term | Definition |
+| :--- | :--- |
+| **POS** | Point of Sale; the hardware/software ecosystem where retail transactions are executed. |
+| **KDS** | Kitchen Display System; digital screens used by production staff to track orders. |
+| **Product** | A finalized, sellable item presented to the customer (e.g., "Vanilla Latte"). |
+| **Ingredient** | A raw material tracked perpetually in the inventory (e.g., "Whole Milk", "Coffee Beans"). |
+| **Recipe** | The exact quantitative mapping of Ingredients required to synthesize one unit of a Product. |
+| **Tokenization**| The cryptographic process of substituting sensitive payment data (e.g., credit card PANs) with non-sensitive equivalents (tokens) for secure transit and storage. |
 
 ---
 
-## 2. Overall Description
+## 2. System Overview
 
 ### 2.1 User Characteristics (Actors)
-* **Customer:** Initiates orders. Can be anonymous or registered (for loyalty points and email receipts).
-* **Cashier:** Operates the POS terminal, takes customer orders, and processes payments.
-* **Barista / Chef:** Views the preparation queue, prepares products according to recipes, and marks items as ready.
-* **Waiter:** Assigned to tables, delivers orders to customers, and updates table statuses.
-* **Store Manager:** Has administrative privileges to view inventory, manage employee shifts, and access end-of-day financial reports.
-* **Supplier:** External entity (or system interface) that provides stock replenishment.
+* **Customer:** The initiator of orders. Profiles may be anonymous or fully registered for loyalty tracking and digital receipt delivery.
+* **Cashier:** The primary operator of the POS terminal, responsible for order intake, customer interaction, and payment processing.
+* **Barista / Chef:** The production staff who monitor the KDS, fulfill product recipes, and trigger order status updates.
+* **Waiter:** Floor staff responsible for table management, order delivery, and state updates.
+* **Store Manager:** The administrative authority holding privileges for inventory auditing, HR oversight, and financial reporting.
+* **Supplier:** An external entity (or integrated B2B interface) supplying inventory replenishment.
 
 ### 2.2 Operating Environment
-* **Frontend/Client:** Modern Web Browser (Chrome/Safari) running on touch-screen POS terminals and tablets (for waiters).
-* **Backend:** Cloud-hosted containerized services (Docker/Kubernetes).
-* **Database:** File-based storage will be used for the current phase (e.g., JSON or CSV files) for local persistence of transactions and inventory.
+* **Client Architecture:** Modern Web Browsers (Chrome/Safari/Edge) operating on touch-enabled POS terminals and mobile tablets for floor staff.
+* **Backend Architecture:** Cloud-native, containerized microservices or monolith (Docker/Kubernetes).
+* **Data Persistence:** Phase 1 utilizes file-based persistence mechanisms (e.g., structured JSON or CSV files) for transactional and inventory data storage.
 
 ### 2.3 Design & Implementation Constraints
-* **Architecture:** Must follow an MVC/Clean Architecture pattern with decoupled managers (OrderManager, InventoryManager, HRManager, FloorManager).
-* **Data Types:** All financial calculations must use arbitrary-precision decimal types (e.g., `BigDecimal` in Java or similar) to prevent floating-point rounding errors.
-* **Security:** The system must not store raw Credit Card numbers, achieving PCI-DSS compliance by utilizing external Payment Processors and saving only Payment Tokens.
+* **Architectural Pattern:** The implementation MUST adhere strictly to the Model-View-Controller (MVC) or Clean Architecture principles, ensuring absolute decoupling via specialized Domain Managers (`OrderManager`, `InventoryManager`, `HRManager`, `FloorManager`).
+* **Financial Data Types:** All monetary and quantitative calculations MUST utilize arbitrary-precision decimal types (e.g., `BigDecimal` in Java). The use of floating-point primitives (`double`, `float`) for currency is strictly prohibited to prevent rounding anomalies.
+* **Security Standard:** To maintain PCI-DSS compliance, the system MUST NEVER capture, process, or store raw Credit Card numbers. All electronic payments must be routed through compliant third-party Payment Processors, persisting only opaque Payment Tokens.
 
 ---
 
-## 3. System Features (Functional Requirements)
-
-This section uses the Agile-friendly format with detailed Acceptance Criteria.
+## 3. Functional Requirements
 
 ### 3.1 Order Management
-**FR-01: Create and Modify Orders**
-* **Description:** The system shall allow a Cashier to create an order, associate it with an optional Customer profile, add/remove `OrderItem`s, and apply overall discounts.
-* **Priority:** High / Critical
-* **Acceptance Criteria:**
-  1. Cashier can add products by category (Hot Beverages, Snacks, etc.).
-  2. Order accurately updates its `calculateSubtotal()` in real-time.
-  3. System permits assigning the order to an anonymous customer or looking up a registered customer via email.
 
-**FR-02: Automated Tax and Total Calculation**
-* **Description:** The system must calculate local taxes (`taxRate`) and deduct any applied `discount` to establish the final `calculateTotal()`.
-* **Priority:** High / Critical
-* **Acceptance Criteria:**
-  1. Final Total = (Subtotal - Discount) + Tax.
-  2. Values must be rounded strictly to 2 decimal places using standard financial rounding rules.
+| ID | Title | Description | Priority |
+| :--- | :--- | :--- | :--- |
+| **FR-01** | **Order Creation** | The Cashier must be able to initiate new orders, add/remove `OrderItem` entities, and link the transaction to an optional Customer profile. | Critical |
+| **FR-02** | **Dynamic Calculation** | The system must calculate the Subtotal, apply conditional discounts, and compute exact regional taxes (`taxRate`) to formulate the final Total. | Critical |
+
+**Acceptance Criteria (FR-01 & FR-02):**
+* Order totals update within < 100ms of any line item modification.
+* Mathematical formula: `Final Total = (Subtotal - Discount) + Tax`.
+* All financial values render strictly to two decimal places.
 
 ### 3.2 Payment Processing
-**FR-03: Multi-modal Payment Checkout**
-* **Description:** The system must support Cash, Credit Card, and Transfer payments via a standard `PaymentProcessor` interface.
-* **Priority:** High / Critical
-* **Acceptance Criteria:**
-  1. Cashier can select the payment method.
-  2. For Cash: System prompts for `amountTendered` and calculates change.
-  3. For Credit Card: System captures the `paymentToken` from the external terminal and verifies the transaction.
-  4. Order status transitions from `PENDING` to `PAID` only upon successful processor callback.
 
-### 3.3 Production & Floor Workflow
-**FR-04: Production Queue Management**
-* **Description:** Paid orders must immediately appear on the Barista/Chef dashboard.
-* **Priority:** High
-* **Acceptance Criteria:**
-  1. Orders display chronologically.
-  2. Barista can update status to `PREPARING`, then `READY`.
-  3. Waiters are notified when an order assigned to their `Table` is `READY`.
+| ID | Title | Description | Priority |
+| :--- | :--- | :--- | :--- |
+| **FR-03** | **Multi-Modal Checkout** | Support for Cash, Tokenized Credit Card, and Bank Transfer payments via an abstract `PaymentProcessor` interface. | Critical |
 
-**FR-05: Table and Waiter Assignment**
-* **Description:** The `FloorManager` must allow assigning a `Waiter` to a `Table` and managing table occupancy states.
-* **Priority:** Medium
-* **Acceptance Criteria:**
-  1. Tables can be marked as `Occupied` or `Free`.
-  2. Waiters can be linked to tables for a shift.
+**Acceptance Criteria (FR-03):**
+* Cash payments must prompt for `amountTendered` and display the exact change due.
+* Credit transactions must asynchronously verify the `paymentToken`.
+* Order state transitions to `PAID` exclusively upon successful callback from the `PaymentProcessor`.
 
-### 3.4 Inventory Management
-**FR-06: Recipe-based Stock Deduction**
-* **Description:** Upon an order transitioning to `PREPARING`, the `InventoryManager` must automatically deduct the exact `quantityNeeded` of each `Ingredient` required by the `Product`'s recipe.
-* **Priority:** High / Critical
-* **Acceptance Criteria:**
-  1. If a Latte requires 200ml of Milk and 15g of Coffee, those exact amounts are subtracted from `stockQuantity`.
-  2. **FR-06b (Pre-check):** Before checkout, the system must warn the cashier if an item lacks sufficient inventory.
+### 3.3 Production Workflow
+
+| ID | Title | Description | Priority |
+| :--- | :--- | :--- | :--- |
+| **FR-04** | **KDS Queue** | Paid orders must instantly manifest on the Barista/Chef KDS dashboards in chronological order. | High |
+| **FR-05** | **Floor Assignment** | The `FloorManager` must allow Waiters to claim ownership of `Table` entities and monitor occupancy states. | Medium |
+
+**Acceptance Criteria (FR-04 & FR-05):**
+* Production staff can toggle statuses: `PENDING` -> `PREPARING` -> `READY`.
+* Waiters receive notifications when table-assigned orders transition to `READY`.
+
+### 3.4 Inventory Automation
+
+| ID | Title | Description | Priority |
+| :--- | :--- | :--- | :--- |
+| **FR-06** | **Recipe Deduction** | Transitioning an order to `PREPARING` triggers the `InventoryManager` to deduct the precise `quantityNeeded` of each `Ingredient`. | Critical |
+
+**Acceptance Criteria (FR-06):**
+* Pre-check validation: The POS must visibly alert the Cashier if requested items exceed available ingredient stock prior to checkout.
 
 ---
 
 ## 4. Non-Functional Requirements (NFRs)
 
-### 4.1 Performance & Scalability
-* **NFR-01 (Response Time):** 95% of POS interactions (adding item, changing screen) must complete in under 500ms. Payment processing depends on the external gateway but must timeout after 15 seconds.
-* **NFR-02 (Concurrency):** The backend must handle up to 50 concurrent POS/Tablet requests without degradation of service.
-
-### 4.2 Security & Privacy
-* **NFR-03 (PCI-DSS):** Raw credit card data must NEVER enter the application backend. Only secure tokens are permitted.
-* **NFR-04 (Authentication):** Employee access requires unique PIN codes or credentials. Actions (like applying a 100% discount) must be logged and require Manager override.
-* **NFR-05 (Data Privacy):** Customer emails must be encrypted at rest (GDPR compliance).
-
-### 4.3 Reliability & Availability
-* **NFR-06 (Uptime):** The system requires 99.9% uptime during defined store business hours (06:00 - 22:00).
-* **NFR-07 (Offline Resilience):** The POS client should cache current open orders and allow cash transactions even if the internet connection to the cloud backend is temporarily lost, syncing upon reconnection.
-
-### 4.4 Usability
-* **NFR-08 (Training Time):** The UI must be intuitive enough that a new Cashier can complete a standard checkout flow with less than 30 minutes of training.
+| Category | ID | Requirement Description | Target Metric |
+| :--- | :--- | :--- | :--- |
+| **Performance** | NFR-01 | Latency for primary POS interactions (item addition, UI navigation). | < 500ms (95th percentile) |
+| **Scalability** | NFR-02 | Concurrent request handling without service degradation. | 50+ simultaneous POS/Tablet clients |
+| **Security** | NFR-03 | Sensitive data protection regarding Employee access and Customer details. | Encrypted at rest; RBAC enforced |
+| **Reliability** | NFR-04 | System availability during operational business hours (06:00 - 22:00). | 99.9% Uptime |
+| **Resilience** | NFR-05 | POS offline capability for cache-based order intake. | Support for localized Cash transactions |
 
 ---
 
-## 5. Business Rules
+## 5. Enterprise Business Rules
 
-* **BR-01:** An `Order` cannot be marked as `PREPARING` until the `Payment` is successfully processed and status is `PAID`.
-* **BR-02:** Inventory quantities cannot drop below zero. If an ingredient hits 0, all products requiring that ingredient must be automatically marked as "Out of Stock" on the POS.
-* **BR-03:** All financial monetary values must use high-precision decimals (never floating-point primitives) to guarantee absolute mathematical accuracy in accounting.
-* **BR-04:** An order must have at least one `OrderItem` before a payment can be initiated.
-
----
-
-## 6. Architecture & System Constraints
-* **Language & Framework:** Backend written in a strongly-typed language (e.g., Java/Spring Boot, C#/.NET, or Node.js/TypeScript).
-* **Data Management:** File-based data must be structured consistently. No complex schema migrations are needed for the initial file-based phase.
-* **Interfaces:** The `PaymentProcessor` must be an abstract interface to allow swapping banks/providers without changing core business logic.
+* **BR-01 (State Enforcement):** An `Order` object is strictly prohibited from entering the `PREPARING` state until the associated `Payment` completes and the status is finalized as `PAID`.
+* **BR-02 (Inventory Integrity):** Ingredient quantities are immutable below zero. Reaching 0 automatically triggers an "Out of Stock" lock on dependent Products.
+* **BR-03 (Financial Accuracy):** No monetary or inventory-weight variable shall be declared as a floating-point primitive. Arbitrary-precision types are mandatory.
 
 ---
 
-## 7. Future Enhancements (Phase 2 Roadmap)
-* **Database Integration:** Migración del almacenamiento actual basado en archivos a una base de datos No Relacional (NoSQL) para manejar alta concurrencia y gestión avanzada de datos.
+## 6. Phase 2 Roadmap & Future Enhancements
+
+* **Database Integration:** Migration from the localized file-based storage architecture to an Enterprise NoSQL Database Management System to facilitate high concurrency and distributed data management.
+* **Predictive Analytics:** Implementation of AI-driven supply chain alerts to proactively notify Managers to re-order ingredients based on historical sales velocity.

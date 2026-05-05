@@ -1,45 +1,57 @@
-# Listado de Funcionalidades (Features List)
+# Enterprise Features Roster
 ## NebulaX Coffee Shop Management System
 
-Este documento desglosa las características principales (Features) del sistema, agrupadas por módulos. Este listado sirve como puente entre los Requerimientos (SRS) y los futuros Diagramas de Casos de Uso.
+This document outlines the systematic breakdown of capabilities (Features) engineered into the platform. This matrix is structurally aligned with the Software Requirements Specification (SRS) and forms the foundation for all UML Use Case modeling.
 
 ---
 
-### Módulo 1: Punto de Venta (POS) y Gestión de Órdenes
-* **F1.1 Creación de Órdenes Rápidas:** Interfaz táctil para agregar productos rápidamente al carrito.
-* **F1.2 Modificadores de Producto:** Capacidad de personalizar productos (ej. "Sin azúcar", "Leche de almendras").
-* **F1.3 Gestión de Clientes (CRM Básico):** Opción de vincular una orden a un cliente registrado (por email/teléfono) o procesar como cliente anónimo.
-* **F1.4 Cálculo Automático:** Cálculo en tiempo real de Subtotal, Impuestos (Tax) y Total.
-* **F1.5 Aplicación de Descuentos:** Capacidad para que el cajero aplique descuentos predefinidos o manuales (con autorización).
-* **F1.6 Modo Offline (Resiliencia):** Capacidad de seguir tomando órdenes y guardarlas en caché local si se pierde la conexión a internet.
+### Module 1: Point of Sale (POS) & Order Engine
+| Feature ID | Nomenclature | Technical Description |
+| :--- | :--- | :--- |
+| **F1.1** | **Rapid Order Creation** | Highly responsive touch interface engineered for sub-second product addition. |
+| **F1.2** | **Product Modifiers** | Dynamic payload attachment for custom instructions (e.g., "No Sugar", "Oat Milk"). |
+| **F1.3** | **CRM Integration** | Modular association of transactions to registered Customer profiles or anonymous tokens. |
+| **F1.4** | **Real-Time Financials** | Synchronous computation of Subtotals, localized Tax protocols, and Final Totals. |
+| **F1.5** | **Discount Authorization** | Manager-authorized logic for applying percentage or fixed-amount price reductions. |
+| **F1.6** | **Offline Resilience** | Local-cache fallbacks allowing uninterrupted order intake during network partitions. |
 
-### Módulo 2: Procesamiento de Pagos (Checkout)
-* **F2.1 Pago Multi-modal:** Soporte nativo para registrar pagos en Efectivo, Tarjeta de Crédito/Débito y Transferencia.
-* **F2.2 Cálculo de Cambio:** Para pagos en efectivo, el sistema calcula automáticamente el cambio a devolver.
-* **F2.3 Integración de Pasarela Segura:** Generación y almacenamiento de *Tokens de Pago* (sin guardar números de tarjeta) para cumplir con PCI-DSS.
-* **F2.4 Generación de Recibos:** Emisión de tickets digitales (enviados por email) o impresos físicos tras un pago exitoso.
+### Module 2: Checkout & Payment Gateway
+| Feature ID | Nomenclature | Technical Description |
+| :--- | :--- | :--- |
+| **F2.1** | **Multi-Modal Parsing** | Algorithmic routing for Cash, Credit/Debit, and direct Bank Transfer protocols. |
+| **F2.2** | **Tender Calculation** | Automated precision calculation for cash change issuance. |
+| **F2.3** | **Tokenized Security** | PCI-DSS compliant interactions via opaque Payment Tokens; zero raw card retention. |
+| **F2.4** | **Receipt Orchestration** | Generation of standardized physical prints and digital (email) transactional receipts. |
 
-### Módulo 3: Pantalla de Producción (Kitchen/Barista Display System - KDS)
-* **F3.1 Cola de Órdenes en Tiempo Real:** Visualización instantánea de las órdenes pagadas en las pantallas de preparación (Barista/Chef).
-* **F3.2 Estados de Preparación:** Botones para que el staff marque los ítems como "Preparando" (`PREPARING`) y "Listo" (`READY`).
-* **F3.3 Alertas de Retraso:** Indicadores visuales (colores) para órdenes que han superado el tiempo límite de preparación (SLA).
+### Module 3: Kitchen Display System (KDS)
+| Feature ID | Nomenclature | Technical Description |
+| :--- | :--- | :--- |
+| **F3.1** | **Chronological Queue** | Web-socket or polling-based live feed of `PAID` orders to production screens. |
+| **F3.2** | **State Transitions** | Interactive toggles shifting entities through `PENDING`, `PREPARING`, and `READY` states. |
+| **F3.3** | **SLA Monitoring** | Visual degradation/alerting for tickets exceeding Service Level Agreement time thresholds. |
 
-### Módulo 4: Control de Inventario
-* **F4.1 Descuento Automático por Receta:** Al iniciar la preparación de un ítem, el sistema descuenta las cantidades exactas de ingredientes según su receta.
-* **F4.2 Alertas de Stock Bajo:** Notificaciones automáticas cuando un ingrediente cruza el umbral mínimo configurado.
-* **F4.3 Bloqueo de Venta por Falta de Stock:** Si un ingrediente llega a cero, los productos que lo requieren se marcan automáticamente como "Agotados" en el POS.
-* **F4.4 Auditoría de Inventario:** Interfaz para que el Manager ajuste el stock manualmente (mermas, desperdicios, conteo físico).
+### Module 4: Perpetual Inventory Control
+| Feature ID | Nomenclature | Technical Description |
+| :--- | :--- | :--- |
+| **F4.1** | **Recipe Deduction** | Algorithmic, micro-measurement subtraction of raw `Ingredients` upon order preparation. |
+| **F4.2** | **Threshold Alerts** | Automated event generation when stock falls beneath pre-defined safety minimums. |
+| **F4.3** | **Preemptive Block** | Real-time POS interlock preventing the sale of items lacking required raw materials. |
+| **F4.4** | **Audit & Reconciliation** | Administrative GUI for manual stock overrides (handling shrinkage, spoilage, or refits). |
 
-### Módulo 5: Gestión de Sala y Personal (Floor & HR)
-* **F5.1 Mapa de Mesas:** Representación visual del estado de las mesas (Libre, Ocupada, Reservada).
-* **F5.2 Asignación de Meseros:** Vinculación de un mesero activo a mesas específicas.
-* **F5.3 Autenticación de Empleados:** Acceso al sistema mediante PIN único o tarjeta RFID.
-* **F5.4 Control de Roles (RBAC):** Restricción de funciones según el rol (Ej. Solo un Manager puede anular una orden pagada o hacer devoluciones).
+### Module 5: Floor & Human Capital Management
+| Feature ID | Nomenclature | Technical Description |
+| :--- | :--- | :--- |
+| **F5.1** | **Spatial Mapping** | State-machine tracking of physical table statuses (`FREE`, `OCCUPIED`). |
+| **F5.2** | **Staff Allocation** | One-to-many relationship mapping between active `Waiters` and their assigned `Tables`. |
+| **F5.3** | **Secure Authentication** | Cryptographic session generation via unique PINs or RFID badge scanning. |
+| **F5.4** | **RBAC Enforcement** | Strict Role-Based Access Control gating sensitive administrative actions. |
 
-### Módulo 6: Administración y Reportes (Backoffice)
-* **F6.1 Gestión de Menú:** Interfaz (CRUD) para crear, editar o eliminar Productos, Categorías y sus Recetas.
-* **F6.2 Corte de Caja (End of Day):** Reporte automatizado de ventas del día, separado por método de pago y por empleado.
-* **F6.3 Reporte de Productos Estrella:** Análisis de los productos más y menos vendidos.
+### Module 6: Administrative Backoffice
+| Feature ID | Nomenclature | Technical Description |
+| :--- | :--- | :--- |
+| **F6.1** | **Menu Schema Manager** | Comprehensive CRUD (Create, Read, Update, Delete) interfaces for system catalogs. |
+| **F6.2** | **Financial Reconciliation** | End-of-Day (Z-Report) synthesis, aggregating revenue streams by payment type and operator. |
+| **F6.3** | **Velocity Analytics** | High-level data aggregation detailing top-performing and under-performing SKUs. |
 
 ---
-*Nota: Este listado es la base exacta para modelar los Actores y las relaciones `«include»` y `«extend»` en el Diagrama de Casos de Uso.*
+*Architectural Note: This roster is the authoritative map dictating the actors, boundaries, and `«include»` / `«extend»` directives modeled within the enterprise UML schematics.*
