@@ -6,7 +6,7 @@ package mka.coffeshopmanagementsystem.model;
 
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public abstract class Employee extends Person {
     private String role;
@@ -22,3 +22,4 @@ public abstract class Employee extends Person {
 
     public abstract void performOperation();
 }
+

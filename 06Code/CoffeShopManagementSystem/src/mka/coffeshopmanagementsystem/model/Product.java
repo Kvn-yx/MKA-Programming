@@ -4,35 +4,40 @@
  */
 package mka.coffeshopmanagementsystem.model;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class Product {
     private String productId;
     private String name;
-    private double price;
+    private BigDecimal price;
+    private ProductCategory category;
     private List<ProductIngredient> recipe;
 
-    public Product(String productId, String name, double price) {
+    public Product(String productId, String name, BigDecimal price, ProductCategory category, List<ProductIngredient> recipe) {
         this.productId = productId;
         this.name = name;
         this.price = price;
-        this.recipe = new ArrayList<>();
+        this.category = category;
+        this.recipe = recipe;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void addIngredient(ProductIngredient pi) {
-        this.recipe.add(pi);
-    }
-
-    public List<ProductIngredient> getRecipe() {
-        return recipe;
+    public Map<Ingredient, BigDecimal> getRequiredIngredients() {
+        Map<Ingredient, BigDecimal> map = new HashMap<>();
+        for (ProductIngredient pi : recipe) {
+            map.put(pi.getIngredient(), pi.getQuantityNeeded());
+        }
+        return map;
     }
 }
+

@@ -6,7 +6,7 @@ package mka.coffeshopmanagementsystem.model;
 
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class Barista extends Employee {
     public Barista(String id, String name) {
@@ -14,11 +14,12 @@ public class Barista extends Employee {
     }
 
     public void prepareDrink() {
-        // Implementation logic
+        System.out.println(getName() + " is preparing a drink.");
     }
 
     @Override
     public void performOperation() {
-        // Implementation logic
+        prepareDrink();
     }
 }
+

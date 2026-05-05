@@ -4,33 +4,24 @@
  */
 package mka.coffeshopmanagementsystem.model;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Date;
 
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class Inventory {
     private List<Ingredient> ingredients;
-    private Date lastReviewDate;
+    private LocalDate lastReviewDate;
 
-    public Inventory() {
-        this.ingredients = new ArrayList<>();
-        this.lastReviewDate = new Date();
+    public Inventory(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+        this.lastReviewDate = LocalDate.now();
     }
-
-    public void addIngredient(Ingredient ingredient) {
-        this.ingredients.add(ingredient);
-    }
-
-    public boolean checkAvailability(Product product, int quantity) {
-        // Logic to check availability
-        return true;
-    }
-
-    public void reduceStock(Product product, int quantity) {
-        // Logic to reduce stock
+    
+    public List<Ingredient> getIngredients() {
+        return ingredients;
     }
 }
+

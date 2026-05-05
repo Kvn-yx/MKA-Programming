@@ -6,7 +6,7 @@ package mka.coffeshopmanagementsystem.model;
 
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public abstract class Person {
     private String id;
@@ -24,8 +24,5 @@ public abstract class Person {
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
+

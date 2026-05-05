@@ -4,15 +4,17 @@
  */
 package mka.coffeshopmanagementsystem.model;
 
+import java.math.BigDecimal;
+
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class OrderItem {
     private String orderItemId;
-    private int quantity;
-    private double subtotal;
     private Product product;
+    private int quantity;
+    private BigDecimal subtotal;
 
     public OrderItem(String orderItemId, Product product, int quantity) {
         this.orderItemId = orderItemId;
@@ -21,18 +23,12 @@ public class OrderItem {
         this.subtotal = calculateSubtotal();
     }
 
-    public double calculateSubtotal() {
-        if (product != null) {
-            return product.getPrice() * quantity;
-        }
-        return 0;
+    public BigDecimal calculateSubtotal() {
+        return product.getPrice().multiply(BigDecimal.valueOf(quantity));
     }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public int getQuantity() {
-        return quantity;
+    
+    public BigDecimal getSubtotal() {
+        return subtotal;
     }
 }
+

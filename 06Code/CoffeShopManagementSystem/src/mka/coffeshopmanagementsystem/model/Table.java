@@ -6,16 +6,16 @@ package mka.coffeshopmanagementsystem.model;
 
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class Table {
     private String id;
     private boolean state;
-    private Employee assignedWaiter;
+    private Waiter assignedWaiter;
 
     public Table(String id) {
         this.id = id;
-        this.state = false;
+        this.state = false; // False = free
     }
 
     public void occupy() {
@@ -27,11 +27,12 @@ public class Table {
         this.assignedWaiter = null;
     }
 
-    public boolean isOccupied() {
-        return state;
-    }
-
-    public void assignWaiter(Employee waiter) {
+    public void setAssignedWaiter(Waiter waiter) {
         this.assignedWaiter = waiter;
     }
+    
+    public String getId() {
+        return id;
+    }
 }
+

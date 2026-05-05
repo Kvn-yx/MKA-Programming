@@ -4,23 +4,23 @@
  */
 package mka.coffeshopmanagementsystem.model;
 
+import java.math.BigDecimal;
+
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class Transfer extends Payment {
     private String accountNumber;
-    private String accountHolder;
 
-    public Transfer(double amount, String accountNumber, String accountHolder) {
+    public Transfer(BigDecimal amount, String accountNumber) {
         super(amount);
         this.accountNumber = accountNumber;
-        this.accountHolder = accountHolder;
     }
 
     @Override
-    public boolean processPayment() {
-        // Transfer process logic
-        return true;
+    public boolean processPayment(PaymentProcessor processor) {
+        return processor.process(this);
     }
 }
+

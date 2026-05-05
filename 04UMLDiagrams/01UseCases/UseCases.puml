@@ -1,0 +1,78 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor LightBlue
+  BorderColor DarkBlue
+  ArrowColor Black
+}
+
+actor "Cashier" as Cashier
+actor "Barista / Chef" as Barista
+actor "Waiter" as Waiter
+actor "Store Manager" as Manager
+actor "Customer" as Customer
+actor "Payment Gateway" as PaymentGateway <<External System>>
+
+rectangle "NebulaX Coffee Shop System" {
+  
+  ' General Security
+  usecase "Authenticate Employee" as UC_Auth
+  
+  ' POS Module
+  usecase "Create Quick Order" as UC_CreateOrder
+  usecase "Assign Customer to Order" as UC_AssignCustomer
+  usecase "Calculate Total with Taxes" as UC_CalcTotal
+  usecase "Apply Special Discount" as UC_Discount
+  usecase "Process Payment" as UC_Payment
+  
+  ' KDS and Inventory Module
+  usecase "View KDS Queue" as UC_ViewQueue
+  usecase "Update Status to Preparing/Ready" as UC_Prepare
+  usecase "Deduct Inventory by Recipe" as UC_DeductInv
+  
+  ' Floor Module
+  usecase "Assign Table" as UC_AssignTable
+  usecase "Mark Order as Served" as UC_Serve
+  
+  ' Backoffice Module
+  usecase "Manage Menu and Recipes" as UC_ManageMenu
+  usecase "Audit/Adjust Inventory" as UC_AuditInv
+  usecase "Generate End of Day Report" as UC_EndOfDay
+}
+
+' Cashier Relations
+Cashier --> UC_CreateOrder
+Cashier --> UC_Payment
+
+' Business Rules and POS Includes/Extends
+UC_CreateOrder ..> UC_Auth : <<include>>
+UC_CreateOrder ..> UC_CalcTotal : <<include>>
+UC_AssignCustomer .up.> UC_CreateOrder : <<extend>>
+UC_Discount .up.> UC_CreateOrder : <<extend>>
+UC_Payment ..> UC_Auth : <<include>>
+
+' Payment interacts with an external system
+UC_Payment --> PaymentGateway
+
+' Barista Relations
+Barista --> UC_ViewQueue
+Barista --> UC_Prepare
+UC_Prepare ..> UC_DeductInv : <<include>>
+
+' Waiter Relations
+Waiter --> UC_AssignTable
+Waiter --> UC_Serve
+
+' Manager Relations
+Manager --> UC_ManageMenu
+Manager --> UC_AuditInv
+Manager --> UC_EndOfDay
+Manager --> UC_Discount : Authorizes
+Manager --> UC_Auth : Inherits global access
+
+' Customer Relations
+Customer --> UC_CreateOrder : Requests
+Customer --> UC_Payment : Provides money/card
+
+@enduml

@@ -6,20 +6,20 @@ package mka.coffeshopmanagementsystem.model;
 
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class Cashier extends Employee {
     public Cashier(String id, String name) {
         super(id, name, "Cashier");
     }
 
-    public Order takeOrder(Customer customer) {
-        // Implementation logic
-        return new Order("dummy-id", customer);
+    public Order takeOrder(Customer customer, String orderId) {
+        return new Order(orderId);
     }
 
     @Override
     public void performOperation() {
-        // Implementation logic
+        System.out.println(getName() + " is handling the cash register.");
     }
 }
+

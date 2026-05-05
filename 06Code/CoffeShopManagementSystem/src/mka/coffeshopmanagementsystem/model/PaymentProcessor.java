@@ -8,14 +8,7 @@ package mka.coffeshopmanagementsystem.model;
  *
  * @author Anthony Aimacaña, MKA programer, @ESPE
  */
-public class Chef extends Employee {
-    public Chef(String id, String name) {
-        super(id, name, "Chef");
-    }
-
-    @Override
-    public void performOperation() {
-        System.out.println(getName() + " is preparing food.");
-    }
+public interface PaymentProcessor {
+    boolean process(Payment payment);
 }
 

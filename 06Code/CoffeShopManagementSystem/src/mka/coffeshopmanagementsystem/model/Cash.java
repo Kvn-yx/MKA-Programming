@@ -4,21 +4,23 @@
  */
 package mka.coffeshopmanagementsystem.model;
 
+import java.math.BigDecimal;
+
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class Cash extends Payment {
-    private double amountTendered;
+    private BigDecimal amountTendered;
 
-    public Cash(double amount, double amountTendered) {
+    public Cash(BigDecimal amount, BigDecimal amountTendered) {
         super(amount);
         this.amountTendered = amountTendered;
     }
 
     @Override
-    public boolean processPayment() {
-        // Cash process logic
-        return amountTendered >= getAmount();
+    public boolean processPayment(PaymentProcessor processor) {
+        return processor.process(this);
     }
 }
+

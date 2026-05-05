@@ -4,21 +4,23 @@
  */
 package mka.coffeshopmanagementsystem.model;
 
+import java.math.BigDecimal;
+
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class CreditCard extends Payment {
-    private String cardNumber;
+    private String paymentToken;
 
-    public CreditCard(double amount, String cardNumber) {
+    public CreditCard(BigDecimal amount, String paymentToken) {
         super(amount);
-        this.cardNumber = cardNumber;
+        this.paymentToken = paymentToken;
     }
 
     @Override
-    public boolean processPayment() {
-        // Credit card process logic
-        return true;
+    public boolean processPayment(PaymentProcessor processor) {
+        return processor.process(this);
     }
 }
+

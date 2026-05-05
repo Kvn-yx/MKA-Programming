@@ -4,40 +4,56 @@
  */
 package mka.coffeshopmanagementsystem.model;
 
-import java.util.Date;
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class Order {
     private String orderId;
-    private Date dateTime;
+    private LocalDateTime dateTime;
     private OrderStatus status;
     private List<OrderItem> items;
     private Customer customer;
     private Payment payment;
+    private BigDecimal taxRate;
+    private BigDecimal discount;
 
-    public Order(String orderId, Customer customer) {
+    public Order(String orderId) {
         this.orderId = orderId;
-        this.customer = customer;
-        this.dateTime = new Date();
+        this.dateTime = LocalDateTime.now();
         this.status = OrderStatus.PENDING;
         this.items = new ArrayList<>();
+        this.taxRate = BigDecimal.ZERO;
+        this.discount = BigDecimal.ZERO;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public void addItem(OrderItem item) {
         this.items.add(item);
     }
 
-    public double calculateTotal() {
-        double total = 0;
+    public BigDecimal calculateSubtotal() {
+        BigDecimal subtotal = BigDecimal.ZERO;
         for (OrderItem item : items) {
-            total += item.calculateSubtotal();
+            subtotal = subtotal.add(item.getSubtotal());
         }
-        return total;
+        return subtotal;
+    }
+
+    public BigDecimal calculateTax() {
+        return calculateSubtotal().subtract(discount).multiply(taxRate);
+    }
+
+    public BigDecimal calculateTotal() {
+        return calculateSubtotal().subtract(discount).add(calculateTax());
     }
 
     public void updateStatus(OrderStatus status) {
@@ -48,3 +64,4 @@ public class Order {
         this.payment = payment;
     }
 }
+

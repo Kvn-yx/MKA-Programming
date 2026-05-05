@@ -1,0 +1,230 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Arial
+
+package "mka.coffeshop.model" {
+
+    abstract class Person {
+        - id: String
+        - name: String
+        + Person(id: String, name: String)
+        + getId(): String
+        + getName(): String
+    }
+
+    class Customer {
+        - email: String
+        - loyaltyPoints: int
+        + Customer(id: String, name: String, email: String)
+        + getEmail(): String
+    }
+
+    abstract class Employee {
+        - role: String
+        + Employee(id: String, name: String, role: String)
+        + getRole(): String
+        + {abstract} performOperation(): void
+    }
+
+    class Cashier {
+        + Cashier(id: String, name: String)
+        + takeOrder(customer: Customer): Order
+        + performOperation(): void
+    }
+
+    class Chef {
+        + Chef(id: String, name: String)
+        + performOperation(): void
+    }
+
+    class Barista {
+        + Barista(id: String, name: String)
+        + prepareDrink(): void
+        + performOperation(): void
+    }
+
+    class Waiter {
+        + Waiter(id: String, name: String)
+        + serveTable(table: Table): void
+        + performOperation(): void
+    }
+
+    Person <|-- Customer
+    Person <|-- Employee
+    Employee <|-- Cashier
+    Employee <|-- Chef
+    Employee <|-- Barista
+    Employee <|-- Waiter
+
+    class CoffeeShop {
+        - name: String
+        - address: String
+    }
+
+    class OrderManager {
+        - orders: List<Order>
+        + createOrder(customer: Customer): Order
+        + processPayment(order: Order, payment: Payment): boolean
+    }
+
+    class HRManager {
+        - employees: List<Employee>
+        + assignShift(employee: Employee): void
+    }
+
+    class FloorManager {
+        - tables: List<Table>
+        - machines: List<Machine>
+        + assignTable(waiter: Waiter, table: Table): void
+    }
+
+    class InventoryManager {
+        - inventory: Inventory
+        + checkStockFor(requiredIngredients: Map<Ingredient, BigDecimal>): boolean
+        + deductStockFor(requiredIngredients: Map<Ingredient, BigDecimal>): void
+    }
+
+    CoffeeShop "1" *-- "1" OrderManager
+    CoffeeShop "1" *-- "1" HRManager
+    CoffeeShop "1" *-- "1" FloorManager
+    CoffeeShop "1" *-- "1" InventoryManager
+
+    class Machine {
+        - id: String
+        - brand: String
+        - state: boolean
+        + turnOn(): void
+        + operate(): void
+    }
+
+    class Table {
+        - id: String
+        - state: boolean
+        - assignedWaiter: Waiter
+        + occupy(): void
+        + free(): void
+    }
+
+    enum OrderStatus {
+        PENDING
+        PREPARING
+        READY
+        SERVED
+        PAID
+    }
+
+    class Order {
+        - orderId: String
+        - dateTime: LocalDateTime
+        - status: OrderStatus
+        - items: List<OrderItem>
+        - customer: Customer
+        - payment: Payment
+        - taxRate: BigDecimal
+        - discount: BigDecimal
+        + Order(orderId: String)
+        + addItem(item: OrderItem): void
+        + calculateSubtotal(): BigDecimal
+        + calculateTax(): BigDecimal
+        + calculateTotal(): BigDecimal
+        + updateStatus(status: OrderStatus): void
+    }
+
+    class OrderItem {
+        - orderItemId: String
+        - quantity: int
+        - subtotal: BigDecimal
+        - product: Product
+        + calculateSubtotal(): BigDecimal
+    }
+
+    abstract class Payment {
+        - amount: BigDecimal
+        + Payment(amount: BigDecimal)
+        + {abstract} processPayment(processor: PaymentProcessor): boolean
+    }
+
+    interface PaymentProcessor {
+        + process(payment: Payment): boolean
+    }
+
+    class Transfer {
+        - accountNumber: String
+        + Transfer(amount: BigDecimal, accountNumber: String)
+        + processPayment(processor: PaymentProcessor): boolean
+    }
+
+    class CreditCard {
+        - paymentToken: String
+        + CreditCard(amount: BigDecimal, paymentToken: String)
+        + processPayment(processor: PaymentProcessor): boolean
+    }
+
+    class Cash {
+        - amountTendered: BigDecimal
+        + Cash(amount: BigDecimal, amountTendered: BigDecimal)
+        + processPayment(processor: PaymentProcessor): boolean
+    }
+
+    Payment <|-- Transfer
+    Payment <|-- CreditCard
+    Payment <|-- Cash
+
+    enum ProductCategory {
+        HOT_BEVERAGE
+        COLD_BEVERAGE
+        DESSERT
+        SNACK
+    }
+
+    class Product {
+        - productId: String
+        - name: String
+        - price: BigDecimal
+        - category: ProductCategory
+        - recipe: List<ProductIngredient>
+        + getPrice(): BigDecimal
+        + getRequiredIngredients(): Map<Ingredient, BigDecimal>
+    }
+
+    class ProductIngredient {
+        - quantityNeeded: BigDecimal
+        - ingredient: Ingredient
+    }
+
+    class Inventory {
+        - ingredients: List<Ingredient>
+        - lastReviewDate: LocalDate
+    }
+
+    class Ingredient {
+        - ingredientId: String
+        - name: String
+        - stockQuantity: BigDecimal
+        + reduceStock(amount: BigDecimal): void
+    }
+
+    ' Relaciones actualizadas
+    FloorManager "1" o-- "*" Machine : manages >
+    FloorManager "1" o-- "*" Table : manages >
+    HRManager "1" o-- "*" Employee : manages >
+    OrderManager "1" o-- "*" Order : manages >
+    InventoryManager "1" o-- "1" Inventory : manages >
+
+    Order "0..1" o-- "1" Customer : placed by >
+    Order "1" *-- "1" Payment : paid via >
+    Order "1" *-- "*" OrderItem : contains >
+
+    Payment ..> PaymentProcessor : uses >
+
+    OrderItem "*" o-- "1" Product : references >
+
+    Product "1" *-- "*" ProductIngredient : requires >
+    ProductIngredient "*" o-- "1" Ingredient : maps to >
+
+    Inventory "1" o-- "*" Ingredient : tracks >
+    
+    Table "*" o-- "0..1" Waiter : assigned to >
+}
+
+@enduml

@@ -6,30 +6,31 @@ package mka.coffeshopmanagementsystem.model;
 
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class Machine {
     private String id;
     private String brand;
-    private String model;
     private boolean state;
 
-    public Machine(String id, String brand, String model) {
+    public Machine(String id, String brand) {
         this.id = id;
         this.brand = brand;
-        this.model = model;
         this.state = false;
     }
 
     public void turnOn() {
         this.state = true;
     }
-
+    
     public void turnOff() {
         this.state = false;
     }
 
     public void operate() {
-        // Implementation logic
+        if(state) {
+            System.out.println("Machine " + id + " is operating.");
+        }
     }
 }
+

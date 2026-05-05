@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1080px" preserveAspectRatio="none" style="width:892px;height:1080px;" version="1.1" viewBox="0 0 892 1080" width="892px" zoomAndPan="magnify"><defs><filter height="300%" id="f1xtn54lnx2d0a" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[06ad47eb07219c4a4de9aa9a3bbf8b42]
+cluster NebulaX Coffee Shop System--><rect fill="#FFFFFF" filter="url(#f1xtn54lnx2d0a)" height="710" style="stroke:#000000;stroke-width:1.5;" width="611" x="269" y="123.5762"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="203" x="473" y="140.1094">NebulaX Coffee Shop System</text><ellipse cx="758.0017" cy="359.5765" fill="#ADD8E6" filter="url(#f1xtn54lnx2d0a)" rx="93.0017" ry="21.0003" style="stroke:#00008B;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="145" x="685.5017" y="363.305">Authenticate Employee</text><ellipse cx="410.0066" cy="249.7775" fill="#ADD8E6" filter="url(#f1xtn54lnx2d0a)" rx="84.0066" ry="19.2013" style="stroke:#00008B;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="124" x="348.0066" y="253.506">Create Quick Order</text><ellipse cx="757.8975" cy="186.7557" fill="#ADD8E6" filter="url(#f1xtn54lnx2d0a)" rx="101.3975" ry="22.6795" style="stroke:#00008B;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="164" x="675.8975" y="190.4842">Assign Customer to Order</text><ellipse cx="757.8449" cy="267.3452" fill="#ADD8E6" filter="url(#f1xtn54lnx2d0a)" rx="101.8449" ry="22.769" style="stroke:#00008B;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="165" x="675.3449" y="271.0737">Calculate Total with Taxes</text><ellipse cx="758.066" cy="436.4894" fill="#ADD8E6" filter="url(#f1xtn54lnx2d0a)" rx="92.566" ry="20.9132" style="stroke:#00008B;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="144" x="686.066" y="440.2179">Apply Special Discount</text><ellipse cx="409.7877" cy="177.6337" fill="#ADD8E6" filter="url(#f1xtn54lnx2d0a)" rx="78.2877" ry="18.0575" style="stroke:#00008B;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="110" x="353.0149" y="181.8535">Process Payment</text><ellipse cx="410.0069" cy="412.4775" fill="#ADD8E6" filter="url(#f1xtn54lnx2d0a)" rx="77.5069" ry="17.9014" style="stroke:#00008B;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="108" x="353.8567" y="416.7922">View KDS Queue</text><ellipse cx="410.205" cy="331.5172" fill="#ADD8E6" filter="url(#f1xtn54lnx2d0a)" rx="125.205" ry="27.441" style="stroke:#00008B;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="216" x="302.205" y="335.2457">Update Status to Preparing/Ready</text><ellipse cx="757.8935" cy="516.6549" fill="#ADD8E6" filter="url(#f1xtn54lnx2d0a)" rx="105.8935" ry="23.5787" style="stroke:#00008B;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="174" x="670.8935" y="520.3834">Deduct Inventory by Recipe</text><ellipse cx="410.0887" cy="558.5939" fill="#ADD8E6" filter="url(#f1xtn54lnx2d0a)" rx="68.0887" ry="16.0177" style="stroke:#00008B;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82" x="366.0887" y="563.1105">Assign Table</text><ellipse cx="409.8297" cy="486.6421" fill="#ADD8E6" filter="url(#f1xtn54lnx2d0a)" rx="90.8297" ry="20.5659" style="stroke:#00008B;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="140" x="339.8297" y="490.3706">Mark Order as Served</text><ellipse cx="409.9418" cy="793.5645" fill="#ADD8E6" filter="url(#f1xtn54lnx2d0a)" rx="105.4418" ry="23.4884" style="stroke:#00008B;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="173" x="323.4418" y="797.293">Manage Menu and Recipes</text><ellipse cx="410.035" cy="630.3832" fill="#ADD8E6" filter="url(#f1xtn54lnx2d0a)" rx="89.535" ry="20.307" style="stroke:#00008B;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="137" x="341.535" y="634.1117">Audit/Adjust Inventory</text><ellipse cx="410.0675" cy="710.7897" fill="#ADD8E6" filter="url(#f1xtn54lnx2d0a)" rx="109.0675" ry="24.2135" style="stroke:#00008B;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="181" x="319.5675" y="714.5182">Generate End of Day Report</text><!--MD5=[626ff6ece95d570cc2519224441d60ff]
+entity Cashier--><ellipse cx="53" cy="117.5762" fill="#FEFECE" filter="url(#f1xtn54lnx2d0a)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M53,125.5762 L53,152.5762 M40,133.5762 L66,133.5762 M53,152.5762 L40,167.5762 M53,152.5762 L66,167.5762 " fill="none" filter="url(#f1xtn54lnx2d0a)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="28.5" y="187.6094">Cashier</text><!--MD5=[54ba06d46e5d88b1a77491638dc94db9]
+entity Barista--><ellipse cx="53" cy="372.5762" fill="#FEFECE" filter="url(#f1xtn54lnx2d0a)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M53,380.5762 L53,407.5762 M40,388.5762 L66,388.5762 M53,407.5762 L40,422.5762 M53,407.5762 L66,422.5762 " fill="none" filter="url(#f1xtn54lnx2d0a)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="10" y="442.6094">Barista / Chef</text><!--MD5=[323c25cdec349f5ea5907cb1b91ccd49]
+entity Waiter--><ellipse cx="53" cy="504.5762" fill="#FEFECE" filter="url(#f1xtn54lnx2d0a)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M53,512.5762 L53,539.5762 M40,520.5762 L66,520.5762 M53,539.5762 L40,554.5762 M53,539.5762 L66,554.5762 " fill="none" filter="url(#f1xtn54lnx2d0a)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="41" x="32.5" y="574.6094">Waiter</text><!--MD5=[327d8b0cc9017ef0d2f4054fa6547e20]
+entity Manager--><ellipse cx="53" cy="761.5762" fill="#FEFECE" filter="url(#f1xtn54lnx2d0a)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M53,769.5762 L53,796.5762 M40,777.5762 L66,777.5762 M53,796.5762 L40,811.5762 M53,796.5762 L66,811.5762 " fill="none" filter="url(#f1xtn54lnx2d0a)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="94" x="6" y="831.6094">Store Manager</text><!--MD5=[ae78ca0dd1f49bdd788e5556d70823ac]
+entity Customer--><ellipse cx="53" cy="246.5762" fill="#FEFECE" filter="url(#f1xtn54lnx2d0a)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M53,254.5762 L53,281.5762 M40,262.5762 L66,262.5762 M53,281.5762 L40,296.5762 M53,281.5762 L66,296.5762 " fill="none" filter="url(#f1xtn54lnx2d0a)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61" x="22.5" y="316.6094">Customer</text><!--MD5=[72a9586c6036bc828fb9ec987b717d65]
+entity PaymentGateway--><ellipse cx="758" cy="34.6855" fill="#FEFECE" filter="url(#f1xtn54lnx2d0a)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M758,42.6855 L758,69.6855 M745,50.6855 L771,50.6855 M758,69.6855 L745,84.6855 M758,69.6855 L771,84.6855 " fill="none" filter="url(#f1xtn54lnx2d0a)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="114" x="701" y="104.7188">Payment Gateway</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="117" x="699.5" y="22.1094">«External System»</text><!--MD5=[63045405aa6518da62cfd9c6f35bfe2e]
+link Cashier to UC_CreateOrder--><path d="M77.53,179.3362 C91.16,194.3462 109.62,211.2962 130,220.5762 C190.76,248.2562 266.47,254.6062 323.69,254.5262 " fill="none" id="Cashier-to-UC_CreateOrder" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="328.81,254.5062,319.7986,250.5319,323.81,254.5205,319.8215,258.5319,328.81,254.5062" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[5014f7775944a790b0486defd7972b83]
+link Cashier to UC_Payment--><path d="M77.57,151.4362 C128.18,155.4262 249.22,164.9762 330.16,171.3562 " fill="none" id="Cashier-to-UC_Payment" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="335.43,171.7762,326.7787,167.0692,330.446,171.3763,326.1389,175.0436,335.43,171.7762" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[b3cc97014b2f52b0f202b042fe44bcbc]
+link UC_CreateOrder to UC_Auth--><path d="M482.8,259.0862 C501.63,264.5562 520.66,273.1262 535,286.5762 C563.01,312.8262 533.49,345.6462 565,367.5762 C604.6,395.1362 660.73,389.0062 702.08,378.4462 " fill="none" id="UC_CreateOrder-to-UC_Auth" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="707.05,377.1462,697.3281,375.5697,702.2148,378.4193,699.3652,383.306,707.05,377.1462" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="55" x="566" y="364.0713">«include»</text><!--MD5=[0c0b91c2aaf25635540d2d32b685ead7]
+link UC_CreateOrder to UC_CalcTotal--><path d="M492.12,253.7962 C540.21,256.2962 601.63,259.4862 653.22,262.1762 " fill="none" id="UC_CreateOrder-to-UC_CalcTotal" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="658.5,262.4462,649.718,257.9879,653.5066,262.1886,649.3059,265.9773,658.5,262.4462" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="55" x="566" y="255.0713">«include»</text><!--MD5=[77c0e93d04cc6a657a853e46a4ec40f8]
+reverse link UC_CreateOrder to UC_AssignCustomer--><path d="M481.21,236.7862 C538.54,226.3562 619.51,211.6062 678.89,200.7962 " fill="none" id="UC_CreateOrder-backto-UC_AssignCustomer" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="476.08,237.7262,485.6468,240.0664,481.0007,236.8393,484.2278,232.1932,476.08,237.7262" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="53" x="567" y="209.0713">«extend»</text><!--MD5=[b9acf7ab099e60bde3ca628c920163f9]
+reverse link UC_CreateOrder to UC_Discount--><path d="M490.06,259.9062 C506.77,265.4462 522.97,273.8462 535,286.5762 C574.54,328.4062 522.13,374.1562 565,412.5762 C594.52,439.0262 637.62,446.1962 675.51,446.2362 " fill="none" id="UC_CreateOrder-backto-UC_Discount" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="484.86,258.2762,492.2461,264.7912,489.6299,259.7757,494.6453,257.1594,484.86,258.2762" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="53" x="567" y="409.0713">«extend»</text><!--MD5=[0874d7388bc750feff0988a63ec9aa85]
+link UC_Payment to UC_Auth--><path d="M480.56,185.6062 C500.01,190.7362 519.92,199.0662 535,212.5762 C561.44,236.2462 539.63,261.7562 565,286.5762 C595.86,316.7662 640.47,334.7262 678.93,345.2762 " fill="none" id="UC_Payment-to-UC_Auth" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="684.07,346.6562,676.4194,340.4539,679.2419,345.3563,674.3396,348.1789,684.07,346.6562" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="55" x="566" y="283.0713">«include»</text><!--MD5=[7c78e75b2d4536932fed24306ef02b89]
+link UC_Payment to PaymentGateway--><path d="M454.12,162.6162 C514.62,141.6362 625.07,103.3262 694.56,79.2262 " fill="none" id="UC_Payment-to-PaymentGateway" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="699.49,77.5162,689.675,76.7006,694.7685,79.1615,692.3076,84.2551,699.49,77.5162" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[7a16a70825b6a98b074214032b0e4600]
+link Barista to UC_ViewQueue--><path d="M96.12,405.5262 C152.97,406.8062 255.46,409.1162 327.61,410.7362 " fill="none" id="Barista-to-UC_ViewQueue" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="332.75,410.8562,323.8438,406.6516,327.7513,410.7419,323.6609,414.6495,332.75,410.8562" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[1e0ef20f482ec37a2c5021a0d3b957eb]
+link Barista to UC_Prepare--><path d="M96.01,391.5962 C107.01,388.4162 118.9,385.1862 130,382.5762 C186.65,369.2362 250.45,357.3362 302.74,348.4062 " fill="none" id="Barista-to-UC_Prepare" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="307.76,347.5462,298.2145,345.1205,302.8315,348.389,299.5631,353.006,307.76,347.5462" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[01aba67b21dd8b915a5e55cdc4a760b5]
+link UC_Prepare to UC_DeductInv--><path d="M498.67,351.0962 C512.26,357.3662 525.06,365.6462 535,376.5762 C570.82,415.9762 525,457.4162 565,492.5762 C589.31,513.9362 622.52,522.6262 654.48,525.1462 " fill="none" id="UC_Prepare-to-UC_DeductInv" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="659.6,525.4962,650.8956,520.8881,654.6118,525.1531,650.3468,528.8693,659.6,525.4962" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="55" x="566" y="489.0713">«include»</text><!--MD5=[9cdf114c4f02c700f97e9ff5da2822cb]
+link Waiter to UC_AssignTable--><path d="M73.59,537.7862 C123.23,540.8662 255.87,549.0862 338.7,554.2162 " fill="none" id="Waiter-to-UC_AssignTable" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="344.09,554.5462,335.3465,550.0128,339.099,554.2459,334.866,557.9984,344.09,554.5462" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[711da3c0f18c2c78b311fc9ba6716e00]
+link Waiter to UC_Serve--><path d="M73.65,533.0062 C88.98,530.2662 110.81,526.4862 130,523.5762 C195.3,513.6662 269.42,503.9062 324.85,496.8962 " fill="none" id="Waiter-to-UC_Serve" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="329.82,496.2662,320.3893,493.4267,324.8595,496.8934,321.3928,501.3635,329.82,496.2662" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[8211f82638c7a7684aaab29ba6ec8f12]
+link Manager to UC_ManageMenu--><path d="M100.05,793.5762 C150.24,793.5762 232.33,793.5762 299.28,793.5762 " fill="none" id="Manager-to-UC_ManageMenu" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="304.48,793.5762,295.48,789.5762,299.48,793.5762,295.48,797.5762,304.48,793.5762" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[a1979d1ba05ff59a2f1ae09ffc07f6e7]
+link Manager to UC_AuditInv--><path d="M97.7,751.8462 C107.86,743.2262 118.96,734.6362 130,727.5762 C194.71,686.1762 279.21,660.0162 338.19,645.4362 " fill="none" id="Manager-to-UC_AuditInv" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="343.1,644.2262,333.4081,642.4747,338.2426,645.4119,335.3054,650.2464,343.1,644.2262" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[d4c0a41b55702a9993dc75bdbe469bbe]
+link Manager to UC_EndOfDay--><path d="M100.33,776.6662 C110.06,773.4162 120.31,770.2062 130,767.5762 C192.17,750.6662 263.34,736.1962 318.24,726.0762 " fill="none" id="Manager-to-UC_EndOfDay" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="323.17,725.1662,313.5979,722.848,318.2513,726.0644,315.035,730.7178,323.17,725.1662" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[f78d49b145b5ad54e4ebbe8d4389968e]
+link Manager to UC_Discount--><path d="M75.62,835.1162 C88.68,856.4062 107.23,881.0562 130,896.5762 C310.71,1019.6962 493.22,1073.2962 622,896.5762 C677.24,820.7762 595.75,550.6262 652,475.5762 C659.67,465.3362 670.33,457.7862 681.94,452.2162 " fill="none" id="Manager-to-UC_Discount" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="686.6,450.1062,676.7513,450.1633,682.0428,452.1633,680.0428,457.4548,686.6,450.1062" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="62" x="379" y="968.0713">Authorizes</text><!--MD5=[113fad3da6608210f344bc6680e52d62]
+link Manager to UC_Auth--><path d="M100.03,818.6762 C192.79,865.4762 404.48,952.6662 535,852.5762 C653.31,761.8362 586.02,673.2662 622,528.5762 C636.41,470.6062 612.42,442.3062 652,397.5762 C660.45,388.0262 671.49,380.8762 683.23,375.5162 " fill="none" id="Manager-to-UC_Auth" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="687.93,373.4762,678.0816,373.3818,683.3417,375.463,681.2605,380.7231,687.93,373.4762" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="126" x="347" y="849.0713">Inherits global access</text><!--MD5=[c6039b09d7c2d9d7d51030c6f22ca849]
+link Customer to UC_CreateOrder--><path d="M83.54,282.4062 C97.59,284.0462 114.63,285.7662 130,286.5762 C184.59,289.4362 198.7,292.9262 253,286.5762 C286.84,282.6162 323.99,273.9862 353.55,266.0462 " fill="none" id="Customer-to-UC_CreateOrder" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="358.6,264.6762,348.8654,263.1803,353.7755,265.9893,350.9665,270.8995,358.6,264.6762" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="55" x="164" y="283.0713">Requests</text><!--MD5=[d118b745f7deb5032db7a42455cfcab5]
+link Customer to UC_Payment--><path d="M83.61,268.3462 C123.6,254.7162 197.21,230.2562 261,212.5762 C289.26,204.7362 320.87,197.1162 347.59,190.9862 " fill="none" id="Customer-to-UC_Payment" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="352.52,189.8662,342.8612,187.9407,347.6421,190.9644,344.6184,195.7453,352.52,189.8662" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="121" x="131" y="213.0713">Provides money/card</text><!--MD5=[d71d50d6ca02dd26f6787dfa2dd1e319]
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor LightBlue
+  BorderColor DarkBlue
+  ArrowColor Black
+}
+
+actor "Cashier" as Cashier
+actor "Barista / Chef" as Barista
+actor "Waiter" as Waiter
+actor "Store Manager" as Manager
+actor "Customer" as Customer
+actor "Payment Gateway" as PaymentGateway <<External System>>
+
+rectangle "NebulaX Coffee Shop System" {
+  
+  ' General Security
+  usecase "Authenticate Employee" as UC_Auth
+  
+  ' POS Module
+  usecase "Create Quick Order" as UC_CreateOrder
+  usecase "Assign Customer to Order" as UC_AssignCustomer
+  usecase "Calculate Total with Taxes" as UC_CalcTotal
+  usecase "Apply Special Discount" as UC_Discount
+  usecase "Process Payment" as UC_Payment
+  
+  ' KDS and Inventory Module
+  usecase "View KDS Queue" as UC_ViewQueue
+  usecase "Update Status to Preparing/Ready" as UC_Prepare
+  usecase "Deduct Inventory by Recipe" as UC_DeductInv
+  
+  ' Floor Module
+  usecase "Assign Table" as UC_AssignTable
+  usecase "Mark Order as Served" as UC_Serve
+  
+  ' Backoffice Module
+  usecase "Manage Menu and Recipes" as UC_ManageMenu
+  usecase "Audit/Adjust Inventory" as UC_AuditInv
+  usecase "Generate End of Day Report" as UC_EndOfDay
+}
+
+' Cashier Relations
+Cashier - -> UC_CreateOrder
+Cashier - -> UC_Payment
+
+' Business Rules and POS Includes/Extends
+UC_CreateOrder ..> UC_Auth : <<include>>
+UC_CreateOrder ..> UC_CalcTotal : <<include>>
+UC_AssignCustomer .up.> UC_CreateOrder : <<extend>>
+UC_Discount .up.> UC_CreateOrder : <<extend>>
+UC_Payment ..> UC_Auth : <<include>>
+
+' Payment interacts with an external system
+UC_Payment - -> PaymentGateway
+
+' Barista Relations
+Barista - -> UC_ViewQueue
+Barista - -> UC_Prepare
+UC_Prepare ..> UC_DeductInv : <<include>>
+
+' Waiter Relations
+Waiter - -> UC_AssignTable
+Waiter - -> UC_Serve
+
+' Manager Relations
+Manager - -> UC_ManageMenu
+Manager - -> UC_AuditInv
+Manager - -> UC_EndOfDay
+Manager - -> UC_Discount : Authorizes
+Manager - -> UC_Auth : Inherits global access
+
+' Customer Relations
+Customer - -> UC_CreateOrder : Requests
+Customer - -> UC_Payment : Provides money/card
+
+@enduml
+
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor LightBlue
+  BorderColor DarkBlue
+  ArrowColor Black
+}
+
+actor "Cashier" as Cashier
+actor "Barista / Chef" as Barista
+actor "Waiter" as Waiter
+actor "Store Manager" as Manager
+actor "Customer" as Customer
+actor "Payment Gateway" as PaymentGateway <<External System>>
+
+rectangle "NebulaX Coffee Shop System" {
+  
+  usecase "Authenticate Employee" as UC_Auth
+  
+  usecase "Create Quick Order" as UC_CreateOrder
+  usecase "Assign Customer to Order" as UC_AssignCustomer
+  usecase "Calculate Total with Taxes" as UC_CalcTotal
+  usecase "Apply Special Discount" as UC_Discount
+  usecase "Process Payment" as UC_Payment
+  
+  usecase "View KDS Queue" as UC_ViewQueue
+  usecase "Update Status to Preparing/Ready" as UC_Prepare
+  usecase "Deduct Inventory by Recipe" as UC_DeductInv
+  
+  usecase "Assign Table" as UC_AssignTable
+  usecase "Mark Order as Served" as UC_Serve
+  
+  usecase "Manage Menu and Recipes" as UC_ManageMenu
+  usecase "Audit/Adjust Inventory" as UC_AuditInv
+  usecase "Generate End of Day Report" as UC_EndOfDay
+}
+
+Cashier - -> UC_CreateOrder
+Cashier - -> UC_Payment
+
+UC_CreateOrder ..> UC_Auth : <<include>>
+UC_CreateOrder ..> UC_CalcTotal : <<include>>
+UC_AssignCustomer .up.> UC_CreateOrder : <<extend>>
+UC_Discount .up.> UC_CreateOrder : <<extend>>
+UC_Payment ..> UC_Auth : <<include>>
+
+UC_Payment - -> PaymentGateway
+
+Barista - -> UC_ViewQueue
+Barista - -> UC_Prepare
+UC_Prepare ..> UC_DeductInv : <<include>>
+
+Waiter - -> UC_AssignTable
+Waiter - -> UC_Serve
+
+Manager - -> UC_ManageMenu
+Manager - -> UC_AuditInv
+Manager - -> UC_EndOfDay
+Manager - -> UC_Discount : Authorizes
+Manager - -> UC_Auth : Inherits global access
+
+Customer - -> UC_CreateOrder : Requests
+Customer - -> UC_Payment : Provides money/card
+
+@enduml
+
+PlantUML version 1.2021.00(Sun Jan 10 05:25:05 GMT-05:00 2021)
+(MIT source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: es
+Country: EC
+--></g></svg>

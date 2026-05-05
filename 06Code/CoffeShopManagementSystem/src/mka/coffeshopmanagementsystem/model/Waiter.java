@@ -8,14 +8,18 @@ package mka.coffeshopmanagementsystem.model;
  *
  * @author Anthony Aimacaña, MKA programer, @ESPE
  */
-public class Chef extends Employee {
-    public Chef(String id, String name) {
-        super(id, name, "Chef");
+public class Waiter extends Employee {
+    public Waiter(String id, String name) {
+        super(id, name, "Waiter");
+    }
+
+    public void serveTable(Table table) {
+        System.out.println(getName() + " is serving table " + table.getId());
     }
 
     @Override
     public void performOperation() {
-        System.out.println(getName() + " is preparing food.");
+        System.out.println(getName() + " is taking orders to tables.");
     }
 }
 

@@ -4,20 +4,22 @@
  */
 package mka.coffeshopmanagementsystem.model;
 
+import java.math.BigDecimal;
+
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class ProductIngredient {
-    private double quantityNeeded;
     private Ingredient ingredient;
+    private BigDecimal quantityNeeded;
 
-    public ProductIngredient(Ingredient ingredient, double quantityNeeded) {
+    public ProductIngredient(Ingredient ingredient, BigDecimal quantityNeeded) {
         this.ingredient = ingredient;
         this.quantityNeeded = quantityNeeded;
     }
 
-    public double getQuantityNeeded() {
+    public BigDecimal getQuantityNeeded() {
         return quantityNeeded;
     }
 
@@ -25,3 +27,4 @@ public class ProductIngredient {
         return ingredient;
     }
 }
+

@@ -4,20 +4,23 @@
  */
 package mka.coffeshopmanagementsystem.model;
 
+import java.math.BigDecimal;
+
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public abstract class Payment {
-    private double amount;
+    private BigDecimal amount;
 
-    public Payment(double amount) {
+    public Payment(BigDecimal amount) {
         this.amount = amount;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public abstract boolean processPayment();
+    public abstract boolean processPayment(PaymentProcessor processor);
 }
+

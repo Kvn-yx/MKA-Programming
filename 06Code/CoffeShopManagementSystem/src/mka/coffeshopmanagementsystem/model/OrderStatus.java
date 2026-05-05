@@ -6,11 +6,13 @@ package mka.coffeshopmanagementsystem.model;
 
 /**
  *
- * @author Anthony Aimacaña
+ * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public enum OrderStatus {
     PENDING,
     PREPARING,
     READY,
-    SERVED
+    SERVED,
+    PAID
 }
+
