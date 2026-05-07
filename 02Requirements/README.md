@@ -45,8 +45,6 @@ _Exclusions:_ The system currently excludes automated payroll generation, advanc
 
 ### 2.2 Operating Environment
 
-- **Client Architecture:** Modern Web Browsers (Chrome/Safari/Edge) operating on touch-enabled POS terminals and mobile tablets for floor staff.
-- **Backend Architecture:** Cloud-native, containerized microservices or monolith (Docker/Kubernetes).
 - **Data Persistence:** Phase 1 utilizes file-based persistence mechanisms (e.g., structured JSON or CSV files) for transactional and inventory data storage.
 
 ### 2.3 Design & Implementation Constraints
