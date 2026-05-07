@@ -48,8 +48,7 @@ This document outlines the systematic breakdown of capabilities (Features) engin
 | :--------- | :------------------------ | :------------------------------------------------------------------------------------- |
 | **F5.1**   | **Spatial Mapping**       | State-machine tracking of physical table statuses (`FREE`, `OCCUPIED`).                |
 | **F5.2**   | **Staff Allocation**      | One-to-many relationship mapping between active `Waiters` and their assigned `Tables`. |
-| **F5.3**   | **Secure Authentication** | Cryptographic session generation via unique PINs or RFID badge scanning.               |
-| **F5.4**   | **RBAC Enforcement**      | Strict Role-Based Access Control gating sensitive administrative actions.              |
+| **F5.3**   | **RBAC Enforcement**      | Strict Role-Based Access Control gating sensitive administrative actions.              |
 
 ### Module 6: Administrative Backoffice
 
