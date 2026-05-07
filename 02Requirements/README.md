@@ -10,7 +10,7 @@ The purpose of this Software Requirements Specification (SRS) is to provide a co
 
 ### 1.2 Scope
 
-The system is an enterprise-grade Point of Sale (POS) and internal management platform architected specifically for physical coffee shop operations. The core modules encompass:
+The system is an Point of Sale (POS) and internal management platform architected specifically for physical coffee shop operations. The core modules encompass:
 
 - **Order & Checkout Lifecycle:** End-to-end order creation, modification, dynamic tax/discount calculations, and multi-modal secure payment processing.
 - **Production Workflow:** Real-time, event-driven synchronization of orders to Kitchen/Barista Display Systems (KDS).
