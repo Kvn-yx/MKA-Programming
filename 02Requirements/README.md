@@ -6,7 +6,7 @@
 
 ### 1.1 Purpose
 
-The purpose of this Software Requirements Specification (SRS) is to provide a comprehensive, detailed, and unequivocal description of the NebulaX Coffee Shop Management System. This document serves as the definitive source of truth for all stakeholders, software engineers, and Quality Assurance (QA) personnel regarding the system's functional capabilities, operational constraints, and non-functional guarantees.
+The purpose of this Software Requirements Specification (SRS) is to provide a comprehensive, detailed, and unequivocal description of the Coffee Shop Management System. This document serves as the definitive source of truth for all stakeholders, software engineers, and Quality Assurance (QA) personnel regarding the system's functional capabilities, operational constraints, and non-functional guarantees.
 
 ### 1.2 Scope
 
