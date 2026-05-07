@@ -50,7 +50,7 @@ _Exclusions:_ The system currently excludes automated payroll generation, advanc
 ### 2.3 Design & Implementation Constraints
 
 - **Architectural Pattern:** The implementation MUST adhere strictly to the Model-View-Controller (MVC) or Clean Architecture principles, ensuring absolute decoupling via specialized Domain Managers (`OrderManager`, `InventoryManager`, `HRManager`, `FloorManager`).
-- **Financial Data Types:** All monetary and quantitative calculations MUST utilize arbitrary-precision decimal types (e.g., `BigDecimal` in Java). The use of floating-point primitives (`double`, `float`) for currency is strictly prohibited to prevent rounding anomalies.
+- **Financial Data Types:** All monetary and quantitative calculations MUST utilize arbitrary-precision decimal types (e.g., `BigDecimal`). The use of floating-point primitives (`double`, `float`) for currency is strictly prohibited to prevent rounding anomalies.
 - **Security Standard:** To maintain PCI-DSS compliance, the system MUST NEVER capture, process, or store raw Credit Card numbers. All electronic payments must be routed through compliant third-party Payment Processors, persisting only opaque Payment Tokens.
 
 ---
@@ -62,7 +62,7 @@ _Exclusions:_ The system currently excludes automated payroll generation, advanc
 | ID        | Title                   | Description                                                                                                                                     | Priority |
 | :-------- | :---------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
 | **FR-01** | **Order Creation**      | The Cashier must be able to initiate new orders, add/remove `OrderItem` entities, and link the transaction to an optional Customer profile.     | Critical |
-| **FR-02** | **Dynamic Calculation** | The system must calculate the Subtotal, apply conditional discounts, and compute exact regional taxes (`taxRate`) to formulate the final Total. | Critical |
+| **FR-02** | **Dynamic Calculation** | The system must calculate the Subtotal, apply conditional discounts, and compute exact taxes (`taxRate`) to formulate the final Total. | Critical |
 
 **Acceptance Criteria (FR-01 & FR-02):**
 
