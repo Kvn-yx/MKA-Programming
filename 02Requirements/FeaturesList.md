@@ -30,9 +30,8 @@ This document outlines the systematic breakdown of capabilities (Features) engin
 
 | Feature ID | Nomenclature            | Technical Description                                                                      |
 | :--------- | :---------------------- | :----------------------------------------------------------------------------------------- |
-| **F3.1**   | **Chronological Queue** | Web-socket or polling-based live feed of `PAID` orders to production screens.              |
-| **F3.2**   | **State Transitions**   | Interactive toggles shifting entities through `PENDING`, `PREPARING`, and `READY` states.  |
-| **F3.3**   | **SLA Monitoring**      | Visual degradation/alerting for tickets exceeding Service Level Agreement time thresholds. |
+| **F3.1**   | **State Transitions**   | Interactive toggles shifting entities through `PENDING`, `PREPARING`, and `READY` states.  |
+| **F3.2**   | **SLA Monitoring**      | Visual degradation/alerting for tickets exceeding Service Level Agreement time thresholds. |
 
 ### Module 4: Perpetual Inventory Control
 
