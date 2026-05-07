@@ -129,4 +129,3 @@ _Exclusions:_ The system currently excludes automated payroll generation, advanc
 ## 6. Phase 2 Roadmap & Future Enhancements
 
 - **Database Integration:** Migration from the localized file-based storage architecture to an Enterprise NoSQL Database Management System to facilitate high concurrency and distributed data management.
-- **Predictive Analytics:** Implementation of AI-driven supply chain alerts to proactively notify Managers to re-order ingredients based on historical sales velocity.
