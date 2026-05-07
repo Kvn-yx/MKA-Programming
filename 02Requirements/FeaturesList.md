@@ -59,7 +59,3 @@ This document outlines the systematic breakdown of capabilities (Features) engin
 | **F6.1**   | **Menu Schema Manager**      | Comprehensive CRUD (Create, Read, Update, Delete) interfaces for system catalogs.          |
 | **F6.2**   | **Financial Reconciliation** | End-of-Day (Z-Report) synthesis, aggregating revenue streams by payment type and operator. |
 | **F6.3**   | **Velocity Analytics**       | High-level data aggregation detailing top-performing and under-performing SKUs.            |
-
----
-
-_Architectural Note: This roster is the authoritative map dictating the actors, boundaries, and `«include»` / `«extend»` directives modeled within the enterprise UML schematics._
