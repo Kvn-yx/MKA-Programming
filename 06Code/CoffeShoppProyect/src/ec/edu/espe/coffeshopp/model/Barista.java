@@ -18,6 +18,6 @@ public class Barista extends Employee {
 
     @Override
     public void performOperation() {
-        System.out.println("Barista preparando bebida");
+        System.out.println("Barista preparing drink");
     }
 }
