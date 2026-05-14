@@ -18,11 +18,11 @@ public class Barista extends Employee {
     }
 
     public void prepareDrink() {
-        System.out.println("Barista " + getName() + " está preparando una bebida de especialidad.");
+        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.barista.prep"), getName()));
     }
 
     @Override
     public void performOperation() {
-        System.out.println("Barista " + getName() + " está operando la máquina de café y sirviendo bebidas.");
+        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.barista.op"), getName()));
     }
 }

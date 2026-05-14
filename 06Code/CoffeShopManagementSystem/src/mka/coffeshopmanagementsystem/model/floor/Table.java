@@ -44,12 +44,12 @@ public class Table {
 
     public void occupy() {
         this.state = true;
-        System.out.println("Mesa " + id + " ahora está OCUPADA.");
+        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.table.occupied"), id));
     }
 
     public void free() {
         this.state = false;
         this.assignedWaiter = null;
-        System.out.println("Mesa " + id + " ahora está LIBRE.");
+        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.table.free"), id));
     }
 }

@@ -9,5 +9,4 @@ package mka.coffeshopmanagementsystem.controller;
  * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class MainController {
-    // Controlador vacio de momento
 }

@@ -48,7 +48,7 @@ public class FloorManager {
     public void assignTable(Waiter waiter, Table table) {
         if (table != null && waiter != null) {
             table.setAssignedWaiter(waiter);
-            System.out.println("Mesero " + waiter.getName() + " asignado exitosamente a la mesa " + table.getId());
+            System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.floor.assigned"), waiter.getName(), table.getId()));
         }
     }
 
@@ -59,10 +59,9 @@ public class FloorManager {
         if (loadedData != null) {
             this.tables = loadedData.getTables();
             this.machines = loadedData.getMachines();
-            System.out.println("Datos de piso cargados exitosamente.");
+            System.out.println(mka.coffeshopmanagementsystem.utils.I18n.getString("model.floor.loaded"));
         }
         
-        // Inicialización segura
         if (this.tables == null) {
             this.tables = new java.util.ArrayList<>();
         }

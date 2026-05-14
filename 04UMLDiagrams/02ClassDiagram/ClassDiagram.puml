@@ -14,6 +14,14 @@ package "mka.coffeshopmanagementsystem" {
             }
         }
 
+        package "utils" {
+            class I18n {
+                - bundle: ResourceBundle
+                + setLocale(locale: Locale): void
+                + getString(key: String): String
+            }
+        }
+
         package "people" {
             abstract class Person {
                 - id: String
@@ -110,6 +118,7 @@ package "mka.coffeshopmanagementsystem" {
                 - ingredientId: String
                 - name: String
                 - stockQuantity: BigDecimal
+                - unit: String
                 + Ingredient()
                 + reduceStock(amount: BigDecimal): void
                 + updateStock(amount: BigDecimal): void

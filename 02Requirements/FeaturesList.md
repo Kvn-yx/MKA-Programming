@@ -10,7 +10,7 @@ This document outlines the systematic breakdown of capabilities (Features) engin
 
 | Feature ID | Nomenclature               | Technical Description                                                                    |
 | :--------- | :------------------------- | :--------------------------------------------------------------------------------------- |
-| **F1.1**   | **Rapid Order Creation**   | Highly responsive touch interface engineered for sub-second product addition.            |
+| **F1.1**   | **Rapid Order Creation**   | Command-Line Interface (CLI) in Phase 1, architected for rapid product addition.         |
 | **F1.2**   | **Product Modifiers**      | Dynamic payload attachment for custom instructions (e.g., "No Sugar", "Oat Milk").       |
 | **F1.3**   | **CRM Integration**        | Modular association of transactions to registered Customer profiles or anonymous tokens. |
 | **F1.4**   | **Real-Time Financials**   | Synchronous computation of Subtotals, localized Tax protocols, and Final Totals.         |
@@ -40,7 +40,7 @@ This document outlines the systematic breakdown of capabilities (Features) engin
 | **F4.1**   | **Recipe Deduction**       | Algorithmic, micro-measurement subtraction of raw `Ingredients` upon order preparation.  |
 | **F4.2**   | **Threshold Alerts**       | Automated event generation when stock falls beneath pre-defined safety minimums.         |
 | **F4.3**   | **Preemptive Block**       | Real-time POS interlock preventing the sale of items lacking required raw materials.     |
-| **F4.4**   | **Audit & Reconciliation** | Administrative GUI for manual stock overrides (handling shrinkage, spoilage, or refits). |
+| **F4.4**   | **Audit & Reconciliation** | Administrative interface (CLI for Phase 1) for manual stock overrides.                   |
 
 ### Module 5: Floor & Human Capital Management
 
@@ -57,3 +57,4 @@ This document outlines the systematic breakdown of capabilities (Features) engin
 | **F6.1**   | **Menu Schema Manager**      | Comprehensive CRUD (Create, Read, Update, Delete) interfaces for system catalogs.          |
 | **F6.2**   | **Financial Reconciliation** | End-of-Day (Z-Report) synthesis, aggregating revenue streams by payment type and operator. |
 | **F6.3**   | **Velocity Analytics**       | High-level data aggregation detailing top-performing and under-performing SKUs.            |
+| **F6.4**   | **Internationalization (i18n)**| Native support for multiple languages (English/Spanish) using Java ResourceBundles.        |

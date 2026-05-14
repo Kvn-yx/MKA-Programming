@@ -63,11 +63,18 @@ public class OrderItem {
     }
 
     public BigDecimal calculateSubtotal() {
-        // TODO: implement
-        return null;
+        if (this.product != null && this.product.getPrice() != null) {
+            this.subtotal = this.product.getPrice().multiply(new BigDecimal(this.quantity));
+        } else {
+            this.subtotal = BigDecimal.ZERO;
+        }
+        return this.subtotal;
     }
 
     public void addModifier(String modifier) {
-        // TODO: implement
+        if (this.modifiers == null) {
+            this.modifiers = new java.util.ArrayList<>();
+        }
+        this.modifiers.add(modifier);
     }
 }

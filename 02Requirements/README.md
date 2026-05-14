@@ -46,6 +46,8 @@ _Exclusions:_ The system currently excludes automated payroll generation, advanc
 ### 2.2 Operating Environment
 
 - **Data Persistence:** Phase 1 utilizes file-based persistence mechanisms (e.g., structured JSON or CSV files) for transactional and inventory data storage.
+- **User Interface:** Phase 1 utilizes an interactive Command-Line Interface (CLI) to simulate and test all operational workflows before migrating to a graphical/touch interface in Phase 2.
+- **Localization:** The system utilizes Java ResourceBundles to provide full Internationalization (i18n) support, currently offering dynamic toggling between English and Spanish.
 
 ### 2.3 Design & Implementation Constraints
 

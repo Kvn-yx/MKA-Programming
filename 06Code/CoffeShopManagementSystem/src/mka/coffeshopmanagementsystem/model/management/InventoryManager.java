@@ -79,9 +79,22 @@ public class InventoryManager {
                 .orElse(null);
     }
 
+    public Ingredient findIngredientByName(String name) {
+        if (inventory == null || inventory.getIngredients() == null || name == null) return null;
+        return inventory.getIngredients().stream()
+                .filter(i -> i.getName().equalsIgnoreCase(name.trim()))
+                .findFirst()
+                .orElse(null);
+    }
+
     public void overrideStock(Ingredient ingredient, BigDecimal actualQuantity) {
         if (ingredient == null) return;
         Ingredient inStock = findIngredient(ingredient.getIngredientId());
+        
+        if (inStock == null) {
+            inStock = findIngredientByName(ingredient.getName());
+        }
+        
         if (inStock != null) {
             inStock.updateStock(actualQuantity);
         } else {

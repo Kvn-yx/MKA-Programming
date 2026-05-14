@@ -105,29 +105,51 @@ public class Order {
     }
 
     public void addItem(OrderItem item) {
-        // TODO: implement
+        if (this.items == null) {
+            this.items = new java.util.ArrayList<>();
+        }
+        this.items.add(item);
     }
 
     public BigDecimal calculateSubtotal() {
-        // TODO: implement
-        return null;
+        BigDecimal total = BigDecimal.ZERO;
+        if (this.items != null) {
+            for (OrderItem item : this.items) {
+                BigDecimal itemSubtotal = item.calculateSubtotal();
+                if (itemSubtotal != null) {
+                    total = total.add(itemSubtotal);
+                }
+            }
+        }
+        return total;
     }
 
     public BigDecimal calculateTax() {
-        // TODO: implement
-        return null;
+        BigDecimal subtotal = calculateSubtotal();
+        if (this.taxRate != null && subtotal != null) {
+            return subtotal.multiply(this.taxRate);
+        }
+        return BigDecimal.ZERO;
     }
 
     public BigDecimal calculateTotal() {
-        // TODO: implement
-        return null;
+        BigDecimal subtotal = calculateSubtotal();
+        BigDecimal tax = calculateTax();
+        BigDecimal total = subtotal.add(tax);
+        if (this.discount != null) {
+            total = total.subtract(this.discount);
+        }
+        if (total.compareTo(BigDecimal.ZERO) < 0) {
+            total = BigDecimal.ZERO;
+        }
+        return total;
     }
 
     public void updateStatus(OrderStatus status) {
-        // TODO: implement
+        this.status = status;
     }
 
     public void markAsSynced() {
-        // TODO: implement
+        this.isSynced = true;
     }
 }

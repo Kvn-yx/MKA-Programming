@@ -19,6 +19,6 @@ public class Chef extends Employee {
 
     @Override
     public void performOperation() {
-        System.out.println("Chef " + getName() + " está preparando los platillos del menú.");
+        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.chef.op"), getName()));
     }
 }

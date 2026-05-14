@@ -20,11 +20,11 @@ public class Waiter extends Employee {
     }
 
     public void serveTable(Table table) {
-        System.out.println("Mesero " + getName() + " está sirviendo a la mesa: " + table.getId());
+        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.waiter.serve"), getName(), table.getId()));
     }
 
     @Override
     public void performOperation() {
-        System.out.println("Mesero " + getName() + " está tomando pedidos y entregando productos a las mesas.");
+        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.waiter.op"), getName()));
     }
 }

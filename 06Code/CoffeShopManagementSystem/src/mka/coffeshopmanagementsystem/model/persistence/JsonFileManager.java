@@ -30,69 +30,40 @@ public class JsonFileManager {
     private final Gson gson;
 
     public JsonFileManager() {
-        // Configuramos Gson con PrettyPrinting para que los JSON sean legibles por humanos
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
-    /**
-     * Constructor que permite inyectar una configuración personalizada de Gson.
-     * Útil para manejar polimorfismo o adaptadores personalizados.
-     * 
-     * @param gson instancia configurada de Gson
-     */
+    
     public JsonFileManager(Gson gson) {
         this.gson = gson;
     }
 
-    /**
-     * Guarda cualquier objeto (o lista de objetos) en un archivo JSON.
-     * 
-     * @param filePath ruta o nombre del archivo (ej. "data/orders.json")
-     * @param data el objeto o la colección a guardar
-     */
+    
     public void saveToFile(String filePath, Object data) {
         try (Writer writer = new FileWriter(filePath)) {
             gson.toJson(data, writer);
-            System.out.println("Datos guardados exitosamente en: " + filePath);
+            System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.json.saved"), filePath));
         } catch (IOException e) {
-            System.err.println("Error al intentar guardar en " + filePath + ": " + e.getMessage());
+            System.err.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.json.err_save"), filePath, e.getMessage()));
         }
     }
 
-    /**
-     * Carga un objeto simple desde un archivo JSON (por ejemplo, un objeto Inventory).
-     * 
-     * @param <T> el tipo de clase
-     * @param filePath ruta o nombre del archivo a leer
-     * @param typeClass la clase del objeto esperado (ej. Inventory.class)
-     * @return el objeto cargado, o null si el archivo no existe o falla la lectura
-     */
+    
     public <T> T loadFromFile(String filePath, Class<T> typeClass) {
         try (Reader reader = new FileReader(filePath)) {
             return gson.fromJson(reader, typeClass);
         } catch (IOException | JsonSyntaxException e) {
-            System.err.println("Error al intentar leer de " + filePath + ": " + e.getMessage());
+            System.err.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.json.err_load"), filePath, e.getMessage()));
             return null;
         }
     }
     
-    /**
-     * Carga una lista o colección con tipos genéricos desde un archivo JSON.
-     * 
-     * Ejemplo de uso en los Managers:
-     * Type listType = new TypeToken<ArrayList<Order>>(){}.getType();
-     * List<Order> orders = jsonFileManager.loadFromFile("orders.json", listType);
-     * 
-     * @param <T> el tipo genérico
-     * @param filePath ruta o nombre del archivo a leer
-     * @param type el Type que representa la estructura genérica (usando TypeToken)
-     * @return el objeto genérico cargado, o null si el archivo no existe o falla la lectura
-     */
+    
     public <T> T loadFromFile(String filePath, Type type) {
         try (Reader reader = new FileReader(filePath)) {
             return gson.fromJson(reader, type);
         } catch (IOException | JsonSyntaxException e) {
-            System.err.println("Error al leer datos genéricos de " + filePath + ": " + e.getMessage());
+            System.err.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.json.err_load_gen"), filePath, e.getMessage()));
             return null;
         }
     }

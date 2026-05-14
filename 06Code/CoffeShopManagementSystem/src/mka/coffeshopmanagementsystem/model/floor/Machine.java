@@ -42,14 +42,14 @@ public class Machine {
 
     public void turnOn() {
         this.state = true;
-        System.out.println("La máquina " + brand + " (ID: " + id + ") se ha encendido.");
+        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.machine.on"), brand, id));
     }
 
     public void operate() {
         if (state) {
-            System.out.println("Operando la máquina " + brand + "...");
+            System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.machine.operating"), brand));
         } else {
-            System.out.println("Error: La máquina " + brand + " está apagada. Enciéndala primero.");
+            System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.machine.err_off"), brand));
         }
     }
 }

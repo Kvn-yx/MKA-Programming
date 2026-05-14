@@ -20,12 +20,12 @@ public class Cashier extends Employee {
     }
 
     public Order takeOrder(Customer customer) {
-        System.out.println("Cajero " + getName() + " está tomando el pedido de " + customer.getName());
-        return new Order(); // Retorna una orden vacía por ahora
+        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.cashier.take"), getName(), customer.getName()));
+        return new Order();
     }
 
     @Override
     public void performOperation() {
-        System.out.println("Cajero " + getName() + " está procesando pagos y atendiendo la caja.");
+        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.cashier.op"), getName()));
     }
 }

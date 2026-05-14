@@ -14,6 +14,7 @@ public class Ingredient {
     private String ingredientId;
     private String name;
     private BigDecimal stockQuantity;
+    private String unit;
 
     public Ingredient() {
     }
@@ -40,6 +41,14 @@ public class Ingredient {
 
     public void setStockQuantity(BigDecimal stockQuantity) {
         this.stockQuantity = stockQuantity;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public void reduceStock(BigDecimal amount) {

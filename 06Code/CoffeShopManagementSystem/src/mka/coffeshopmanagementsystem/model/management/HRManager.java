@@ -42,7 +42,7 @@ public class HRManager {
 
     public void assignShift(Employee employee) {
         if (employee != null) {
-            System.out.println("Turno asignado al empleado: " + employee.getName() + " (" + employee.getRole() + ")");
+            System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.hr.assigned"), employee.getName(), employee.getRole()));
         }
     }
 
@@ -53,7 +53,7 @@ public class HRManager {
         
         if (loadedEmployees != null) {
             this.employees = loadedEmployees;
-            System.out.println("Datos de empleados cargados exitosamente (" + employees.size() + " empleados).");
+            System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.hr.loaded"), employees.size()));
         } else {
             this.employees = new ArrayList<>();
         }
@@ -72,9 +72,7 @@ public class HRManager {
         return new JsonFileManager(gson);
     }
 
-    /**
-     * Adaptador personalizado para manejar el polimorfismo de Employee basado en el campo 'role'.
-     */
+    
     private static class EmployeeAdapter implements JsonDeserializer<Employee>, JsonSerializer<Employee> {
         @Override
         public Employee deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -102,8 +100,6 @@ public class HRManager {
 
         @Override
         public JsonElement serialize(Employee src, Type typeOfSrc, JsonSerializationContext context) {
-            // El campo 'role' ya existe en las clases, así que la serialización estándar funciona,
-            // pero nos aseguramos de usar la clase concreta para no perder campos específicos si los hubiera.
             return context.serialize(src, src.getClass());
         }
     }
