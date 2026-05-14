@@ -43,10 +43,12 @@ public class Ingredient {
     }
 
     public void reduceStock(BigDecimal amount) {
-        // TODO: implement
+        if (this.stockQuantity != null) {
+            this.stockQuantity = this.stockQuantity.subtract(amount);
+        }
     }
 
     public void updateStock(BigDecimal amount) {
-        // TODO: implement
+        this.stockQuantity = amount;
     }
 }

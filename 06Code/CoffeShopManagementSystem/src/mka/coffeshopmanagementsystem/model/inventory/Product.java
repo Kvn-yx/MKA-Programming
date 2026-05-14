@@ -5,6 +5,7 @@
 package mka.coffeshopmanagementsystem.model.inventory;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +64,12 @@ public class Product {
     }
 
     public Map<Ingredient, BigDecimal> getRequiredIngredients() {
-        // TODO: implement
-        return null;
+        Map<Ingredient, BigDecimal> ingredientsMap = new HashMap<>();
+        if (recipe != null) {
+            for (ProductIngredient productIngredient : recipe) {
+                ingredientsMap.put(productIngredient.getIngredient(), productIngredient.getQuantityNeeded());
+            }
+        }
+        return ingredientsMap;
     }
 }
