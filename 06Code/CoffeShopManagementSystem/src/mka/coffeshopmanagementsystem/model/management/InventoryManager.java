@@ -5,9 +5,11 @@
 package mka.coffeshopmanagementsystem.model.management;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Map;
 import mka.coffeshopmanagementsystem.model.inventory.Inventory;
 import mka.coffeshopmanagementsystem.model.inventory.Ingredient;
+import mka.coffeshopmanagementsystem.model.persistence.JsonFileManager;
 
 /**
  *
@@ -16,8 +18,12 @@ import mka.coffeshopmanagementsystem.model.inventory.Ingredient;
 public class InventoryManager {
     private Inventory inventory;
     private String dataFilePath;
+    private final JsonFileManager jsonFileManager;
 
     public InventoryManager() {
+        this.jsonFileManager = new JsonFileManager();
+        this.inventory = new Inventory();
+        this.inventory.setIngredients(new ArrayList<>());
     }
 
     public Inventory getInventory() {
@@ -37,23 +43,70 @@ public class InventoryManager {
     }
 
     public boolean checkStockFor(Map<Ingredient, BigDecimal> requiredIngredients) {
-        // TODO: implement
-        return false;
+        if (inventory == null || inventory.getIngredients() == null || requiredIngredients == null) return false;
+        
+        for (Map.Entry<Ingredient, BigDecimal> entry : requiredIngredients.entrySet()) {
+            Ingredient required = entry.getKey();
+            BigDecimal amountNeeded = entry.getValue();
+            
+            Ingredient inStock = findIngredient(required.getIngredientId());
+            if (inStock == null || inStock.getStockQuantity().compareTo(amountNeeded) < 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void deductStockFor(Map<Ingredient, BigDecimal> requiredIngredients) {
-        // TODO: implement
+        if (inventory == null || inventory.getIngredients() == null || requiredIngredients == null) return;
+
+        for (Map.Entry<Ingredient, BigDecimal> entry : requiredIngredients.entrySet()) {
+            Ingredient required = entry.getKey();
+            BigDecimal amountToDeduct = entry.getValue();
+            
+            Ingredient inStock = findIngredient(required.getIngredientId());
+            if (inStock != null) {
+                inStock.reduceStock(amountToDeduct);
+            }
+        }
+    }
+
+    private Ingredient findIngredient(String id) {
+        if (inventory == null || inventory.getIngredients() == null) return null;
+        return inventory.getIngredients().stream()
+                .filter(i -> i.getIngredientId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     public void overrideStock(Ingredient ingredient, BigDecimal actualQuantity) {
-        // TODO: implement
+        if (ingredient == null) return;
+        Ingredient inStock = findIngredient(ingredient.getIngredientId());
+        if (inStock != null) {
+            inStock.updateStock(actualQuantity);
+        } else {
+            ingredient.setStockQuantity(actualQuantity);
+            if (inventory.getIngredients() == null) {
+                inventory.setIngredients(new ArrayList<>());
+            }
+            inventory.getIngredients().add(ingredient);
+        }
     }
 
     public void loadData() {
-        // TODO: implement
+        Inventory loadedInventory = jsonFileManager.loadFromFile(dataFilePath, Inventory.class);
+        if (loadedInventory != null) {
+            this.inventory = loadedInventory;
+            if (this.inventory.getIngredients() == null) {
+                this.inventory.setIngredients(new ArrayList<>());
+            }
+        } else {
+            this.inventory = new Inventory();
+            this.inventory.setIngredients(new ArrayList<>());
+        }
     }
 
     public void saveData() {
-        // TODO: implement
+        jsonFileManager.saveToFile(dataFilePath, inventory);
     }
 }

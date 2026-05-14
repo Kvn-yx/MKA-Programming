@@ -4,8 +4,12 @@
  */
 package mka.coffeshopmanagementsystem.model.management;
 
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import mka.coffeshopmanagementsystem.model.inventory.Product;
+import mka.coffeshopmanagementsystem.model.persistence.JsonFileManager;
 
 /**
  *
@@ -14,8 +18,11 @@ import mka.coffeshopmanagementsystem.model.inventory.Product;
 public class CatalogManager {
     private List<Product> products;
     private String dataFilePath;
+    private final JsonFileManager jsonFileManager;
 
     public CatalogManager() {
+        this.jsonFileManager = new JsonFileManager();
+        this.products = new ArrayList<>();
     }
 
     public List<Product> getProducts() {
@@ -35,18 +42,29 @@ public class CatalogManager {
     }
 
     public void addProduct(Product p) {
-        // TODO: implement
+        if (this.products == null) {
+            this.products = new ArrayList<>();
+        }
+        this.products.add(p);
     }
 
     public void removeProduct(String id) {
-        // TODO: implement
+        if (this.products != null) {
+            this.products.removeIf(p -> p.getProductId().equals(id));
+        }
     }
 
     public void loadData() {
-        // TODO: implement
+        Type listType = new TypeToken<ArrayList<Product>>(){}.getType();
+        List<Product> loadedProducts = jsonFileManager.loadFromFile(dataFilePath, listType);
+        if (loadedProducts != null) {
+            this.products = loadedProducts;
+        } else {
+            this.products = new ArrayList<>();
+        }
     }
 
     public void saveData() {
-        // TODO: implement
+        jsonFileManager.saveToFile(dataFilePath, products);
     }
 }
