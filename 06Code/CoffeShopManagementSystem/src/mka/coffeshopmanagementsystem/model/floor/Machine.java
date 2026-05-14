@@ -41,10 +41,15 @@ public class Machine {
     }
 
     public void turnOn() {
-        // TODO: implement
+        this.state = true;
+        System.out.println("La máquina " + brand + " (ID: " + id + ") se ha encendido.");
     }
 
     public void operate() {
-        // TODO: implement
+        if (state) {
+            System.out.println("Operando la máquina " + brand + "...");
+        } else {
+            System.out.println("Error: La máquina " + brand + " está apagada. Enciéndala primero.");
+        }
     }
 }

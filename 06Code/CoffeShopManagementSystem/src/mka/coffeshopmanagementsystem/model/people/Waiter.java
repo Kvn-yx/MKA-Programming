@@ -20,11 +20,11 @@ public class Waiter extends Employee {
     }
 
     public void serveTable(Table table) {
-        // TODO: implement
+        System.out.println("Mesero " + getName() + " está sirviendo a la mesa: " + table.getId());
     }
 
     @Override
     public void performOperation() {
-        // TODO: implement
+        System.out.println("Mesero " + getName() + " está tomando pedidos y entregando productos a las mesas.");
     }
 }

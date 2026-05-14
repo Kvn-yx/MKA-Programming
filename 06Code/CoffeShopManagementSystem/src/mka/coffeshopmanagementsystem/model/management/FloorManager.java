@@ -46,14 +46,33 @@ public class FloorManager {
     }
 
     public void assignTable(Waiter waiter, Table table) {
-        // TODO: implement
+        if (table != null && waiter != null) {
+            table.setAssignedWaiter(waiter);
+            System.out.println("Mesero " + waiter.getName() + " asignado exitosamente a la mesa " + table.getId());
+        }
     }
 
     public void loadData() {
-        // TODO: implement
+        mka.coffeshopmanagementsystem.model.persistence.JsonFileManager jfm = new mka.coffeshopmanagementsystem.model.persistence.JsonFileManager();
+        FloorManager loadedData = jfm.loadFromFile(dataFilePath, FloorManager.class);
+        
+        if (loadedData != null) {
+            this.tables = loadedData.getTables();
+            this.machines = loadedData.getMachines();
+            System.out.println("Datos de piso cargados exitosamente.");
+        }
+        
+        // Inicialización segura
+        if (this.tables == null) {
+            this.tables = new java.util.ArrayList<>();
+        }
+        if (this.machines == null) {
+            this.machines = new java.util.ArrayList<>();
+        }
     }
 
     public void saveData() {
-        // TODO: implement
+        mka.coffeshopmanagementsystem.model.persistence.JsonFileManager jfm = new mka.coffeshopmanagementsystem.model.persistence.JsonFileManager();
+        jfm.saveToFile(dataFilePath, this);
     }
 }

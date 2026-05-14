@@ -19,6 +19,6 @@ public class Chef extends Employee {
 
     @Override
     public void performOperation() {
-        // TODO: implement
+        System.out.println("Chef " + getName() + " está preparando los platillos del menú.");
     }
 }

@@ -20,12 +20,12 @@ public class Cashier extends Employee {
     }
 
     public Order takeOrder(Customer customer) {
-        // TODO: implement
-        return null;
+        System.out.println("Cajero " + getName() + " está tomando el pedido de " + customer.getName());
+        return new Order(); // Retorna una orden vacía por ahora
     }
 
     @Override
     public void performOperation() {
-        // TODO: implement
+        System.out.println("Cajero " + getName() + " está procesando pagos y atendiendo la caja.");
     }
 }

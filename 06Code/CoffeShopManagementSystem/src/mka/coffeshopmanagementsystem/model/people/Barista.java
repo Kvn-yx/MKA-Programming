@@ -18,11 +18,11 @@ public class Barista extends Employee {
     }
 
     public void prepareDrink() {
-        // TODO: implement
+        System.out.println("Barista " + getName() + " está preparando una bebida de especialidad.");
     }
 
     @Override
     public void performOperation() {
-        // TODO: implement
+        System.out.println("Barista " + getName() + " está operando la máquina de café y sirviendo bebidas.");
     }
 }

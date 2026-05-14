@@ -43,10 +43,13 @@ public class Table {
     }
 
     public void occupy() {
-        // TODO: implement
+        this.state = true;
+        System.out.println("Mesa " + id + " ahora está OCUPADA.");
     }
 
     public void free() {
-        // TODO: implement
+        this.state = false;
+        this.assignedWaiter = null;
+        System.out.println("Mesa " + id + " ahora está LIBRE.");
     }
 }

@@ -35,6 +35,16 @@ public class JsonFileManager {
     }
 
     /**
+     * Constructor que permite inyectar una configuración personalizada de Gson.
+     * Útil para manejar polimorfismo o adaptadores personalizados.
+     * 
+     * @param gson instancia configurada de Gson
+     */
+    public JsonFileManager(Gson gson) {
+        this.gson = gson;
+    }
+
+    /**
      * Guarda cualquier objeto (o lista de objetos) en un archivo JSON.
      * 
      * @param filePath ruta o nombre del archivo (ej. "data/orders.json")
