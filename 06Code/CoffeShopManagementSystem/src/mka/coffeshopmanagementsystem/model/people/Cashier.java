@@ -20,12 +20,16 @@ public class Cashier extends Employee {
     }
 
     public Order takeOrder(Customer customer) {
-        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.cashier.take"), getName(), customer.getName()));
+        // Return a new order without printing to console
         return new Order();
     }
 
+    public String getTakeOrderMessage(Customer customer) {
+         return String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.cashier.take"), getName(), customer.getName());
+    }
+
     @Override
-    public void performOperation() {
-        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.cashier.op"), getName()));
+    public String performOperation() {
+        return String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.cashier.op"), getName());
     }
 }

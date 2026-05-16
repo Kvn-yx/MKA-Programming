@@ -15,7 +15,6 @@ import mka.coffeshopmanagementsystem.model.inventory.Product;
 public class OrderItem {
     private String orderItemId;
     private int quantity;
-    private BigDecimal subtotal;
     private Product product;
     private List<String> modifiers;
 
@@ -35,15 +34,10 @@ public class OrderItem {
     }
 
     public void setQuantity(int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.orderitem.err_qty"));
+        }
         this.quantity = quantity;
-    }
-
-    public BigDecimal getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(BigDecimal subtotal) {
-        this.subtotal = subtotal;
     }
 
     public Product getProduct() {
@@ -64,14 +58,15 @@ public class OrderItem {
 
     public BigDecimal calculateSubtotal() {
         if (this.product != null && this.product.getPrice() != null) {
-            this.subtotal = this.product.getPrice().multiply(new BigDecimal(this.quantity));
-        } else {
-            this.subtotal = BigDecimal.ZERO;
+            return this.product.getPrice().multiply(new BigDecimal(this.quantity));
         }
-        return this.subtotal;
+        return BigDecimal.ZERO;
     }
 
     public void addModifier(String modifier) {
+        if (modifier == null || modifier.trim().isEmpty()) {
+            throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.orderitem.err_mod"));
+        }
         if (this.modifiers == null) {
             this.modifiers = new java.util.ArrayList<>();
         }

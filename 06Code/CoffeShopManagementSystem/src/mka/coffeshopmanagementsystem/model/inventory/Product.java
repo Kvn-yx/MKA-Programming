@@ -44,6 +44,9 @@ public class Product {
     }
 
     public void setPrice(BigDecimal price) {
+        if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.product.err_price"));
+        }
         this.price = price;
     }
 
@@ -56,7 +59,10 @@ public class Product {
     }
 
     public List<ProductIngredient> getRecipe() {
-        return recipe;
+        if (recipe == null) {
+            return java.util.Collections.emptyList();
+        }
+        return java.util.Collections.unmodifiableList(recipe);
     }
 
     public void setRecipe(List<ProductIngredient> recipe) {

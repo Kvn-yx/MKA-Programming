@@ -7,8 +7,8 @@ package mka.coffeshopmanagementsystem.model.management;
 import java.util.ArrayList;
 import java.util.List;
 import mka.coffeshopmanagementsystem.model.people.*;
-import mka.coffeshopmanagementsystem.model.persistence.JsonFileManager;
-import com.google.gson.*;
+import mka.coffeshopmanagementsystem.model.persistence.repository.IRepository;
+import mka.coffeshopmanagementsystem.model.persistence.repository.JsonRepository;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 
@@ -18,89 +18,74 @@ import java.lang.reflect.Type;
  */
 public class HRManager {
     private List<Employee> employees;
-    private String dataFilePath;
+    private IRepository<Employee> employeeRepository;
 
     public HRManager() {
         this.employees = new ArrayList<>();
     }
+    
+    public HRManager(IRepository<Employee> employeeRepository) {
+        this.employeeRepository = employeeRepository;
+        this.employees = new ArrayList<>();
+    }
 
     public List<Employee> getEmployees() {
-        return employees;
+        if (employees == null) {
+            return java.util.Collections.emptyList();
+        }
+        return java.util.Collections.unmodifiableList(employees);
     }
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
 
-    public String getDataFilePath() {
-        return dataFilePath;
-    }
-
+    // Keep this method for backwards compatibility with the previous API if it was used in MainController
     public void setDataFilePath(String dataFilePath) {
-        this.dataFilePath = dataFilePath;
+        Type listType = new TypeToken<ArrayList<Employee>>(){}.getType();
+        this.employeeRepository = new JsonRepository<>(dataFilePath, listType);
     }
 
-    public void assignShift(Employee employee) {
+    public void addEmployee(Employee employee) {
         if (employee != null) {
-            System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.hr.assigned"), employee.getName(), employee.getRole()));
+            List<Employee> currentEmployees = new ArrayList<>(getEmployees());
+            currentEmployees.add(employee);
+            this.employees = currentEmployees;
+        }
+    }
+
+    public void removeEmployee(String id) {
+        List<Employee> currentEmployees = new ArrayList<>(getEmployees());
+        boolean removed = currentEmployees.removeIf(e -> e.getId().equals(id.trim()));
+        if (removed) {
+            this.employees = currentEmployees;
+        } else {
+            throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("msg.invalid"));
+        }
+    }
+
+    public void assignShift(String id, String shift) {
+        Employee emp = getEmployees().stream().filter(e -> e.getId().equals(id.trim())).findFirst().orElse(null);
+        if (emp != null) {
+            emp.setShift(shift);
+        } else {
+            throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("msg.invalid"));
         }
     }
 
     public void loadData() {
-        JsonFileManager jfm = getCustomJsonFileManager();
-        Type listType = new TypeToken<ArrayList<Employee>>(){}.getType();
-        List<Employee> loadedEmployees = jfm.loadFromFile(dataFilePath, listType);
-        
-        if (loadedEmployees != null) {
-            this.employees = loadedEmployees;
-            System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.hr.loaded"), employees.size()));
+        if (employeeRepository != null) {
+            this.employees = employeeRepository.findAll();
         } else {
-            this.employees = new ArrayList<>();
+            throw new IllegalStateException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.repo.err_hr"));
         }
     }
 
     public void saveData() {
-        JsonFileManager jfm = getCustomJsonFileManager();
-        jfm.saveToFile(dataFilePath, employees);
-    }
-
-    private JsonFileManager getCustomJsonFileManager() {
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Employee.class, new EmployeeAdapter())
-                .setPrettyPrinting()
-                .create();
-        return new JsonFileManager(gson);
-    }
-
-    
-    private static class EmployeeAdapter implements JsonDeserializer<Employee>, JsonSerializer<Employee> {
-        @Override
-        public Employee deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            JsonObject jsonObject = json.getAsJsonObject();
-            JsonElement roleElement = jsonObject.get("role");
-            
-            if (roleElement == null) {
-                throw new JsonParseException("Campo 'role' no encontrado en el JSON del empleado");
-            }
-            
-            String role = roleElement.getAsString();
-            switch (role) {
-                case "Cashier":
-                    return context.deserialize(json, Cashier.class);
-                case "Chef":
-                    return context.deserialize(json, Chef.class);
-                case "Barista":
-                    return context.deserialize(json, Barista.class);
-                case "Waiter":
-                    return context.deserialize(json, Waiter.class);
-                default:
-                    throw new JsonParseException("Rol desconocido: " + role);
-            }
-        }
-
-        @Override
-        public JsonElement serialize(Employee src, Type typeOfSrc, JsonSerializationContext context) {
-            return context.serialize(src, src.getClass());
+        if (employeeRepository != null) {
+            employeeRepository.saveAll(employees);
+        } else {
+             throw new IllegalStateException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.repo.err_hr"));
         }
     }
 }

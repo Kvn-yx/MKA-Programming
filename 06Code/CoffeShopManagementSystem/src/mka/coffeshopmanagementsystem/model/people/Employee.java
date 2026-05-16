@@ -10,6 +10,7 @@ package mka.coffeshopmanagementsystem.model.people;
  */
 public abstract class Employee extends Person {
     private String role;
+    private String shift;
 
     public Employee() {
         super();
@@ -28,5 +29,13 @@ public abstract class Employee extends Person {
         this.role = role;
     }
 
-    public abstract void performOperation();
+    public String getShift() {
+        return shift;
+    }
+
+    public void setShift(String shift) {
+        this.shift = shift;
+    }
+
+    public abstract String performOperation();
 }

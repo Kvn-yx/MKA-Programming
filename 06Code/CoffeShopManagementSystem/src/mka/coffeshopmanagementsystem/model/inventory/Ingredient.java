@@ -40,6 +40,9 @@ public class Ingredient {
     }
 
     public void setStockQuantity(BigDecimal stockQuantity) {
+        if (stockQuantity == null || stockQuantity.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.inventory.err_qty_null"));
+        }
         this.stockQuantity = stockQuantity;
     }
 
@@ -52,12 +55,22 @@ public class Ingredient {
     }
 
     public void reduceStock(BigDecimal amount) {
-        if (this.stockQuantity != null) {
-            this.stockQuantity = this.stockQuantity.subtract(amount);
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.inventory.err_reduce_null"));
         }
+        if (this.stockQuantity == null) {
+             throw new IllegalStateException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.inventory.err_stock_null"));
+        }
+        if (this.stockQuantity.compareTo(amount) < 0) {
+            throw new IllegalStateException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.inventory.err_insufficient"));
+        }
+        this.stockQuantity = this.stockQuantity.subtract(amount);
     }
 
     public void updateStock(BigDecimal amount) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.inventory.err_new_null"));
+        }
         this.stockQuantity = amount;
     }
 }

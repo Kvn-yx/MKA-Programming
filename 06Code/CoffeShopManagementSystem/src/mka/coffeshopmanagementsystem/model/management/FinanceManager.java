@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import mka.coffeshopmanagementsystem.model.order.Order;
 import mka.coffeshopmanagementsystem.model.order.OrderStatus;
-import mka.coffeshopmanagementsystem.model.persistence.JsonFileManager;
 
 /**
  *
@@ -19,10 +18,8 @@ import mka.coffeshopmanagementsystem.model.persistence.JsonFileManager;
  */
 public class FinanceManager {
     private String dataFilePath;
-    private final JsonFileManager jsonFileManager;
 
     public FinanceManager() {
-        this.jsonFileManager = new JsonFileManager();
     }
 
     public String getDataFilePath() {
@@ -38,6 +35,9 @@ public class FinanceManager {
         report.put("CASH", BigDecimal.ZERO);
         report.put("CREDIT_CARD", BigDecimal.ZERO);
         report.put("TRANSFER", BigDecimal.ZERO);
+        report.put("SUBTOTAL", BigDecimal.ZERO);
+        report.put("TAX", BigDecimal.ZERO);
+        report.put("ORDERS", BigDecimal.ZERO);
         
         if (orders != null) {
             for (Order order : orders) {
@@ -45,6 +45,14 @@ public class FinanceManager {
                     if (order.getDateTime() != null && order.getDateTime().toLocalDate().equals(date)) {
                         String paymentType = order.getPayment().getType();
                         BigDecimal amount = order.getPayment().getAmount();
+                        
+                        BigDecimal subtotal = order.calculateSubtotal();
+                        BigDecimal tax = order.calculateTax();
+                        
+                        report.put("SUBTOTAL", report.get("SUBTOTAL").add(subtotal));
+                        report.put("TAX", report.get("TAX").add(tax));
+                        report.put("ORDERS", report.get("ORDERS").add(BigDecimal.ONE));
+
                         if (amount != null && paymentType != null) {
                             BigDecimal currentTotal = report.getOrDefault(paymentType, BigDecimal.ZERO);
                             report.put(paymentType, currentTotal.add(amount));
@@ -57,8 +65,10 @@ public class FinanceManager {
     }
 
     public void loadData() {
+        // Nothing to load here. Finance reporting is generated dynamically.
     }
 
     public void saveData() {
+        // Nothing to save here.
     }
 }

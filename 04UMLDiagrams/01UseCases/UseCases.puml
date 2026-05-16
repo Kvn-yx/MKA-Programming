@@ -21,10 +21,9 @@ rectangle "NebulaX Coffee Shop System" {
   
   ' POS Module
   usecase "Create Quick Order" as UC_CreateOrder
-  usecase "Assign Customer to Order" as UC_AssignCustomer
-  usecase "Calculate Total with Taxes" as UC_CalcTotal
+  usecase "Calculate Total & Tax (IVA)" as UC_CalcTotal
   usecase "Apply Special Discount" as UC_Discount
-  usecase "Process Payment" as UC_Payment
+  usecase "Process Payment (Visitor Dispatch)" as UC_Payment
   
   ' KDS and Inventory Module
   usecase "View KDS Queue" as UC_ViewQueue
@@ -32,47 +31,51 @@ rectangle "NebulaX Coffee Shop System" {
   usecase "Deduct Inventory by Recipe" as UC_DeductInv
   
   ' Floor Module
-  usecase "Assign Table" as UC_AssignTable
+  usecase "Manage Tables (State/Assignment)" as UC_ManageTables
+  usecase "Manage Machines (State)" as UC_ManageMachines
   usecase "Mark Order as Served" as UC_Serve
   
-  ' Backoffice Module
-  usecase "Manage Menu and Recipes" as UC_ManageMenu
-  usecase "Audit/Adjust Inventory" as UC_AuditInv
-  usecase "Generate End of Day Report" as UC_EndOfDay
+  ' Backoffice Module (Manager)
+  usecase "Manage Catalog (Products & Recipes)" as UC_ManageMenu
+  usecase "Audit Inventory (Standardized Units)" as UC_AuditInv
+  usecase "Manage Human Resources (Hire/Fire/Shifts)" as UC_ManageHR
+  usecase "Generate Financial Z-Report" as UC_EndOfDay
 }
 
 ' Cashier Relations
 Cashier --> UC_CreateOrder
 Cashier --> UC_Payment
 
-' Business Rules and POS Includes/Extends
+' POS Includes/Extends
 UC_CreateOrder ..> UC_Auth : <<include>>
 UC_CreateOrder ..> UC_CalcTotal : <<include>>
-UC_AssignCustomer .up.> UC_CreateOrder : <<extend>>
 UC_Discount .up.> UC_CreateOrder : <<extend>>
 UC_Payment ..> UC_Auth : <<include>>
 
 ' Payment interacts with an external system
 UC_Payment --> PaymentGateway
 
-' Barista Relations
+' Barista/Chef Relations
 Barista --> UC_ViewQueue
 Barista --> UC_Prepare
+Barista --> UC_ManageMachines
 UC_Prepare ..> UC_DeductInv : <<include>>
 
 ' Waiter Relations
-Waiter --> UC_AssignTable
+Waiter --> UC_ManageTables
 Waiter --> UC_Serve
 
 ' Manager Relations
 Manager --> UC_ManageMenu
 Manager --> UC_AuditInv
+Manager --> UC_ManageHR
 Manager --> UC_EndOfDay
 Manager --> UC_Discount : Authorizes
-Manager --> UC_Auth : Inherits global access
+Manager --> UC_ManageTables : Setup Floor
+Manager --> UC_ManageMachines : Setup Floor
 
 ' Customer Relations
 Customer --> UC_CreateOrder : Requests
-Customer --> UC_Payment : Provides money/card
+Customer --> UC_Payment : Provides Funds
 
 @enduml

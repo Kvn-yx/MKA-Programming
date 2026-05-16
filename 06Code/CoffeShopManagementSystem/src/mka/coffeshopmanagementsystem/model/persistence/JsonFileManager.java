@@ -30,7 +30,7 @@ public class JsonFileManager {
     private final Gson gson;
 
     public JsonFileManager() {
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.gson = GsonProvider.createGson();
     }
 
     
@@ -42,9 +42,8 @@ public class JsonFileManager {
     public void saveToFile(String filePath, Object data) {
         try (Writer writer = new FileWriter(filePath)) {
             gson.toJson(data, writer);
-            System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.json.saved"), filePath));
         } catch (IOException e) {
-            System.err.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.json.err_save"), filePath, e.getMessage()));
+            throw new RuntimeException(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.json.err_save"), filePath, e.getMessage()), e);
         }
     }
 
@@ -53,8 +52,7 @@ public class JsonFileManager {
         try (Reader reader = new FileReader(filePath)) {
             return gson.fromJson(reader, typeClass);
         } catch (IOException | JsonSyntaxException e) {
-            System.err.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.json.err_load"), filePath, e.getMessage()));
-            return null;
+            throw new RuntimeException(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.json.err_load"), filePath, e.getMessage()), e);
         }
     }
     
@@ -63,8 +61,7 @@ public class JsonFileManager {
         try (Reader reader = new FileReader(filePath)) {
             return gson.fromJson(reader, type);
         } catch (IOException | JsonSyntaxException e) {
-            System.err.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.json.err_load_gen"), filePath, e.getMessage()));
-            return null;
+            throw new RuntimeException(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.json.err_load_gen"), filePath, e.getMessage()), e);
         }
     }
 }

@@ -11,6 +11,36 @@ package "mka.coffeshopmanagementsystem" {
             class JsonFileManager {
                 + saveToFile(filePath: String, data: Object): void
                 + loadFromFile(filePath: String, typeClass: Class): Object
+                + loadFromFile(filePath: String, type: Type): Object
+            }
+            class GsonProvider {
+                + {static} createGson(): Gson
+            }
+            
+            package "repository" {
+                interface IRepository<T> {
+                    + findAll(): List<T>
+                    + saveAll(entities: List<T>): void
+                    + add(entity: T): void
+                }
+                class JsonRepository<T> {
+                    + findAll(): List<T>
+                    + saveAll(entities: List<T>): void
+                    + add(entity: T): void
+                }
+                interface ISingleRepository<T> {
+                    + load(): T
+                    + save(entity: T): void
+                }
+                class JsonSingleRepository<T> {
+                    + load(): T
+                    + save(entity: T): void
+                }
+                
+                IRepository <|.. JsonRepository
+                ISingleRepository <|.. JsonSingleRepository
+                JsonRepository ..> JsonFileManager : uses
+                JsonSingleRepository ..> JsonFileManager : uses
             }
         }
 
@@ -20,6 +50,17 @@ package "mka.coffeshopmanagementsystem" {
                 + setLocale(locale: Locale): void
                 + getString(key: String): String
             }
+            
+            class UnitConverter {
+                + {static} normalize(unit: String, quantity: BigDecimal): ConversionResult
+            }
+            
+            class ConversionResult {
+                + unit: String
+                + quantity: BigDecimal
+            }
+            
+            UnitConverter +-- ConversionResult
         }
 
         package "people" {
@@ -42,37 +83,39 @@ package "mka.coffeshopmanagementsystem" {
 
             abstract class Employee {
                 - role: String
+                - shift: String
                 + Employee()
                 + Employee(id: String, name: String, role: String)
                 + getRole(): String
-                + {abstract} performOperation(): void
+                + getShift(): String
+                + {abstract} performOperation(): String
             }
 
             class Cashier {
                 + Cashier()
                 + Cashier(id: String, name: String)
                 + takeOrder(customer: Customer): Order
-                + performOperation(): void
+                + performOperation(): String
             }
 
             class Chef {
                 + Chef()
                 + Chef(id: String, name: String)
-                + performOperation(): void
+                + performOperation(): String
             }
 
             class Barista {
                 + Barista()
                 + Barista(id: String, name: String)
-                + prepareDrink(): void
-                + performOperation(): void
+                + prepareDrink(): String
+                + performOperation(): String
             }
 
             class Waiter {
                 + Waiter()
                 + Waiter(id: String, name: String)
-                + serveTable(table: Table): void
-                + performOperation(): void
+                + serveTable(table: Table): String
+                + performOperation(): String
             }
 
             Person <|-- Customer
@@ -137,6 +180,7 @@ package "mka.coffeshopmanagementsystem" {
                 + Machine()
                 + turnOn(): void
                 + operate(): void
+                + turnOff(): void
             }
 
             class Table {
@@ -162,7 +206,9 @@ package "mka.coffeshopmanagementsystem" {
             }
 
             interface PaymentProcessor {
-                + process(payment: Payment): boolean
+                + processCash(cash: Cash): boolean
+                + processCreditCard(creditCard: CreditCard): boolean
+                + processTransfer(transfer: Transfer): boolean
             }
 
             class Transfer {
@@ -189,7 +235,7 @@ package "mka.coffeshopmanagementsystem" {
             Payment <|-- Transfer
             Payment <|-- CreditCard
             Payment <|-- Cash
-            Payment ..> PaymentProcessor : uses >
+            Payment ..> PaymentProcessor : double dispatch >
         }
 
         package "order" {
@@ -212,19 +258,16 @@ package "mka.coffeshopmanagementsystem" {
                 - discount: BigDecimal
                 - isSynced: boolean
                 + Order()
-                + Order(orderId: String)
                 + addItem(item: OrderItem): void
                 + calculateSubtotal(): BigDecimal
                 + calculateTax(): BigDecimal
                 + calculateTotal(): BigDecimal
                 + updateStatus(status: OrderStatus): void
-                + markAsSynced(): void
             }
 
             class OrderItem {
                 - orderItemId: String
                 - quantity: int
-                - subtotal: BigDecimal
                 - product: Product
                 - modifiers: List<String>
                 + OrderItem()
@@ -241,18 +284,19 @@ package "mka.coffeshopmanagementsystem" {
         package "management" {
             class OrderManager {
                 - orders: List<Order>
-                - dataFilePath: String
+                - orderRepository: IRepository<Order>
                 + createOrder(customer: Customer): Order
                 + processPayment(order: Order, payment: Payment): boolean
-                + syncOfflineOrders(): void
                 + loadData(): void
                 + saveData(): void
             }
 
             class HRManager {
                 - employees: List<Employee>
-                - dataFilePath: String
-                + assignShift(employee: Employee): void
+                - employeeRepository: IRepository<Employee>
+                + addEmployee(employee: Employee): void
+                + removeEmployee(id: String): void
+                + assignShift(id: String, shift: String): void
                 + loadData(): void
                 + saveData(): void
             }
@@ -260,27 +304,37 @@ package "mka.coffeshopmanagementsystem" {
             class FloorManager {
                 - tables: List<Table>
                 - machines: List<Machine>
-                - dataFilePath: String
-                + assignTable(waiter: Waiter, table: Table): void
+                - floorRepository: ISingleRepository<FloorManager>
+                + addTable(table: Table): void
+                + removeTable(id: String): void
+                + addMachine(machine: Machine): void
+                + removeMachine(id: String): void
+                + assignTable(tableId: String, waiter: Waiter): void
+                + toggleTableState(id: String): void
+                + toggleMachineState(id: String): void
                 + loadData(): void
                 + saveData(): void
             }
 
             class InventoryManager {
                 - inventory: Inventory
-                - dataFilePath: String
+                - inventoryRepository: ISingleRepository<Inventory>
+                + addIngredient(ingredient: Ingredient): void
+                + updateIngredientStock(id: String, actualQuantity: BigDecimal): void
+                + removeIngredient(id: String): void
                 + checkStockFor(requiredIngredients: Map<Ingredient, BigDecimal>): boolean
                 + deductStockFor(requiredIngredients: Map<Ingredient, BigDecimal>): void
-                + overrideStock(ingredient: Ingredient, actualQuantity: BigDecimal): void
                 + loadData(): void
                 + saveData(): void
             }
 
             class CatalogManager {
                 - products: List<Product>
-                - dataFilePath: String
+                - productRepository: IRepository<Product>
                 + addProduct(p: Product): void
                 + removeProduct(id: String): void
+                + updateProductPrice(id: String, newPrice: BigDecimal): void
+                + updateProductRecipe(id: String, newRecipe: List<ProductIngredient>): void
                 + loadData(): void
                 + saveData(): void
             }
@@ -294,7 +348,6 @@ package "mka.coffeshopmanagementsystem" {
             
             class CoffeeShop {
                 - name: String
-                - address: String
             }
 
             CoffeeShop "1" *-- "1" OrderManager
@@ -311,33 +364,29 @@ package "mka.coffeshopmanagementsystem" {
             InventoryManager "1" o-- "1" Inventory : manages >
             CatalogManager "1" o-- "*" Product : manages >
             
-            OrderManager ..> JsonFileManager : uses >
-            HRManager ..> JsonFileManager : uses >
-            FloorManager ..> JsonFileManager : uses >
-            InventoryManager ..> JsonFileManager : uses >
-            CatalogManager ..> JsonFileManager : uses >
-            FinanceManager ..> JsonFileManager : uses >
+            OrderManager ..> IRepository : depends on >
+            HRManager ..> IRepository : depends on >
+            FloorManager ..> ISingleRepository : depends on >
+            InventoryManager ..> ISingleRepository : depends on >
+            CatalogManager ..> IRepository : depends on >
         }
     }
 
     package "view" {
         class MainView {
-            + displayMainMenu(): void
-            + showMessage(msg: String): void
-            + readInput(): String
-        }
-    }
-
-    package "controller" {
-        class MainController {
-            ' Controlador vacío de momento
+            + start(): void
+            - posModule(): void
+            - kitchenModule(): void
+            - catalogModule(): void
+            - inventoryModule(): void
+            - hrModule(): void
+            - floorModule(): void
+            - financeModule(): void
         }
     }
 
     ' Relaciones del patrón MVC
-    view ..> controller : envía acciones del usuario >
-    controller ..> model : actualiza >
-    view ..> model : lee datos >
+    MainView ..> CoffeeShop : interacts with >
 
 }
 @enduml

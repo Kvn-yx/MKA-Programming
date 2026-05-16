@@ -9,5 +9,7 @@ package mka.coffeshopmanagementsystem.model.payment;
  * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public interface PaymentProcessor {
-    boolean process(Payment payment);
+    boolean processCash(Cash cash);
+    boolean processCreditCard(CreditCard creditCard);
+    boolean processTransfer(Transfer transfer);
 }

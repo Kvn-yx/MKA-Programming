@@ -17,12 +17,12 @@ public class Barista extends Employee {
         super(id, name, "Barista");
     }
 
-    public void prepareDrink() {
-        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.barista.prep"), getName()));
+    public String prepareDrink() {
+        return String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.barista.prep"), getName());
     }
 
     @Override
-    public void performOperation() {
-        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.barista.op"), getName()));
+    public String performOperation() {
+        return String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.barista.op"), getName());
     }
 }

@@ -77,8 +77,8 @@ public class MainView {
     }
 
     public void start() {
-        System.out.println("1. English\n2. Spanish");
-        System.out.print(">>> ");
+        System.out.println(I18n.getString("lang.en") + "\n" + I18n.getString("lang.es"));
+        System.out.print(I18n.getString("lang.prompt") + " ");
         String lang = scanner.nextLine().trim();
         I18n.setLocale(new Locale(lang.equals("2") ? "es" : "en"));
 
@@ -158,7 +158,7 @@ public class MainView {
                     if (!mod.isEmpty()) it.addModifier(mod);
                     o.addItem(it);
                 }
-            } catch (Exception e) { System.out.println(I18n.getString("msg.invalid")); }
+            } catch (Exception e) { System.out.println(I18n.getString("msg.invalid") + " " + (e.getMessage() != null ? e.getMessage() : "")); }
         }
         if (o.getItems().isEmpty()) { System.out.println(I18n.getString("pos.emptyCancel")); return; }
         handlePayment(o);
@@ -236,18 +236,71 @@ public class MainView {
             System.out.println(I18n.getString("cat.list"));
             System.out.println(I18n.getString("cat.add"));
             System.out.println(I18n.getString("cat.del"));
+            System.out.println(I18n.getString("cat.edit"));
+            System.out.println(I18n.getString("cat.editRecipe"));
             System.out.println(I18n.getString("menu.back"));
             System.out.print(I18n.getString("menu.select"));
             String opt = scanner.nextLine().trim();
             if (opt.equals("0")) break;
-            if (opt.equals("1")) shop.getCatalogManager().getProducts().forEach(p -> System.out.println(" - " + p.getName() + " | $" + p.getPrice()));
+            if (opt.equals("1")) shop.getCatalogManager().getProducts().forEach(p -> System.out.println(" - [" + p.getProductId() + "] " + p.getName() + " | $" + p.getPrice()));
             else if (opt.equals("2")) addNewProduct();
-            else if (opt.equals("3")) {
-                System.out.print(I18n.getString("cat.delName"));
-                String name = scanner.nextLine().trim();
-                shop.getCatalogManager().getProducts().removeIf(p -> p.getName().equalsIgnoreCase(name));
-            }
+            else if (opt.equals("3")) deleteProduct();
+            else if (opt.equals("4")) editProduct();
+            else if (opt.equals("5")) editProductRecipe();
+            else System.out.println(I18n.getString("msg.invalid"));
             pause();
+        }
+    }
+
+    private void editProductRecipe() {
+        System.out.print(I18n.getString("cat.enterId")); String id = scanner.nextLine().trim();
+        System.out.println(I18n.getString("cat.editRecipeMsg"));
+        List<ProductIngredient> recipe = new ArrayList<>();
+        while (true) {
+            Ingredient ing = new Ingredient();
+            System.out.print(I18n.getString("cat.ingName")); ing.setName(scanner.nextLine().trim());
+            System.out.print(I18n.getString("cat.ingUnit")); String rawUnit = scanner.nextLine().trim();
+            System.out.print(I18n.getString("cat.ingQty") + rawUnit + "): ");
+            try {
+                BigDecimal rawQty = new BigDecimal(scanner.nextLine().trim());
+                mka.coffeshopmanagementsystem.utils.UnitConverter.ConversionResult norm = mka.coffeshopmanagementsystem.utils.UnitConverter.normalize(rawUnit, rawQty);
+                ing.setUnit(norm.unit);
+                ProductIngredient pi = new ProductIngredient();
+                pi.setIngredient(ing);
+                pi.setQuantityNeeded(norm.quantity);
+                recipe.add(pi);
+            } catch (Exception e) {
+                System.out.println(I18n.getString("msg.invalid") + " " + (e.getMessage() != null ? e.getMessage() : ""));
+            }
+            System.out.print(I18n.getString("cat.askAnother"));
+            if (!scanner.nextLine().trim().toLowerCase().matches("s|y")) break;
+        }
+        try {
+            shop.getCatalogManager().updateProductRecipe(id, recipe);
+            System.out.println(I18n.getString("cat.recipeUpdated"));
+        } catch (Exception e) {
+            System.out.println(I18n.getString("msg.invalid") + " " + (e.getMessage() != null ? e.getMessage() : ""));
+        }
+    }
+
+    private void editProduct() {
+        System.out.print(I18n.getString("cat.enterId")); String id = scanner.nextLine().trim();
+        System.out.print(I18n.getString("cat.price"));
+        try {
+            shop.getCatalogManager().updateProductPrice(id, new BigDecimal(scanner.nextLine().trim()));
+            System.out.println(I18n.getString("cat.updated"));
+        } catch (Exception e) {
+            System.out.println(I18n.getString("msg.invalid") + " " + (e.getMessage() != null ? e.getMessage() : ""));
+        }
+    }
+
+    private void deleteProduct() {
+        System.out.print(I18n.getString("cat.delId")); String id = scanner.nextLine().trim();
+        try {
+            shop.getCatalogManager().removeProduct(id);
+            System.out.println(I18n.getString("inv.deleted"));
+        } catch (Exception e) {
+            System.out.println(I18n.getString("msg.invalid") + " " + (e.getMessage() != null ? e.getMessage() : ""));
         }
     }
 
@@ -279,33 +332,60 @@ public class MainView {
         while (true) {
             System.out.println("\n" + I18n.getString("mod.inventory"));
             System.out.println(I18n.getString("inv.view"));
-            System.out.println(I18n.getString("inv.update"));
+            System.out.println(I18n.getString("inv.add"));
+            System.out.println(I18n.getString("inv.edit"));
+            System.out.println(I18n.getString("inv.del"));
             System.out.println(I18n.getString("menu.back"));
             System.out.print(I18n.getString("menu.select"));
             String opt = scanner.nextLine().trim();
             if (opt.equals("0")) break;
             if (opt.equals("1")) listInventory();
-            else if (opt.equals("2")) updateStockManual();
+            else if (opt.equals("2")) addNewIngredient();
+            else if (opt.equals("3")) editIngredientStock();
+            else if (opt.equals("4")) deleteIngredient();
+            else System.out.println(I18n.getString("msg.invalid"));
             pause();
         }
     }
 
     private void listInventory() {
         Inventory inv = shop.getInventoryManager().getInventory();
-        if (inv != null && inv.getIngredients() != null) {
-            inv.getIngredients().forEach(i -> System.out.println(" - " + i.getName() + I18n.getString("inv.avail") + i.getStockQuantity() + " " + i.getUnit()));
+        if (inv != null && inv.getIngredients() != null && !inv.getIngredients().isEmpty()) {
+            inv.getIngredients().forEach(i -> System.out.println(" - [" + i.getIngredientId() + "] " + i.getName() + I18n.getString("inv.avail") + i.getStockQuantity() + " " + i.getUnit()));
         } else System.out.println(I18n.getString("inv.empty"));
     }
 
-    private void updateStockManual() {
+    private void addNewIngredient() {
         Ingredient ing = new Ingredient();
+        ing.setIngredientId(UUID.randomUUID().toString().substring(0,8));
         System.out.print(I18n.getString("cat.ingName")); ing.setName(scanner.nextLine().trim());
         System.out.print(I18n.getString("inv.unit")); ing.setUnit(scanner.nextLine().trim());
         System.out.print(I18n.getString("inv.qty"));
         try {
-            shop.getInventoryManager().overrideStock(ing, new BigDecimal(scanner.nextLine().trim()));
+            ing.setStockQuantity(new BigDecimal(scanner.nextLine().trim()));
+            shop.getInventoryManager().addIngredient(ing);
+            System.out.println(I18n.getString("inv.added"));
+        } catch (Exception e) { System.out.println(I18n.getString("msg.invalid") + " " + (e.getMessage() != null ? e.getMessage() : "")); }
+    }
+
+    private void editIngredientStock() {
+        System.out.print(I18n.getString("inv.enterId")); String id = scanner.nextLine().trim();
+        System.out.print(I18n.getString("inv.unit")); String rawUnit = scanner.nextLine().trim();
+        System.out.print(I18n.getString("inv.qty"));
+        try {
+            BigDecimal rawQty = new BigDecimal(scanner.nextLine().trim());
+            mka.coffeshopmanagementsystem.utils.UnitConverter.ConversionResult norm = mka.coffeshopmanagementsystem.utils.UnitConverter.normalize(rawUnit, rawQty);
+            shop.getInventoryManager().updateIngredientStock(id, norm.quantity);
             System.out.println(I18n.getString("inv.updated"));
-        } catch (Exception e) { System.out.println(I18n.getString("msg.invalid")); }
+        } catch (Exception e) { System.out.println(I18n.getString("msg.invalid") + " " + (e.getMessage() != null ? e.getMessage() : "")); }
+    }
+
+    private void deleteIngredient() {
+        System.out.print(I18n.getString("inv.delId")); String id = scanner.nextLine().trim();
+        try {
+            shop.getInventoryManager().removeIngredient(id);
+            System.out.println(I18n.getString("inv.deleted"));
+        } catch (Exception e) { System.out.println(I18n.getString("msg.invalid") + " " + (e.getMessage() != null ? e.getMessage() : "")); }
     }
 
     private void hrModule() {
@@ -313,12 +393,17 @@ public class MainView {
             System.out.println("\n" + I18n.getString("mod.hr"));
             System.out.println(I18n.getString("hr.list"));
             System.out.println(I18n.getString("hr.hire"));
+            System.out.println(I18n.getString("hr.fire"));
+            System.out.println(I18n.getString("hr.assign"));
             System.out.println(I18n.getString("menu.back"));
             System.out.print(I18n.getString("menu.select"));
             String opt = scanner.nextLine().trim();
             if (opt.equals("0")) break;
-            if (opt.equals("1")) shop.getHrManager().getEmployees().forEach(e -> System.out.println(" - [" + e.getRole() + "] " + e.getName()));
+            if (opt.equals("1")) shop.getHrManager().getEmployees().forEach(e -> System.out.println(" - [" + e.getId() + "] " + e.getRole() + ": " + e.getName() + (e.getShift() != null ? " (Turno: " + e.getShift() + ")" : "")));
             else if (opt.equals("2")) hireEmployee();
+            else if (opt.equals("3")) fireEmployee();
+            else if (opt.equals("4")) assignShift();
+            else System.out.println(I18n.getString("msg.invalid"));
             pause();
         }
     }
@@ -328,8 +413,29 @@ public class MainView {
         System.out.print(I18n.getString("hr.role")); String r = scanner.nextLine().trim();
         String id = UUID.randomUUID().toString().substring(0,8);
         Employee e = r.equals("1") ? new Cashier(id, n) : r.equals("2") ? new Waiter(id, n) : r.equals("3") ? new Barista(id, n) : r.equals("4") ? new Chef(id, n) : null;
-        if (e != null) { shop.getHrManager().getEmployees().add(e); System.out.println(I18n.getString("hr.registered") + n); }
+        if (e != null) { shop.getHrManager().addEmployee(e); System.out.println(I18n.getString("hr.registered") + n); }
         else System.out.println(I18n.getString("msg.invalid"));
+    }
+
+    private void fireEmployee() {
+        System.out.print(I18n.getString("hr.enterId")); String id = scanner.nextLine().trim();
+        try {
+            shop.getHrManager().removeEmployee(id);
+            System.out.println(I18n.getString("hr.fired"));
+        } catch (Exception e) {
+            System.out.println(I18n.getString("msg.invalid") + " " + (e.getMessage() != null ? e.getMessage() : ""));
+        }
+    }
+
+    private void assignShift() {
+        System.out.print(I18n.getString("hr.enterId")); String id = scanner.nextLine().trim();
+        System.out.print(I18n.getString("hr.enterShift")); String shift = scanner.nextLine().trim();
+        try {
+            shop.getHrManager().assignShift(id, shift);
+            System.out.println(I18n.getString("hr.shift"));
+        } catch (Exception e) {
+            System.out.println(I18n.getString("msg.invalid") + " " + (e.getMessage() != null ? e.getMessage() : ""));
+        }
     }
 
     private void floorModule() {
@@ -337,14 +443,44 @@ public class MainView {
             System.out.println("\n" + I18n.getString("mod.floor"));
             System.out.println(I18n.getString("flr.viewTbl"));
             System.out.println(I18n.getString("flr.addTbl"));
+            System.out.println(I18n.getString("flr.delTbl"));
+            System.out.println(I18n.getString("flr.viewMac"));
+            System.out.println(I18n.getString("flr.addMac"));
+            System.out.println(I18n.getString("flr.delMac"));
             System.out.println(I18n.getString("menu.back"));
             System.out.print(I18n.getString("menu.select"));
             String opt = scanner.nextLine().trim();
             if (opt.equals("0")) break;
-            if (opt.equals("1")) shop.getFloorManager().getTables().forEach(t -> System.out.println(" - " + t.getId() + " " + (t.isState() ? I18n.getString("flr.occ") : I18n.getString("flr.free"))));
-            else if (opt.equals("2")) {
-                Table t = new Table(); t.setId("Mesa-" + (shop.getFloorManager().getTables().size() + 1));
-                shop.getFloorManager().getTables().add(t); System.out.println(I18n.getString("flr.tblAdded"));
+            
+            try {
+                if (opt.equals("1")) {
+                    shop.getFloorManager().getTables().forEach(t -> System.out.println(" - " + t.getId() + " " + (t.isState() ? I18n.getString("flr.occ") : I18n.getString("flr.free"))));
+                }
+                else if (opt.equals("2")) {
+                    Table t = new Table(); t.setId("Mesa-" + (shop.getFloorManager().getTables().size() + 1));
+                    shop.getFloorManager().addTable(t); System.out.println(I18n.getString("flr.tblAdded"));
+                }
+                else if (opt.equals("3")) {
+                    System.out.print(I18n.getString("flr.enterId")); String id = scanner.nextLine().trim();
+                    shop.getFloorManager().removeTable(id); System.out.println(I18n.getString("flr.deleted"));
+                }
+                else if (opt.equals("4")) {
+                    shop.getFloorManager().getMachines().forEach(m -> System.out.println(" - " + m.getBrand() + " " + (m.isState() ? "[ON]" : "[OFF]")));
+                }
+                else if (opt.equals("5")) {
+                    mka.coffeshopmanagementsystem.model.floor.Machine m = new mka.coffeshopmanagementsystem.model.floor.Machine();
+                    System.out.print(I18n.getString("flr.brand")); m.setBrand(scanner.nextLine().trim());
+                    shop.getFloorManager().addMachine(m); System.out.println(I18n.getString("flr.macAdded"));
+                }
+                else if (opt.equals("6")) {
+                    System.out.print(I18n.getString("flr.brand")); String brand = scanner.nextLine().trim();
+                    shop.getFloorManager().removeMachine(brand); System.out.println(I18n.getString("flr.deleted"));
+                }
+                else {
+                    System.out.println(I18n.getString("msg.invalid"));
+                }
+            } catch (Exception e) {
+                System.out.println(I18n.getString("msg.invalid") + " " + (e.getMessage() != null ? e.getMessage() : ""));
             }
             pause();
         }
@@ -354,8 +490,23 @@ public class MainView {
         System.out.println("\n" + I18n.getString("mod.finance"));
         Map<String, BigDecimal> r = shop.getFinanceManager().generateZReport(LocalDate.now(), shop.getOrderManager().getOrders());
         System.out.println(I18n.getString("fin.breakdown"));
-        r.forEach((k, v) -> System.out.println("   " + k + " : $" + v));
-        BigDecimal total = r.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        
+        System.out.println(I18n.getString("fin.orders") + r.getOrDefault("ORDERS", BigDecimal.ZERO).intValue());
+        System.out.println(I18n.getString("fin.subtotal") + r.getOrDefault("SUBTOTAL", BigDecimal.ZERO));
+        System.out.println(I18n.getString("fin.tax") + r.getOrDefault("TAX", BigDecimal.ZERO));
+        System.out.println("---------------------------------");
+        
+        r.forEach((k, v) -> {
+            if (!k.equals("ORDERS") && !k.equals("SUBTOTAL") && !k.equals("TAX")) {
+                System.out.println("   " + k + " : $" + v);
+            }
+        });
+        
+        BigDecimal total = r.entrySet().stream()
+            .filter(e -> !e.getKey().equals("ORDERS") && !e.getKey().equals("SUBTOTAL") && !e.getKey().equals("TAX"))
+            .map(Map.Entry::getValue)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+            
         System.out.println("---------------------------------");
         System.out.println(I18n.getString("fin.total") + total);
         pause();

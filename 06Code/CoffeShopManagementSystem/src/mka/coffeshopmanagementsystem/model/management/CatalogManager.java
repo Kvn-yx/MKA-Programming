@@ -9,7 +9,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import mka.coffeshopmanagementsystem.model.inventory.Product;
-import mka.coffeshopmanagementsystem.model.persistence.JsonFileManager;
+import mka.coffeshopmanagementsystem.model.persistence.repository.IRepository;
+import mka.coffeshopmanagementsystem.model.persistence.repository.JsonRepository;
 
 /**
  *
@@ -17,54 +18,82 @@ import mka.coffeshopmanagementsystem.model.persistence.JsonFileManager;
  */
 public class CatalogManager {
     private List<Product> products;
-    private String dataFilePath;
-    private final JsonFileManager jsonFileManager;
+    private IRepository<Product> productRepository;
 
     public CatalogManager() {
-        this.jsonFileManager = new JsonFileManager();
+        this.products = new ArrayList<>();
+    }
+
+    public CatalogManager(IRepository<Product> productRepository) {
+        this.productRepository = productRepository;
         this.products = new ArrayList<>();
     }
 
     public List<Product> getProducts() {
-        return products;
+        if (products == null) {
+            return java.util.Collections.emptyList();
+        }
+        return java.util.Collections.unmodifiableList(products);
     }
 
     public void setProducts(List<Product> products) {
         this.products = products;
     }
 
-    public String getDataFilePath() {
-        return dataFilePath;
-    }
-
     public void setDataFilePath(String dataFilePath) {
-        this.dataFilePath = dataFilePath;
+        Type listType = new TypeToken<ArrayList<Product>>(){}.getType();
+        this.productRepository = new JsonRepository<>(dataFilePath, listType);
     }
 
     public void addProduct(Product p) {
-        if (this.products == null) {
-            this.products = new ArrayList<>();
+        if (p != null) {
+            List<Product> currentProducts = new ArrayList<>(getProducts());
+            currentProducts.add(p);
+            this.products = currentProducts;
         }
-        this.products.add(p);
     }
 
     public void removeProduct(String id) {
-        if (this.products != null) {
-            this.products.removeIf(p -> p.getProductId().equals(id));
+        List<Product> currentProducts = new ArrayList<>(getProducts());
+        boolean removed = currentProducts.removeIf(p -> p.getProductId().equals(id.trim()));
+        if (removed) {
+            this.products = currentProducts;
+        } else {
+            throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("cat.notFound"));
+        }
+    }
+
+    public void updateProductPrice(String id, java.math.BigDecimal newPrice) {
+        Product p = getProducts().stream().filter(pr -> pr.getProductId().equals(id.trim())).findFirst().orElse(null);
+        if (p != null) {
+            p.setPrice(newPrice);
+        } else {
+             throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("cat.notFound"));
+        }
+    }
+
+    public void updateProductRecipe(String id, List<mka.coffeshopmanagementsystem.model.inventory.ProductIngredient> newRecipe) {
+        Product p = getProducts().stream().filter(pr -> pr.getProductId().equals(id.trim())).findFirst().orElse(null);
+        if (p != null) {
+            p.setRecipe(newRecipe);
+        } else {
+             throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("cat.notFound"));
         }
     }
 
     public void loadData() {
-        Type listType = new TypeToken<ArrayList<Product>>(){}.getType();
-        List<Product> loadedProducts = jsonFileManager.loadFromFile(dataFilePath, listType);
-        if (loadedProducts != null) {
-            this.products = loadedProducts;
+        if (productRepository != null) {
+            this.products = productRepository.findAll();
         } else {
-            this.products = new ArrayList<>();
+             throw new IllegalStateException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.repo.err_product"));
         }
     }
 
     public void saveData() {
-        jsonFileManager.saveToFile(dataFilePath, products);
+        if (productRepository != null) {
+            productRepository.saveAll(products);
+        } else {
+             throw new IllegalStateException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.repo.err_product"));
+        }
     }
 }

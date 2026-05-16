@@ -57,7 +57,10 @@ public class Order {
     }
 
     public List<OrderItem> getItems() {
-        return items;
+        if (items == null) {
+            return java.util.Collections.emptyList();
+        }
+        return java.util.Collections.unmodifiableList(items);
     }
 
     public void setItems(List<OrderItem> items) {
@@ -85,6 +88,9 @@ public class Order {
     }
 
     public void setTaxRate(BigDecimal taxRate) {
+        if (taxRate != null && taxRate.compareTo(BigDecimal.ZERO) < 0) {
+             throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.order.err_tax"));
+        }
         this.taxRate = taxRate;
     }
 
@@ -93,6 +99,9 @@ public class Order {
     }
 
     public void setDiscount(BigDecimal discount) {
+        if (discount != null && discount.compareTo(BigDecimal.ZERO) < 0) {
+             throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.order.err_discount"));
+        }
         this.discount = discount;
     }
 
@@ -105,6 +114,9 @@ public class Order {
     }
 
     public void addItem(OrderItem item) {
+        if (item == null) {
+            throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.order.err_item_null"));
+        }
         if (this.items == null) {
             this.items = new java.util.ArrayList<>();
         }

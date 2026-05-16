@@ -33,7 +33,7 @@ public class Cash extends Payment {
     @Override
     public boolean processPayment(PaymentProcessor processor) {
         if (processor != null) {
-            return processor.process(this);
+            return processor.processCash(this);
         }
         return false;
     }

@@ -33,7 +33,7 @@ public class CreditCard extends Payment {
     @Override
     public boolean processPayment(PaymentProcessor processor) {
         if (processor != null) {
-            return processor.process(this);
+            return processor.processCreditCard(this);
         }
         return false;
     }

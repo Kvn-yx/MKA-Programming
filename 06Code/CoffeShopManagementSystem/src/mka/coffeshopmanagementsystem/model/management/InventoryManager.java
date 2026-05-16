@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import mka.coffeshopmanagementsystem.model.inventory.Inventory;
 import mka.coffeshopmanagementsystem.model.inventory.Ingredient;
-import mka.coffeshopmanagementsystem.model.persistence.JsonFileManager;
+import mka.coffeshopmanagementsystem.model.persistence.repository.ISingleRepository;
+import mka.coffeshopmanagementsystem.model.persistence.repository.JsonSingleRepository;
 
 /**
  *
@@ -17,11 +18,15 @@ import mka.coffeshopmanagementsystem.model.persistence.JsonFileManager;
  */
 public class InventoryManager {
     private Inventory inventory;
-    private String dataFilePath;
-    private final JsonFileManager jsonFileManager;
+    private ISingleRepository<Inventory> inventoryRepository;
 
     public InventoryManager() {
-        this.jsonFileManager = new JsonFileManager();
+        this.inventory = new Inventory();
+        this.inventory.setIngredients(new ArrayList<>());
+    }
+
+    public InventoryManager(ISingleRepository<Inventory> inventoryRepository) {
+        this.inventoryRepository = inventoryRepository;
         this.inventory = new Inventory();
         this.inventory.setIngredients(new ArrayList<>());
     }
@@ -34,12 +39,8 @@ public class InventoryManager {
         this.inventory = inventory;
     }
 
-    public String getDataFilePath() {
-        return dataFilePath;
-    }
-
     public void setDataFilePath(String dataFilePath) {
-        this.dataFilePath = dataFilePath;
+        this.inventoryRepository = new JsonSingleRepository<>(dataFilePath, Inventory.class);
     }
 
     public boolean checkStockFor(Map<Ingredient, BigDecimal> requiredIngredients) {
@@ -87,39 +88,55 @@ public class InventoryManager {
                 .orElse(null);
     }
 
-    public void overrideStock(Ingredient ingredient, BigDecimal actualQuantity) {
-        if (ingredient == null) return;
-        Ingredient inStock = findIngredient(ingredient.getIngredientId());
-        
-        if (inStock == null) {
-            inStock = findIngredientByName(ingredient.getName());
+    public void addIngredient(Ingredient ingredient) {
+        if (ingredient != null) {
+            java.util.List<Ingredient> currentList = new ArrayList<>(inventory.getIngredients());
+            currentList.add(ingredient);
+            inventory.setIngredients(currentList);
         }
-        
+    }
+
+    public void updateIngredientStock(String id, BigDecimal actualQuantity) {
+        Ingredient inStock = findIngredient(id);
         if (inStock != null) {
             inStock.updateStock(actualQuantity);
         } else {
-            ingredient.setStockQuantity(actualQuantity);
-            if (inventory.getIngredients() == null) {
-                inventory.setIngredients(new ArrayList<>());
-            }
-            inventory.getIngredients().add(ingredient);
+            throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("inv.notFound"));
+        }
+    }
+
+    public void removeIngredient(String id) {
+        java.util.List<Ingredient> currentList = new ArrayList<>(inventory.getIngredients());
+        boolean removed = currentList.removeIf(i -> i.getIngredientId().equals(id.trim()));
+        if (removed) {
+            inventory.setIngredients(currentList);
+        } else {
+            throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("inv.notFound"));
         }
     }
 
     public void loadData() {
-        Inventory loadedInventory = jsonFileManager.loadFromFile(dataFilePath, Inventory.class);
-        if (loadedInventory != null) {
-            this.inventory = loadedInventory;
-            if (this.inventory.getIngredients() == null) {
+        if (inventoryRepository != null) {
+            Inventory loadedInventory = inventoryRepository.load();
+            if (loadedInventory != null) {
+                this.inventory = loadedInventory;
+                if (this.inventory.getIngredients() == null) {
+                    this.inventory.setIngredients(new ArrayList<>());
+                }
+            } else {
+                this.inventory = new Inventory();
                 this.inventory.setIngredients(new ArrayList<>());
             }
         } else {
-            this.inventory = new Inventory();
-            this.inventory.setIngredients(new ArrayList<>());
+            throw new IllegalStateException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.repo.err_inventory"));
         }
     }
 
     public void saveData() {
-        jsonFileManager.saveToFile(dataFilePath, inventory);
+        if (inventoryRepository != null) {
+            inventoryRepository.save(inventory);
+        } else {
+            throw new IllegalStateException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.repo.err_inventory"));
+        }
     }
 }

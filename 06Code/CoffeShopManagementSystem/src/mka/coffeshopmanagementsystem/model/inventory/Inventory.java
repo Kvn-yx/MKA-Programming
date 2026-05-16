@@ -19,7 +19,10 @@ public class Inventory {
     }
 
     public List<Ingredient> getIngredients() {
-        return ingredients;
+        if (ingredients == null) {
+            return java.util.Collections.emptyList();
+        }
+        return java.util.Collections.unmodifiableList(ingredients);
     }
 
     public void setIngredients(List<Ingredient> ingredients) {

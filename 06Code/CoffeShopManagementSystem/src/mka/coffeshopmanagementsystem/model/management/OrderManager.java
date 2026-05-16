@@ -4,7 +4,6 @@
  */
 package mka.coffeshopmanagementsystem.model.management;
 
-import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -17,7 +16,8 @@ import mka.coffeshopmanagementsystem.model.payment.Cash;
 import mka.coffeshopmanagementsystem.model.payment.CreditCard;
 import mka.coffeshopmanagementsystem.model.payment.Transfer;
 import mka.coffeshopmanagementsystem.model.payment.PaymentProcessor;
-import mka.coffeshopmanagementsystem.model.persistence.JsonFileManager;
+import mka.coffeshopmanagementsystem.model.persistence.repository.IRepository;
+import mka.coffeshopmanagementsystem.model.persistence.repository.JsonRepository;
 import java.time.LocalDateTime;
 
 /**
@@ -26,37 +26,31 @@ import java.time.LocalDateTime;
  */
 public class OrderManager {
     private List<Order> orders;
-    private String dataFilePath;
-    private JsonFileManager jsonFileManager;
+    private IRepository<Order> orderRepository;
 
     public OrderManager() {
-        this.jsonFileManager = getCustomJsonFileManager();
         this.orders = new ArrayList<>();
     }
 
-    private JsonFileManager getCustomJsonFileManager() {
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Payment.class, new PaymentAdapter())
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .setPrettyPrinting()
-                .create();
-        return new JsonFileManager(gson);
+    public OrderManager(IRepository<Order> orderRepository) {
+        this.orderRepository = orderRepository;
+        this.orders = new ArrayList<>();
     }
 
     public List<Order> getOrders() {
-        return orders;
+        if (orders == null) {
+            return java.util.Collections.emptyList();
+        }
+        return java.util.Collections.unmodifiableList(orders);
     }
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 
-    public String getDataFilePath() {
-        return dataFilePath;
-    }
-
     public void setDataFilePath(String dataFilePath) {
-        this.dataFilePath = dataFilePath;
+        Type listType = new TypeToken<ArrayList<Order>>(){}.getType();
+        this.orderRepository = new JsonRepository<>(dataFilePath, listType);
     }
 
     public Order createOrder(Customer customer) {
@@ -77,7 +71,20 @@ public class OrderManager {
         if (order != null && payment != null) {
             PaymentProcessor defaultProcessor = new PaymentProcessor() {
                 @Override
-                public boolean process(Payment p) {
+                public boolean processCash(Cash cash) {
+                    // Logic specific to cash, like verifying amountTendered > total
+                    return true;
+                }
+                
+                @Override
+                public boolean processCreditCard(CreditCard creditCard) {
+                    // Logic specific to credit card, like external API calls
+                    return true;
+                }
+                
+                @Override
+                public boolean processTransfer(Transfer transfer) {
+                    // Logic specific to transfer, like verifying account
                     return true;
                 }
             };
@@ -102,65 +109,18 @@ public class OrderManager {
     }
 
     public void loadData() {
-        if (jsonFileManager == null) {
-            jsonFileManager = getCustomJsonFileManager();
-        }
-        Type listType = new TypeToken<ArrayList<Order>>(){}.getType();
-        List<Order> loadedOrders = jsonFileManager.loadFromFile(dataFilePath, listType);
-        if (loadedOrders != null) {
-            this.orders = loadedOrders;
+        if (orderRepository != null) {
+            this.orders = orderRepository.findAll();
         } else {
-            this.orders = new ArrayList<>();
+            throw new IllegalStateException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.repo.err_order"));
         }
     }
 
     public void saveData() {
-        if (jsonFileManager == null) {
-            jsonFileManager = getCustomJsonFileManager();
-        }
-        jsonFileManager.saveToFile(dataFilePath, orders);
-    }
-
-    
-    private static class PaymentAdapter implements JsonDeserializer<Payment>, JsonSerializer<Payment> {
-        @Override
-        public Payment deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            JsonObject jsonObject = json.getAsJsonObject();
-            JsonElement typeElement = jsonObject.get("type");
-            
-            if (typeElement == null) {
-                throw new JsonParseException("Campo 'type' no encontrado en el JSON de payment");
-            }
-            
-            String paymentType = typeElement.getAsString();
-            switch (paymentType) {
-                case "CASH":
-                    return context.deserialize(json, Cash.class);
-                case "CREDIT_CARD":
-                    return context.deserialize(json, CreditCard.class);
-                case "TRANSFER":
-                    return context.deserialize(json, Transfer.class);
-                default:
-                    throw new JsonParseException("Tipo de pago desconocido: " + paymentType);
-            }
-        }
-
-        @Override
-        public JsonElement serialize(Payment src, Type typeOfSrc, JsonSerializationContext context) {
-            return context.serialize(src, src.getClass());
-        }
-    }
-
-    
-    private static class LocalDateTimeAdapter implements JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
-        @Override
-        public JsonElement serialize(LocalDateTime src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(src.toString());
-        }
-
-        @Override
-        public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return LocalDateTime.parse(json.getAsString());
+        if (orderRepository != null) {
+            orderRepository.saveAll(orders);
+        } else {
+             throw new IllegalStateException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.repo.err_order"));
         }
     }
 }

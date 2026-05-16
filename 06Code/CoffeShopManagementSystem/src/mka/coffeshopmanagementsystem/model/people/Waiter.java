@@ -19,12 +19,12 @@ public class Waiter extends Employee {
         super(id, name, "Waiter");
     }
 
-    public void serveTable(Table table) {
-        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.waiter.serve"), getName(), table.getId()));
+    public String serveTable(Table table) {
+        return String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.waiter.serve"), getName(), table.getId());
     }
 
     @Override
-    public void performOperation() {
-        System.out.println(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.waiter.op"), getName()));
+    public String performOperation() {
+        return String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.waiter.op"), getName());
     }
 }
