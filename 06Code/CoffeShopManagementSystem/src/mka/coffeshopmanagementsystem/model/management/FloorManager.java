@@ -9,7 +9,6 @@ import mka.coffeshopmanagementsystem.model.floor.Table;
 import mka.coffeshopmanagementsystem.model.floor.Machine;
 import mka.coffeshopmanagementsystem.model.people.Waiter;
 import mka.coffeshopmanagementsystem.model.persistence.repository.ISingleRepository;
-import mka.coffeshopmanagementsystem.model.persistence.repository.JsonSingleRepository;
 
 /**
  *
@@ -18,13 +17,12 @@ import mka.coffeshopmanagementsystem.model.persistence.repository.JsonSingleRepo
 public class FloorManager {
     private List<Table> tables;
     private List<Machine> machines;
-    private transient ISingleRepository<FloorManager> floorRepository;
+    private final ISingleRepository<FloorManager> floorRepository;
 
-    public FloorManager() {
-    }
-    
     public FloorManager(ISingleRepository<FloorManager> floorRepository) {
         this.floorRepository = floorRepository;
+        this.tables = new java.util.ArrayList<>();
+        this.machines = new java.util.ArrayList<>();
     }
 
     public List<Table> getTables() {
@@ -47,10 +45,6 @@ public class FloorManager {
 
     public void setMachines(List<Machine> machines) {
         this.machines = machines;
-    }
-
-    public void setDataFilePath(String dataFilePath) {
-        this.floorRepository = new JsonSingleRepository<>(dataFilePath, FloorManager.class);
     }
 
     public void addTable(Table table) {

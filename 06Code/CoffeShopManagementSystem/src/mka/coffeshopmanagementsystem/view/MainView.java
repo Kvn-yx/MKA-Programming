@@ -17,6 +17,10 @@ import mka.coffeshopmanagementsystem.model.payment.Transfer;
 import mka.coffeshopmanagementsystem.model.people.*;
 import mka.coffeshopmanagementsystem.utils.I18n;
 
+import mka.coffeshopmanagementsystem.model.persistence.repository.JsonRepository;
+import mka.coffeshopmanagementsystem.model.persistence.repository.JsonSingleRepository;
+import com.google.gson.reflect.TypeToken;
+
 /**
  *
  * @author Anthony Aimacaña, MKA programer, @ESPE
@@ -33,24 +37,17 @@ public class MainView {
     }
 
     private void initSystem() {
-        shop.setOrderManager(new OrderManager());
-        shop.getOrderManager().setDataFilePath("data/orders.json");
+        shop.setOrderManager(new OrderManager(new JsonRepository<>("data/orders.json", new TypeToken<ArrayList<Order>>(){}.getType())));
         
-        shop.setCatalogManager(new CatalogManager());
-        shop.getCatalogManager().setDataFilePath("data/catalog.json");
+        shop.setCatalogManager(new CatalogManager(new JsonRepository<>("data/catalog.json", new TypeToken<ArrayList<Product>>(){}.getType())));
         
-        shop.setInventoryManager(new InventoryManager());
-        shop.getInventoryManager().setDataFilePath("data/inventory.json");
+        shop.setInventoryManager(new InventoryManager(new JsonSingleRepository<>("data/inventory.json", Inventory.class)));
         
-        shop.setFloorManager(new FloorManager());
-        shop.getFloorManager().setDataFilePath("data/floor.json");
+        shop.setFloorManager(new FloorManager(new JsonSingleRepository<>("data/floor.json", FloorManager.class)));
         
-        shop.setHrManager(new HRManager());
-        
-        shop.getHrManager().setDataFilePath("data/employees.json");
+        shop.setHrManager(new HRManager(new JsonRepository<>("data/employees.json", new TypeToken<ArrayList<Employee>>(){}.getType())));
         
         shop.setFinanceManager(new FinanceManager());
-        shop.getFinanceManager().setDataFilePath("data/finance.json");
     }
 
     private void loadAllData() {
@@ -182,16 +179,12 @@ public class MainView {
         } catch (Exception e) { System.out.println(I18n.getString("msg.invalid")); return; }
 
         if (p != null) {
-            shop.getOrderManager().processPayment(o, p);
-            o.getItems().forEach(it -> {
-                if (it.getProduct().getRecipe() != null) {
-                    it.getProduct().getRequiredIngredients().forEach((ing, qty) -> {
-                        Ingredient s = shop.getInventoryManager().findIngredientByName(ing.getName());
-                        if (s != null) s.reduceStock(qty.multiply(new BigDecimal(it.getQuantity())));
-                    });
-                }
-            });
-            System.out.println(I18n.getString("pos.invUpdated"));
+            try {
+                shop.finalizeAndPayOrder(o, p);
+                System.out.println(I18n.getString("pos.invUpdated"));
+            } catch (Exception e) {
+                System.out.println(I18n.getString("msg.invalid") + " " + e.getMessage());
+            }
         }
     }
 

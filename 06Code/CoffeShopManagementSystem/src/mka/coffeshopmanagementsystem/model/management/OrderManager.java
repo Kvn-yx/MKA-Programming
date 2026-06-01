@@ -4,8 +4,6 @@
  */
 package mka.coffeshopmanagementsystem.model.management;
 
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import mka.coffeshopmanagementsystem.model.order.Order;
@@ -17,7 +15,6 @@ import mka.coffeshopmanagementsystem.model.payment.CreditCard;
 import mka.coffeshopmanagementsystem.model.payment.Transfer;
 import mka.coffeshopmanagementsystem.model.payment.PaymentProcessor;
 import mka.coffeshopmanagementsystem.model.persistence.repository.IRepository;
-import mka.coffeshopmanagementsystem.model.persistence.repository.JsonRepository;
 import java.time.LocalDateTime;
 
 /**
@@ -27,10 +24,6 @@ import java.time.LocalDateTime;
 public class OrderManager {
     private List<Order> orders;
     private IRepository<Order> orderRepository;
-
-    public OrderManager() {
-        this.orders = new ArrayList<>();
-    }
 
     public OrderManager(IRepository<Order> orderRepository) {
         this.orderRepository = orderRepository;
@@ -46,11 +39,6 @@ public class OrderManager {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
-    }
-
-    public void setDataFilePath(String dataFilePath) {
-        Type listType = new TypeToken<ArrayList<Order>>(){}.getType();
-        this.orderRepository = new JsonRepository<>(dataFilePath, listType);
     }
 
     public Order createOrder(Customer customer) {

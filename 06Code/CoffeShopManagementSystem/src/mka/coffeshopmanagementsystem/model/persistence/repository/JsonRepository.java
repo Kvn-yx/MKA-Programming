@@ -38,4 +38,17 @@ public class JsonRepository<T> implements IRepository<T> {
         entities.add(entity);
         saveAll(entities);
     }
+
+    @Override
+    public T findById(String id) {
+        // Generic implementation would need reflection or a common interface.
+        // For now, throwing exception as the managers will use internal Maps for optimization.
+        throw new UnsupportedOperationException("Not implemented yet. Managers use internal cache.");
+    }
+
+    @Override
+    public void delete(String id) {
+        // Generic implementation would need reflection or a common interface.
+        throw new UnsupportedOperationException("Not implemented yet. Managers use internal cache.");
+    }
 }

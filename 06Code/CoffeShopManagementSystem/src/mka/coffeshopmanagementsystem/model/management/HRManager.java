@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import mka.coffeshopmanagementsystem.model.people.*;
 import mka.coffeshopmanagementsystem.model.persistence.repository.IRepository;
-import mka.coffeshopmanagementsystem.model.persistence.repository.JsonRepository;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
 
 /**
  *
@@ -18,12 +15,8 @@ import java.lang.reflect.Type;
  */
 public class HRManager {
     private List<Employee> employees;
-    private IRepository<Employee> employeeRepository;
+    private final IRepository<Employee> employeeRepository;
 
-    public HRManager() {
-        this.employees = new ArrayList<>();
-    }
-    
     public HRManager(IRepository<Employee> employeeRepository) {
         this.employeeRepository = employeeRepository;
         this.employees = new ArrayList<>();
@@ -38,12 +31,6 @@ public class HRManager {
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
-    }
-
-    // Keep this method for backwards compatibility with the previous API if it was used in MainController
-    public void setDataFilePath(String dataFilePath) {
-        Type listType = new TypeToken<ArrayList<Employee>>(){}.getType();
-        this.employeeRepository = new JsonRepository<>(dataFilePath, listType);
     }
 
     public void addEmployee(Employee employee) {

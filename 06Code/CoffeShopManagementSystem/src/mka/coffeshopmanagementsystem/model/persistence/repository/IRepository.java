@@ -10,5 +10,6 @@ public interface IRepository<T> {
     List<T> findAll();
     void saveAll(List<T> entities);
     void add(T entity);
-    // You can add findById, remove, etc. as needed.
+    T findById(String id);
+    void delete(String id);
 }

@@ -17,17 +17,8 @@ import mka.coffeshopmanagementsystem.model.order.OrderStatus;
  * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class FinanceManager {
-    private String dataFilePath;
 
     public FinanceManager() {
-    }
-
-    public String getDataFilePath() {
-        return dataFilePath;
-    }
-
-    public void setDataFilePath(String dataFilePath) {
-        this.dataFilePath = dataFilePath;
     }
 
     public Map<String, BigDecimal> generateZReport(LocalDate date, List<Order> orders) {

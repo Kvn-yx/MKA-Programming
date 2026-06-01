@@ -4,67 +4,47 @@
  */
 package mka.coffeshopmanagementsystem.model.management;
 
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import mka.coffeshopmanagementsystem.model.inventory.Product;
 import mka.coffeshopmanagementsystem.model.persistence.repository.IRepository;
-import mka.coffeshopmanagementsystem.model.persistence.repository.JsonRepository;
 
 /**
  *
  * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class CatalogManager {
-    private List<Product> products;
+    private Map<String, Product> productMap;
     private IRepository<Product> productRepository;
-
-    public CatalogManager() {
-        this.products = new ArrayList<>();
-    }
 
     public CatalogManager(IRepository<Product> productRepository) {
         this.productRepository = productRepository;
-        this.products = new ArrayList<>();
+        this.productMap = new HashMap<>();
     }
 
     public List<Product> getProducts() {
-        if (products == null) {
-            return java.util.Collections.emptyList();
-        }
-        return java.util.Collections.unmodifiableList(products);
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public void setDataFilePath(String dataFilePath) {
-        Type listType = new TypeToken<ArrayList<Product>>(){}.getType();
-        this.productRepository = new JsonRepository<>(dataFilePath, listType);
+        return new ArrayList<>(productMap.values());
     }
 
     public void addProduct(Product p) {
-        if (p != null) {
-            List<Product> currentProducts = new ArrayList<>(getProducts());
-            currentProducts.add(p);
-            this.products = currentProducts;
+        if (p != null && p.getProductId() != null) {
+            this.productMap.put(p.getProductId(), p);
         }
     }
 
     public void removeProduct(String id) {
-        List<Product> currentProducts = new ArrayList<>(getProducts());
-        boolean removed = currentProducts.removeIf(p -> p.getProductId().equals(id.trim()));
-        if (removed) {
-            this.products = currentProducts;
+        if (id != null && productMap.containsKey(id.trim())) {
+            productMap.remove(id.trim());
         } else {
             throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("cat.notFound"));
         }
     }
 
     public void updateProductPrice(String id, java.math.BigDecimal newPrice) {
-        Product p = getProducts().stream().filter(pr -> pr.getProductId().equals(id.trim())).findFirst().orElse(null);
+        Product p = productMap.get(id != null ? id.trim() : null);
         if (p != null) {
             p.setPrice(newPrice);
         } else {
@@ -73,7 +53,7 @@ public class CatalogManager {
     }
 
     public void updateProductRecipe(String id, List<mka.coffeshopmanagementsystem.model.inventory.ProductIngredient> newRecipe) {
-        Product p = getProducts().stream().filter(pr -> pr.getProductId().equals(id.trim())).findFirst().orElse(null);
+        Product p = productMap.get(id != null ? id.trim() : null);
         if (p != null) {
             p.setRecipe(newRecipe);
         } else {
@@ -83,7 +63,9 @@ public class CatalogManager {
 
     public void loadData() {
         if (productRepository != null) {
-            this.products = productRepository.findAll();
+            List<Product> products = productRepository.findAll();
+            this.productMap = products.stream()
+                    .collect(Collectors.toMap(Product::getProductId, p -> p, (existing, replacement) -> replacement, HashMap::new));
         } else {
              throw new IllegalStateException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.repo.err_product"));
         }
@@ -91,7 +73,7 @@ public class CatalogManager {
 
     public void saveData() {
         if (productRepository != null) {
-            productRepository.saveAll(products);
+            productRepository.saveAll(new ArrayList<>(productMap.values()));
         } else {
              throw new IllegalStateException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.repo.err_product"));
         }

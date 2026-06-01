@@ -6,11 +6,13 @@ package mka.coffeshopmanagementsystem.model.management;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import mka.coffeshopmanagementsystem.model.inventory.Inventory;
 import mka.coffeshopmanagementsystem.model.inventory.Ingredient;
 import mka.coffeshopmanagementsystem.model.persistence.repository.ISingleRepository;
-import mka.coffeshopmanagementsystem.model.persistence.repository.JsonSingleRepository;
 
 /**
  *
@@ -18,17 +20,14 @@ import mka.coffeshopmanagementsystem.model.persistence.repository.JsonSingleRepo
  */
 public class InventoryManager {
     private Inventory inventory;
+    private Map<String, Ingredient> ingredientMap;
     private ISingleRepository<Inventory> inventoryRepository;
-
-    public InventoryManager() {
-        this.inventory = new Inventory();
-        this.inventory.setIngredients(new ArrayList<>());
-    }
 
     public InventoryManager(ISingleRepository<Inventory> inventoryRepository) {
         this.inventoryRepository = inventoryRepository;
         this.inventory = new Inventory();
         this.inventory.setIngredients(new ArrayList<>());
+        this.ingredientMap = new HashMap<>();
     }
 
     public Inventory getInventory() {
@@ -37,14 +36,20 @@ public class InventoryManager {
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+        syncMapFromInventory();
     }
 
-    public void setDataFilePath(String dataFilePath) {
-        this.inventoryRepository = new JsonSingleRepository<>(dataFilePath, Inventory.class);
+    private void syncMapFromInventory() {
+        if (inventory != null && inventory.getIngredients() != null) {
+            this.ingredientMap = inventory.getIngredients().stream()
+                    .collect(Collectors.toMap(Ingredient::getIngredientId, i -> i, (existing, replacement) -> replacement, HashMap::new));
+        } else {
+            this.ingredientMap = new HashMap<>();
+        }
     }
 
     public boolean checkStockFor(Map<Ingredient, BigDecimal> requiredIngredients) {
-        if (inventory == null || inventory.getIngredients() == null || requiredIngredients == null) return false;
+        if (requiredIngredients == null) return false;
         
         for (Map.Entry<Ingredient, BigDecimal> entry : requiredIngredients.entrySet()) {
             Ingredient required = entry.getKey();
@@ -59,7 +64,7 @@ public class InventoryManager {
     }
 
     public void deductStockFor(Map<Ingredient, BigDecimal> requiredIngredients) {
-        if (inventory == null || inventory.getIngredients() == null || requiredIngredients == null) return;
+        if (requiredIngredients == null) return;
 
         for (Map.Entry<Ingredient, BigDecimal> entry : requiredIngredients.entrySet()) {
             Ingredient required = entry.getKey();
@@ -72,27 +77,23 @@ public class InventoryManager {
         }
     }
 
-    private Ingredient findIngredient(String id) {
-        if (inventory == null || inventory.getIngredients() == null) return null;
-        return inventory.getIngredients().stream()
-                .filter(i -> i.getIngredientId().equals(id))
-                .findFirst()
-                .orElse(null);
+    public Ingredient findIngredient(String id) {
+        return ingredientMap.get(id);
     }
 
     public Ingredient findIngredientByName(String name) {
-        if (inventory == null || inventory.getIngredients() == null || name == null) return null;
-        return inventory.getIngredients().stream()
-                .filter(i -> i.getName().equalsIgnoreCase(name.trim()))
+        if (name == null) return null;
+        String trimmedName = name.trim();
+        return ingredientMap.values().stream()
+                .filter(i -> i.getName().equalsIgnoreCase(trimmedName))
                 .findFirst()
                 .orElse(null);
     }
 
     public void addIngredient(Ingredient ingredient) {
-        if (ingredient != null) {
-            java.util.List<Ingredient> currentList = new ArrayList<>(inventory.getIngredients());
-            currentList.add(ingredient);
-            inventory.setIngredients(currentList);
+        if (ingredient != null && ingredient.getIngredientId() != null) {
+            ingredientMap.put(ingredient.getIngredientId(), ingredient);
+            updateInventoryList();
         }
     }
 
@@ -106,12 +107,17 @@ public class InventoryManager {
     }
 
     public void removeIngredient(String id) {
-        java.util.List<Ingredient> currentList = new ArrayList<>(inventory.getIngredients());
-        boolean removed = currentList.removeIf(i -> i.getIngredientId().equals(id.trim()));
-        if (removed) {
-            inventory.setIngredients(currentList);
+        if (id != null && ingredientMap.containsKey(id.trim())) {
+            ingredientMap.remove(id.trim());
+            updateInventoryList();
         } else {
             throw new IllegalArgumentException(mka.coffeshopmanagementsystem.utils.I18n.getString("inv.notFound"));
+        }
+    }
+
+    private void updateInventoryList() {
+        if (this.inventory != null) {
+            this.inventory.setIngredients(new ArrayList<>(ingredientMap.values()));
         }
     }
 
@@ -120,13 +126,11 @@ public class InventoryManager {
             Inventory loadedInventory = inventoryRepository.load();
             if (loadedInventory != null) {
                 this.inventory = loadedInventory;
-                if (this.inventory.getIngredients() == null) {
-                    this.inventory.setIngredients(new ArrayList<>());
-                }
             } else {
                 this.inventory = new Inventory();
                 this.inventory.setIngredients(new ArrayList<>());
             }
+            syncMapFromInventory();
         } else {
             throw new IllegalStateException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.repo.err_inventory"));
         }
@@ -134,6 +138,7 @@ public class InventoryManager {
 
     public void saveData() {
         if (inventoryRepository != null) {
+            updateInventoryList();
             inventoryRepository.save(inventory);
         } else {
             throw new IllegalStateException(mka.coffeshopmanagementsystem.utils.I18n.getString("model.repo.err_inventory"));
