@@ -15,7 +15,10 @@ import mka.coffeshopmanagementsystem.model.inventory.Product;
 public class OrderItem {
     private String orderItemId;
     private int quantity;
-    private Product product;
+    private transient Product product;
+    private String productId;
+    private String productNameSnapshot;
+    private BigDecimal pricePaidSnapshot;
     private List<String> modifiers;
 
     public OrderItem() {
@@ -46,6 +49,35 @@ public class OrderItem {
 
     public void setProduct(Product product) {
         this.product = product;
+        if (product != null) {
+            this.productId = product.getProductId();
+            this.productNameSnapshot = product.getName();
+            this.pricePaidSnapshot = product.getPrice();
+        }
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getProductNameSnapshot() {
+        return productNameSnapshot;
+    }
+
+    public void setProductNameSnapshot(String productNameSnapshot) {
+        this.productNameSnapshot = productNameSnapshot;
+    }
+
+    public BigDecimal getPricePaidSnapshot() {
+        return pricePaidSnapshot;
+    }
+
+    public void setPricePaidSnapshot(BigDecimal pricePaidSnapshot) {
+        this.pricePaidSnapshot = pricePaidSnapshot;
     }
 
     public List<String> getModifiers() {
@@ -57,7 +89,9 @@ public class OrderItem {
     }
 
     public BigDecimal calculateSubtotal() {
-        if (this.product != null && this.product.getPrice() != null) {
+        if (this.pricePaidSnapshot != null) {
+            return this.pricePaidSnapshot.multiply(new BigDecimal(this.quantity));
+        } else if (this.product != null && this.product.getPrice() != null) {
             return this.product.getPrice().multiply(new BigDecimal(this.quantity));
         }
         return BigDecimal.ZERO;

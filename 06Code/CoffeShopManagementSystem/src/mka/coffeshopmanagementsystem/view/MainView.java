@@ -207,11 +207,11 @@ public class MainView {
     }
 
     public void showInventory(Inventory inventory) {
-        ConsoleTable table = new ConsoleTable("ID", "NAME", "STOCK", "UNIT");
+        ConsoleTable table = new ConsoleTable("ID", "NAME", "STOCK", "UNIT", "ALERT LIMIT");
         table.setTitle(I18n.getString("mod.inventory"));
         if (inventory != null && inventory.getIngredients() != null) {
             inventory.getIngredients().forEach(i -> 
-                table.addRow(i.getIngredientId(), i.getName(), i.getStockQuantity().toString(), i.getUnit()));
+                table.addRow(i.getIngredientId(), i.getName(), i.getStockQuantity().toString(), i.getUnit(), i.getMinimumAlertQuantity().toString()));
         }
         table.print();
     }
@@ -289,7 +289,7 @@ public class MainView {
         shop.setInventoryManager(new InventoryManager(new JsonSingleRepository<>("data/inventory.json", Inventory.class)));
         shop.setFloorManager(new FloorManager(new JsonSingleRepository<>("data/floor.json", FloorManager.class)));
         shop.setHrManager(new HRManager(new JsonRepository<>("data/employees.json", new TypeToken<ArrayList<Employee>>(){}.getType())));
-        shop.setFinanceManager(new FinanceManager());
+        shop.setFinanceManager(new FinanceManager(new JsonRepository<>("data/finance_history.json", new TypeToken<ArrayList<ZReportSnapshot>>(){}.getType())));
 
         // Load data
         shop.getOrderManager().loadData();
@@ -298,6 +298,7 @@ public class MainView {
         shop.getFloorManager().loadData();
         shop.getHrManager().loadData();
         shop.getFinanceManager().loadData();
+        shop.linkOrdersAndCatalog();
 
         MainView view = new MainView();
         MainController controller = new MainController(view, shop);

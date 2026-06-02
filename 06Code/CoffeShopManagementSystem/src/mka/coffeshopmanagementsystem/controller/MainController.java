@@ -166,6 +166,18 @@ public class MainController {
             try {
                 shop.finalizeAndPayOrder(order, payment);
                 view.showMessage(I18n.getString("pos.invUpdated"));
+                
+                // Alertas de stock mínimo bajo
+                for (OrderItem item : order.getItems()) {
+                    if (item.getProduct() != null) {
+                        item.getProduct().getRequiredIngredients().keySet().forEach(ing -> {
+                            Ingredient inStock = shop.getInventoryManager().findIngredient(ing.getIngredientId());
+                            if (inStock != null && inStock.getStockQuantity().compareTo(inStock.getMinimumAlertQuantity()) <= 0) {
+                                view.showMessage("[ALERT] " + I18n.getString("inv.alertWarning") + " " + inStock.getName() + " (Stock: " + inStock.getStockQuantity() + " " + inStock.getUnit() + ")");
+                            }
+                        });
+                    }
+                }
             } catch (Exception e) {
                 view.showErrorMessage(I18n.getString("msg.invalid") + " " + e.getMessage());
             }
@@ -313,10 +325,13 @@ public class MainController {
         ing.setName(view.promptString(I18n.getString("cat.ingName")));
         String unit = view.promptString(I18n.getString("inv.unit"));
         BigDecimal qty = view.promptBigDecimal(I18n.getString("inv.qty"));
+        BigDecimal alertQty = view.promptBigDecimal(I18n.getString("inv.alertQty"));
         
         UnitConverter.ConversionResult norm = UnitConverter.normalize(unit, qty);
+        UnitConverter.ConversionResult normAlert = UnitConverter.normalize(unit, alertQty);
         ing.setUnit(norm.unit);
         ing.setStockQuantity(norm.quantity);
+        ing.setMinimumAlertQuantity(normAlert.quantity);
         
         shop.getInventoryManager().addIngredient(ing);
         view.showMessage(I18n.getString("inv.added"));
@@ -324,12 +339,20 @@ public class MainController {
 
     private void editIngredientStock() {
         String id = view.promptString(I18n.getString("inv.enterId"));
+        Ingredient ing = shop.getInventoryManager().findIngredient(id);
+        if (ing == null) {
+            view.showErrorMessage(I18n.getString("inv.notFound"));
+            return;
+        }
         String unit = view.promptString(I18n.getString("inv.unit"));
         BigDecimal qty = view.promptBigDecimal(I18n.getString("inv.qty"));
+        BigDecimal alertQty = view.promptBigDecimal(I18n.getString("inv.alertQty"));
         
         try {
             UnitConverter.ConversionResult norm = UnitConverter.normalize(unit, qty);
+            UnitConverter.ConversionResult normAlert = UnitConverter.normalize(unit, alertQty);
             shop.getInventoryManager().updateIngredientStock(id, norm.quantity);
+            ing.setMinimumAlertQuantity(normAlert.quantity);
             view.showMessage(I18n.getString("inv.updated"));
         } catch (Exception e) {
             view.showErrorMessage(e.getMessage());
@@ -456,6 +479,38 @@ public class MainController {
     private void financeModule() {
         Map<String, BigDecimal> report = shop.getFinanceManager().generateZReport(LocalDate.now(), shop.getOrderManager().getOrders());
         view.showZReport(report);
+        
+        String confirm = view.promptString(I18n.getString("fin.askClose"));
+        if (confirm.toLowerCase().matches("s|y")) {
+            BigDecimal subtotal = report.getOrDefault("SUBTOTAL", BigDecimal.ZERO);
+            BigDecimal tax = report.getOrDefault("TAX", BigDecimal.ZERO);
+            
+            BigDecimal total = report.entrySet().stream()
+                .filter(e -> !e.getKey().equals("ORDERS") && !e.getKey().equals("SUBTOTAL") && !e.getKey().equals("TAX"))
+                .map(Map.Entry::getValue)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            int totalOrders = report.getOrDefault("ORDERS", BigDecimal.ZERO).intValue();
+            
+            // Desglose de pagos sin metadatos
+            java.util.Map<String, BigDecimal> breakdown = new java.util.HashMap<>(report);
+            breakdown.remove("ORDERS");
+            breakdown.remove("SUBTOTAL");
+            breakdown.remove("TAX");
+            
+            ZReportSnapshot snapshot = new ZReportSnapshot(
+                UUID.randomUUID().toString().substring(0, 8),
+                LocalDate.now().toString(),
+                totalOrders,
+                subtotal,
+                tax,
+                total,
+                breakdown
+            );
+            
+            shop.getFinanceManager().saveZReport(snapshot);
+            view.showMessage(I18n.getString("fin.closeSuccess"));
+        }
         view.pause();
     }
 }

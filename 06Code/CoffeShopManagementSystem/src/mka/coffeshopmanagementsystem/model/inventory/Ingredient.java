@@ -15,8 +15,24 @@ public class Ingredient {
     private String name;
     private BigDecimal stockQuantity;
     private String unit;
+    private BigDecimal minimumAlertQuantity;
 
     public Ingredient() {
+        this.minimumAlertQuantity = BigDecimal.ZERO;
+    }
+
+    public BigDecimal getMinimumAlertQuantity() {
+        if (minimumAlertQuantity == null) {
+            return BigDecimal.ZERO;
+        }
+        return minimumAlertQuantity;
+    }
+
+    public void setMinimumAlertQuantity(BigDecimal minimumAlertQuantity) {
+        if (minimumAlertQuantity != null && minimumAlertQuantity.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("La cantidad mínima de alerta no puede ser negativa.");
+        }
+        this.minimumAlertQuantity = minimumAlertQuantity;
     }
 
     public String getIngredientId() {

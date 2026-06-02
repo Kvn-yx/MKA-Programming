@@ -54,6 +54,7 @@ _Exclusions:_ The system currently excludes automated payroll generation, advanc
 - **Architectural Pattern:** The implementation MUST adhere strictly to the Model-View-Controller (MVC) or Clean Architecture principles, ensuring absolute decoupling via specialized Domain Managers (`OrderManager`, `InventoryManager`, `HRManager`, `FloorManager`).
 - **Financial Data Types:** All monetary and quantitative calculations MUST utilize arbitrary-precision decimal types (e.g., `BigDecimal`). The use of floating-point primitives (`double`, `float`) for currency is strictly prohibited to prevent rounding anomalies.
 - **Security Standard:** To maintain PCI-DSS compliance, the system MUST NEVER capture, process, or store raw Credit Card numbers. All electronic payments must be routed through compliant third-party Payment Processors, persisting only opaque Payment Tokens.
+- **Data Integrity (Atomic Writes):** All local JSON persistence operations MUST execute atomic writes via temporary files to prevent data corruption during unexpected program termination.
 
 ---
 
@@ -98,13 +99,15 @@ _Exclusions:_ The system currently excludes automated payroll generation, advanc
 
 ### 3.4 Inventory Automation
 
-| ID        | Title                | Description                                                                                                                        | Priority |
-| :-------- | :------------------- | :--------------------------------------------------------------------------------------------------------------------------------- | :------- |
-| **FR-06** | **Recipe Deduction** | Transitioning an order to `PREPARING` triggers the `InventoryManager` to deduct the precise `quantityNeeded` of each `Ingredient`. | Critical |
+| ID        | Title                   | Description                                                                                                                        | Priority |
+| :-------- | :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------- | :------- |
+| **FR-06** | **Recipe Deduction**      | Transitioning an order to `PREPARING` triggers the `InventoryManager` to deduct the precise `quantityNeeded` of each `Ingredient`. | Critical |
+| **FR-07** | **Stock Alert Threshold** | The system must monitor ingredient levels post-deduction and emit a low-stock alert if quantities drop below defined thresholds.   | Medium   |
 
-**Acceptance Criteria (FR-06):**
+**Acceptance Criteria (FR-06 & FR-07):**
 
 - Pre-check validation: The POS must visibly alert the Cashier if requested items exceed available ingredient stock prior to checkout.
+- Visual warnings: Trigger low-stock alerts on the POS console if an ingredient's quantity is less than or equal to its configured `minimumAlertQuantity` immediately after deduction.
 
 ---
 
@@ -123,8 +126,9 @@ _Exclusions:_ The system currently excludes automated payroll generation, advanc
 ## 5. Enterprise Business Rules
 
 - **BR-01 (State Enforcement):** An `Order` object is strictly prohibited from entering the `PREPARING` state until the associated `Payment` completes and the status is finalized as `PAID`.
-- **BR-02 (Inventory Integrity):** Ingredient quantities are immutable below zero. Reaching 0 automatically triggers an "Out of Stock" lock on dependent Products.
+- **BR-02 (Inventory Integrity):** Ingredient quantities are immutable below zero. Reaching 0 automatically triggers an "Out of Stock" lock on dependent Products. Low stock alerts trigger when quantities reach their custom minimum alert threshold.
 - **BR-03 (Financial Accuracy):** No monetary or inventory-weight variable shall be declared as a floating-point primitive. Arbitrary-precision types are mandatory.
+- **BR-04 (Price Snapshot Consistency):** Invoiced items must preserve a flat price snapshot (`pricePaidSnapshot`) captured during checkout, isolating historical order subtotals from subsequent catalog price updates.
 
 ---
 

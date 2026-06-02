@@ -40,7 +40,7 @@ This document outlines the systematic breakdown of capabilities (Features) engin
 | :--------- | :------------------------- | :--------------------------------------------------------------------------------------- |
 | **F4.1**   | **Unit Standardization**   | Autonomous conversion of user-input units (e.g., kg to g, L to ml) to prevent recipe mismatches. |
 | **F4.2**   | **Recipe Deduction**       | Algorithmic, micro-measurement subtraction of raw `Ingredients` upon order preparation.  |
-| **F4.3**   | **Defensive Validation**   | Built-in safeguards preventing negative inventory states, null updates, or sub-zero pricing. |
+| **F4.3**   | **Defensive Validation**   | Built-in safeguards preventing negative inventory states, null updates, or sub-zero pricing; incorporates visual warnings for ingredients below minimum alert thresholds. |
 | **F4.4**   | **Audit & Reconciliation** | Administrative ID-based CRUD interface for creating, editing, and deleting inventory items. |
 
 ### Module 5: Floor & Human Capital Management
@@ -56,6 +56,6 @@ This document outlines the systematic breakdown of capabilities (Features) engin
 | Feature ID | Nomenclature                 | Technical Description                                                                      |
 | :--------- | :--------------------------- | :----------------------------------------------------------------------------------------- |
 | **F6.1**   | **Menu Schema Manager**      | ID-based CRUD interfaces for products, including dynamic recipe updates.                   |
-| **F6.2**   | **Financial Reconciliation** | End-of-Day (Z-Report) synthesis, aggregating total sales, orders, and taxes (IVA).         |
-| **F6.3**   | **Repository Pattern**       | Total decoupling of JSON persistence infrastructure from core business logic (Managers).   |
+| **F6.2**   | **Financial Reconciliation** | End-of-Day (Z-Report) closures with historical persistence of snapshots (`ZReportSnapshot`) for financial audit tracking. |
+| **F6.3**   | **Repository Pattern**       | Total decoupling of JSON persistence infrastructure from core business logic (Managers) using atomic file writing to prevent data corruption. |
 | **F6.4**   | **Internationalization**     | 100% localization of all UI prompts and system exceptions (English/Spanish).               |

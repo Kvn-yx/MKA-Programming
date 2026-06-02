@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package mka.coffeshopmanagementsystem.model.management;
 
 import java.math.BigDecimal;
@@ -11,14 +7,43 @@ import java.util.List;
 import java.util.Map;
 import mka.coffeshopmanagementsystem.model.order.Order;
 import mka.coffeshopmanagementsystem.model.order.OrderStatus;
+import mka.coffeshopmanagementsystem.model.persistence.repository.IRepository;
 
 /**
- *
+ * Manages financial reports and daily closures (Z-reports).
+ * Supports historical audit tracking.
+ * 
  * @author Anthony Aimacaña, MKA programer, @ESPE
  */
 public class FinanceManager {
+    private final IRepository<ZReportSnapshot> historyRepository;
+    private List<ZReportSnapshot> history;
 
     public FinanceManager() {
+        this.historyRepository = null;
+        this.history = new java.util.ArrayList<>();
+    }
+
+    public FinanceManager(IRepository<ZReportSnapshot> historyRepository) {
+        this.historyRepository = historyRepository;
+        this.history = new java.util.ArrayList<>();
+    }
+
+    public void saveZReport(ZReportSnapshot snapshot) {
+        if (snapshot != null) {
+            if (this.history == null) {
+                this.history = new java.util.ArrayList<>();
+            }
+            this.history.add(snapshot);
+            saveData();
+        }
+    }
+
+    public List<ZReportSnapshot> getHistory() {
+        if (history == null) {
+            return java.util.Collections.emptyList();
+        }
+        return java.util.Collections.unmodifiableList(history);
     }
 
     public Map<String, BigDecimal> generateZReport(LocalDate date, List<Order> orders) {
@@ -56,10 +81,14 @@ public class FinanceManager {
     }
 
     public void loadData() {
-        // Nothing to load here. Finance reporting is generated dynamically.
+        if (historyRepository != null) {
+            this.history = historyRepository.findAll();
+        }
     }
 
     public void saveData() {
-        // Nothing to save here.
+        if (historyRepository != null && history != null) {
+            historyRepository.saveAll(history);
+        }
     }
 }

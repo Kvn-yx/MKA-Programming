@@ -40,9 +40,33 @@ public class JsonFileManager {
 
     
     public void saveToFile(String filePath, Object data) {
-        try (Writer writer = new FileWriter(filePath)) {
-            gson.toJson(data, writer);
+        java.nio.file.Path targetPath = java.nio.file.Paths.get(filePath);
+        java.nio.file.Path tempPath = java.nio.file.Paths.get(filePath + ".tmp");
+        
+        // Asegurar que el directorio padre existe
+        java.nio.file.Path parentDir = targetPath.getParent();
+        if (parentDir != null && !java.nio.file.Files.exists(parentDir)) {
+            try {
+                java.nio.file.Files.createDirectories(parentDir);
+            } catch (IOException e) {
+                throw new RuntimeException("No se pudieron crear los directorios padres para: " + filePath, e);
+            }
+        }
+
+        try {
+            // 1. Escribir datos al archivo temporal
+            try (Writer writer = java.nio.file.Files.newBufferedWriter(tempPath)) {
+                gson.toJson(data, writer);
+            }
+            // 2. Reemplazar atómicamente el archivo objetivo con el temporal
+            java.nio.file.Files.move(tempPath, targetPath, 
+                    java.nio.file.StandardCopyOption.REPLACE_EXISTING, 
+                    java.nio.file.StandardCopyOption.ATOMIC_MOVE);
         } catch (IOException e) {
+            // Intentar limpiar el archivo temporal si ocurre un error
+            try {
+                java.nio.file.Files.deleteIfExists(tempPath);
+            } catch (IOException ignored) {}
             throw new RuntimeException(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.json.err_save"), filePath, e.getMessage()), e);
         }
     }

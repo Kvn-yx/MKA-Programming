@@ -61,6 +61,21 @@ public class CoffeeShop {
         inventoryManager.deductStockFor(totalRequired);
     }
 
+    public void linkOrdersAndCatalog() {
+        if (this.orderManager == null || this.catalogManager == null) return;
+        for (Order order : this.orderManager.getOrders()) {
+            for (OrderItem item : order.getItems()) {
+                if (item.getProductId() != null) {
+                    Product p = this.catalogManager.findProductById(item.getProductId());
+                    if (p != null) {
+                        // setProduct también setea los snapshots pero de forma segura
+                        item.setProduct(p);
+                    }
+                }
+            }
+        }
+    }
+
     public String getName() {
         return name;
     }
