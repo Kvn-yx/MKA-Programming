@@ -12,6 +12,7 @@ import mka.coffeshopmanagementsystem.model.inventory.Inventory;
 import mka.coffeshopmanagementsystem.model.inventory.Product;
 import mka.coffeshopmanagementsystem.model.inventory.ProductIngredient;
 import mka.coffeshopmanagementsystem.model.management.CoffeeShop;
+import mka.coffeshopmanagementsystem.model.management.ZReportSnapshot;
 import mka.coffeshopmanagementsystem.model.order.Order;
 import mka.coffeshopmanagementsystem.model.order.OrderItem;
 import mka.coffeshopmanagementsystem.model.order.OrderStatus;

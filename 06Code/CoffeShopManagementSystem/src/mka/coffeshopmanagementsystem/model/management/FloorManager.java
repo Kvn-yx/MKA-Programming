@@ -17,7 +17,7 @@ import mka.coffeshopmanagementsystem.model.persistence.repository.ISingleReposit
 public class FloorManager {
     private List<Table> tables;
     private List<Machine> machines;
-    private final ISingleRepository<FloorManager> floorRepository;
+    private final transient ISingleRepository<FloorManager> floorRepository;
 
     public FloorManager(ISingleRepository<FloorManager> floorRepository) {
         this.floorRepository = floorRepository;

@@ -29,6 +29,10 @@ public class CatalogManager {
         return new ArrayList<>(productMap.values());
     }
 
+    public Product findProductById(String id) {
+        return productMap.get(id != null ? id.trim() : null);
+    }
+
     public void addProduct(Product p) {
         if (p != null && p.getProductId() != null) {
             this.productMap.put(p.getProductId(), p);

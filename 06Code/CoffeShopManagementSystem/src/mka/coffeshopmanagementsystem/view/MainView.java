@@ -14,6 +14,7 @@ import mka.coffeshopmanagementsystem.model.inventory.Product;
 import mka.coffeshopmanagementsystem.model.management.CatalogManager;
 import mka.coffeshopmanagementsystem.model.management.CoffeeShop;
 import mka.coffeshopmanagementsystem.model.management.FinanceManager;
+import mka.coffeshopmanagementsystem.model.management.ZReportSnapshot;
 import mka.coffeshopmanagementsystem.model.management.FloorManager;
 import mka.coffeshopmanagementsystem.model.management.HRManager;
 import mka.coffeshopmanagementsystem.model.management.InventoryManager;
@@ -55,9 +56,9 @@ public class MainView {
         System.out.println(I18n.getString("menu.title").toUpperCase());
         System.out.println("=========================================");
         for (int i = 1; i <= 7; i++) {
-            System.out.println(i + ". " + I18n.getString("menu.opt" + i));
+            System.out.println(I18n.getString("menu.opt" + i));
         }
-        System.out.println("0. " + I18n.getString("menu.opt0"));
+        System.out.println(I18n.getString("menu.opt0"));
         System.out.println("=========================================");
         System.out.print(I18n.getString("menu.select") + " ");
         return scanner.nextLine().trim();

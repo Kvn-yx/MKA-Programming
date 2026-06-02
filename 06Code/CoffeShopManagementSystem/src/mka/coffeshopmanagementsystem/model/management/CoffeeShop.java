@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import mka.coffeshopmanagementsystem.model.inventory.Ingredient;
+import mka.coffeshopmanagementsystem.model.inventory.Product;
 import mka.coffeshopmanagementsystem.model.order.Order;
 import mka.coffeshopmanagementsystem.model.order.OrderItem;
 import mka.coffeshopmanagementsystem.model.payment.Payment;

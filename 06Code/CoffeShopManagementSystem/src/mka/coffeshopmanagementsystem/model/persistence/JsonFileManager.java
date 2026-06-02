@@ -73,7 +73,11 @@ public class JsonFileManager {
 
     
     public <T> T loadFromFile(String filePath, Class<T> typeClass) {
-        try (Reader reader = new FileReader(filePath)) {
+        java.nio.file.Path path = java.nio.file.Paths.get(filePath);
+        if (!java.nio.file.Files.exists(path)) {
+            return null;
+        }
+        try (Reader reader = java.nio.file.Files.newBufferedReader(path)) {
             return gson.fromJson(reader, typeClass);
         } catch (IOException | JsonSyntaxException e) {
             throw new RuntimeException(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.json.err_load"), filePath, e.getMessage()), e);
@@ -82,7 +86,11 @@ public class JsonFileManager {
     
     
     public <T> T loadFromFile(String filePath, Type type) {
-        try (Reader reader = new FileReader(filePath)) {
+        java.nio.file.Path path = java.nio.file.Paths.get(filePath);
+        if (!java.nio.file.Files.exists(path)) {
+            return null;
+        }
+        try (Reader reader = java.nio.file.Files.newBufferedReader(path)) {
             return gson.fromJson(reader, type);
         } catch (IOException | JsonSyntaxException e) {
             throw new RuntimeException(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.json.err_load_gen"), filePath, e.getMessage()), e);
