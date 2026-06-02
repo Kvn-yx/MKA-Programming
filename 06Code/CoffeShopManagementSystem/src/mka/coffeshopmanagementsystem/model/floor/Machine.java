@@ -44,6 +44,10 @@ public class Machine {
         this.state = true;
     }
 
+    public void turnOff() {
+        this.state = false;
+    }
+
     public void operate() {
         if (!state) {
             throw new IllegalStateException(String.format(mka.coffeshopmanagementsystem.utils.I18n.getString("model.machine.err_off"), brand));
