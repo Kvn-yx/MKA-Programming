@@ -167,13 +167,13 @@ public class MainView {
     public void showProductList(List<Product> products) {
         System.out.println("\n--- " + I18n.getString("pos.menuTitle") + " ---");
         for (int i = 0; i < products.size(); i++) {
-            System.out.println((i + 1) + ". " + products.get(i).getName() + " - $" + products.get(i).getPrice());
+            System.out.println((i + 1) + ". " + products.get(i).getName() + " - " + formatMoney(products.get(i).getPrice()));
         }
         System.out.println("0. " + I18n.getString("pos.finish"));
     }
 
     public void showOrderTotal(BigDecimal total) {
-        System.out.println("\n" + I18n.getString("pos.total") + total);
+        System.out.println("\n" + I18n.getString("pos.total") + total.setScale(2, java.math.RoundingMode.HALF_UP).toString());
     }
 
     public String showPaymentMethods() {
@@ -203,7 +203,7 @@ public class MainView {
     public void showCatalog(List<Product> products) {
         ConsoleTable table = new ConsoleTable("ID", "NAME", "PRICE");
         table.setTitle(I18n.getString("mod.catalog"));
-        products.forEach(p -> table.addRow(p.getProductId(), p.getName(), "$" + p.getPrice()));
+        products.forEach(p -> table.addRow(p.getProductId(), p.getName(), formatMoney(p.getPrice())));
         table.print();
     }
 
@@ -256,12 +256,12 @@ public class MainView {
         table.setTitle(I18n.getString("mod.finance"));
         
         table.addRow(I18n.getString("fin.orders"), report.getOrDefault("ORDERS", BigDecimal.ZERO).toString());
-        table.addRow(I18n.getString("fin.subtotal"), "$" + report.getOrDefault("SUBTOTAL", BigDecimal.ZERO));
-        table.addRow(I18n.getString("fin.tax"), "$" + report.getOrDefault("TAX", BigDecimal.ZERO));
+        table.addRow(I18n.getString("fin.subtotal"), formatMoney(report.getOrDefault("SUBTOTAL", BigDecimal.ZERO)));
+        table.addRow(I18n.getString("fin.tax"), formatMoney(report.getOrDefault("TAX", BigDecimal.ZERO)));
         
         report.forEach((k, v) -> {
             if (!k.equals("ORDERS") && !k.equals("SUBTOTAL") && !k.equals("TAX")) {
-                table.addRow(k, "$" + v);
+                table.addRow(k, formatMoney(v));
             }
         });
         
@@ -271,8 +271,13 @@ public class MainView {
             .reduce(BigDecimal.ZERO, BigDecimal::add);
             
         table.addRow("---", "---");
-        table.addRow(I18n.getString("fin.total"), "$" + total);
+        table.addRow(I18n.getString("fin.total"), formatMoney(total));
         table.print();
+    }
+
+    private String formatMoney(BigDecimal amount) {
+        if (amount == null) return "$0.00";
+        return "$" + amount.setScale(2, java.math.RoundingMode.HALF_UP).toString();
     }
 
     public void showGoodbye() {

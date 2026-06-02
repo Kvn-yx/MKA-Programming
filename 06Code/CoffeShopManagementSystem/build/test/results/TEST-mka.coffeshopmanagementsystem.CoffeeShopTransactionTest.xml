@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="Nebula" name="mka.coffeshopmanagementsystem.CoffeeShopTransactionTest" skipped="0" tests="4" time="0.084" timestamp="2026-06-02T02:46:12">
+<testsuite errors="0" failures="0" hostname="Nebula" name="mka.coffeshopmanagementsystem.CoffeeShopTransactionTest" skipped="0" tests="4" time="0.095" timestamp="2026-06-02T03:06:54">
   <properties>
     <property name="javac.test.classpath" value="lib\gson-2.14.0.jar:build/classes:C:\Program Files\Apache NetBeans\platform\modules\ext\junit-4.13.2.jar:C:\Program Files\Apache NetBeans\platform\modules\ext\hamcrest-core-1.3.jar" />
     <property name="java.specification.version" value="25" />
@@ -14,7 +14,7 @@
     <property name="libs.eclipselink.javadoc" value="C:\Program Files\Apache NetBeans\java\modules\ext\docs\jakarta.persistence-2.2.3-doc.zip" />
     <property name="libs.JWSAntTasks.javadoc" value="" />
     <property name="sun.boot.library.path" value="C:\Program Files\Apache NetBeans\jdk\bin" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner mka.coffeshopmanagementsystem.CoffeeShopTransactionTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\test\results\TEST-mka.coffeshopmanagementsystem.CoffeeShopTransactionTest.xml crashfile=D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\junitvmwatcher15902010437174172370.properties propsfile=D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\junit10264878513653614361.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner mka.coffeshopmanagementsystem.CoffeeShopTransactionTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\test\results\TEST-mka.coffeshopmanagementsystem.CoffeeShopTransactionTest.xml crashfile=D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\junitvmwatcher10051715784184429047.properties propsfile=D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\junit8925823341010790614.properties" />
     <property name="jdk.debug" value="release" />
     <property name="javadoc.use" value="true" />
     <property name="javadoc.notree" value="false" />
@@ -58,6 +58,7 @@
     <property name="jlink.additionalparam" value="" />
     <property name="libs.testng.maven-pom" value="" />
     <property name="org.openide.version" value="deprecated" />
+    <property name="test.includes" value="mka/coffeshopmanagementsystem/CoffeeShopTransactionTest.java" />
     <property name="run.classpath" value="lib\gson-2.14.0.jar:build/classes" />
     <property name="libs.jaxb.src" value="" />
     <property name="sun.awt.enableExtraMouseButtons" value="true" />
@@ -82,7 +83,6 @@
     <property name="jlink.launcher" value="true" />
     <property name="build.generated.sources.dir" value="build/generated-sources" />
     <property name="plugin.manager.check.updates" value="false" />
-    <property name="netbeans.autoupdate.language" value="es" />
     <property name="polyglot.engine.WarnInterpreterOnly" value="false" />
     <property name="libs.eclipselinkmodelgen.src" value="" />
     <property name="build.compiler.emacs" value="true" />
@@ -143,7 +143,6 @@
     <property name="java.lang.Runtime.level" value="FINE" />
     <property name="build.dir" value="build" />
     <property name="libs.graaljs.maven-pom" value="" />
-    <property name="netbeans.autoupdate.variant" value="" />
     <property name="ant.file.CoffeShopManagementSystem-impl" value="D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\nbproject\build-impl.xml" />
     <property name="javadoc.version" value="false" />
     <property name="libs.metro.classpath" value="C:\Program Files\Apache NetBeans\ide\modules\ext\jaxb\activation.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\metro\webservices-api.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\metro\webservices-extra-api.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\metro\webservices-extra.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\metro\webservices-rt.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\metro\webservices-tools.jar" />
@@ -170,7 +169,7 @@
     <property name="libs.jpa20-persistence.src" value="" />
     <property name="libs.restapi.javadoc" value="" />
     <property name="javac.test.sourcepath" value="D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\empty" />
-    <property name="includes" value="**/*Test.java" />
+    <property name="includes" value="**" />
     <property name="libs.hamcrest.classpath" value="C:\Program Files\Apache NetBeans\platform\modules\ext\hamcrest-core-1.3.jar" />
     <property name="javadoc.splitindex" value="true" />
     <property name="libs.JWSAntTasks.classpath" value="C:\Program Files\Apache NetBeans\java\ant\extra\org-netbeans-modules-javawebstart-anttasks.jar" />
@@ -178,9 +177,8 @@
     <property name="javac.processormodulepath" value="" />
     <property name="javadoc.encoding" value="UTF-8" />
     <property name="libs.jakartaee-api-11.0.src" value="" />
-    <property name="netbeans.hash.code" value="unique=03d87f90c-f43a-474d-96a9-6ece6a380a7e_54317fbf-af03-4b0c-974b-8bf61cd553f4" />
-    <property name="libs.jstl.src" value="" />
     <property name="libs.jsp-compilation-syscp.maven-pom" value="" />
+    <property name="libs.jstl.src" value="" />
     <property name="java.runtime.name" value="OpenJDK Runtime Environment" />
     <property name="libs.jaxb.javadoc" value="C:\Program Files\Apache NetBeans\ide\docs\jaxb-api-doc.jar" />
     <property name="libs.spring-framework500.maven-pom" value="" />
@@ -192,14 +190,14 @@
     <property name="libs.jakartaee-api-9.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\jakarta.jakartaee-api-9.0.0.jar" />
     <property name="libs.jstl-jakarta.javadoc" value="C:\Program Files\Apache NetBeans\enterprise\docs\javaee-doc-api.jar" />
     <property name="do.archive+main.class.available" value="true" />
-    <property name="javac.test.modulepath" value="" />
     <property name="libs.jakartaee-api-10.0.src" value="" />
-    <property name="ignore.failing.tests" value="true" />
+    <property name="javac.test.modulepath" value="" />
     <property name="libs.PostgreSQLDriver.javadoc" value="" />
     <property name="libs.jsp-compilation-syscp.classpath" value="C:\Program Files\Apache NetBeans\extide\ant\lib\ant.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\servlet4.0-jsp2.3-api.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\glassfish-jspparser-5.1.0.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\jstl-impl.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\jsf-2_2\javax.faces.jar" />
     <property name="libs.jsp-compilation.classpath" value="C:\Program Files\Apache NetBeans\extide\ant\lib\ant.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\servlet4.0-jsp2.3-api.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\glassfish-jspparser-5.1.0.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\jsf-2_2\javax.faces.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\jstl-api.jar;C:\Program Files\Apache NetBeans\extide\ant\lib\ant-launcher.jar" />
     <property name="org.apache.commons.logging.Log" value="org.apache.commons.logging.impl.Jdk14Logger" />
     <property name="libs.javaee-api-6.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee-api-6.0.jar" />
+    <property name="javac.includesfile.binary" value="D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\null1086788390" />
     <property name="libs.javaee-api-7.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee-api-7.0.jar" />
     <property name="sun.cpu.isalist" value="amd64" />
     <property name="libs.restapi.maven-pom" value="" />
@@ -310,10 +308,10 @@
     <property name="libs.jsf20.javadoc" value="C:\Program Files\Apache NetBeans\enterprise\docs\javaee-doc-api.jar" />
     <property name="netbeans.importclass" value="org.netbeans.upgrade.AutoUpgrade" />
     <property name="ant.file.type.CoffeShopManagementSystem-impl" value="file" />
-    <property name="netbeans.autoupdate.version" value="1.23" />
     <property name="empty.dir" value="D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\empty" />
     <property name="libs.jakartaee-api-10.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\jakarta.jakartaee-api-10.0.0.jar" />
     <property name="netbeans.user" value="C:\Users\GAMING\AppData\Roaming\NetBeans\30" />
+    <property name="javac.includes.binary" value="D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\test\classes\mka\coffeshopmanagementsystem\CoffeeShopTransactionTest.class" />
     <property name="file.separator" value="\" />
     <property name="line.separator" value="&#xd;&#xa;" />
     <property name="javadoc.additionalparam" value="" />
@@ -327,7 +325,7 @@
     <property name="build.classes.dir" value="build/classes" />
     <property name="javadoc.windowtitle" value="" />
     <property name="nb.junit.single" value="false" />
-    <property name="nb.internal.action.name" value="test.single" />
+    <property name="nb.internal.action.name" value="run.single" />
     <property name="libs.javaee-api-8.0.maven-pom" value="" />
     <property name="libs.jaxws21.src" value="" />
     <property name="libs.jakartaee-web-api-9.0.javadoc" value="C:\Program Files\Apache NetBeans\enterprise\docs\jakartaee9-doc-api.jar" />
@@ -350,7 +348,7 @@
     <property name="libs.spring-framework500.src" value="" />
     <property name="user.properties.file" value="C:\Users\GAMING\AppData\Roaming\NetBeans\30\build.properties" />
     <property name="libs.javaee-api-6.0.src" value="" />
-    <property name="netbeans.autoupdate.country" value="EC" />
+    <property name="javac.includes" value="mka/coffeshopmanagementsystem/CoffeeShopTransactionTest.java" />
     <property name="java.class.path" value="D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\lib\gson-2.14.0.jar;D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\classes;C:\Program Files\Apache NetBeans\platform\modules\ext\junit-4.13.2.jar;C:\Program Files\Apache NetBeans\platform\modules\ext\hamcrest-core-1.3.jar;D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\test\classes;C:\Program Files\Apache NetBeans\extide\ant\lib\ant-launcher.jar;C:\Program Files\Apache NetBeans\extide\ant\lib\ant.jar;C:\Program Files\Apache NetBeans\extide\ant\lib\ant-junit.jar;C:\Program Files\Apache NetBeans\extide\ant\lib\ant-junit4.jar" />
     <property name="libs.javaee-web-api-6.0.maven-pom" value="" />
     <property name="java.vm.vendor" value="Azul Systems, Inc." />
@@ -390,7 +388,7 @@
     <property name="nb.junit.batch" value="true" />
     <property name="libs.jakartaee-web-api-10.0.maven-pom" value="" />
     <property name="build.test.classes.dir" value="build/test/classes" />
-    <property name="ant.project.invoked-targets" value="test" />
+    <property name="ant.project.invoked-targets" value="test-single" />
     <property name="libs.jstl.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\jstl-impl.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\jstl-api.jar" />
     <property name="ap.cmd.line.internal" value="" />
     <property name="libs.PostgreSQLDriver.src" value="" />
@@ -407,6 +405,7 @@
     <property name="libs.metro.javadoc" value="C:\Program Files\Apache NetBeans\enterprise\docs\webservices-api-javadoc.jar;C:\Program Files\Apache NetBeans\enterprise\docs\webservices-extra-javadoc.jar;C:\Program Files\Apache NetBeans\enterprise\docs\webservices-extra-api-javadoc.jar;C:\Program Files\Apache NetBeans\enterprise\docs\webservices-rt-javadoc.jar;C:\Program Files\Apache NetBeans\enterprise\docs\webservices-tools-javadoc.jar" />
     <property name="libs.jakartaee-web-api-9.0.src" value="" />
     <property name="libs.jakartaee-web-api-10.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\jakarta.jakartaee-web-api-10.0.0.jar" />
+    <property name="test.class" value="mka.coffeshopmanagementsystem.CoffeeShopTransactionTest" />
     <property name="sun.awt.datatransfer.timeout" value="1000" />
     <property name="libs.javaee-web-api-7.0.src" value="" />
     <property name="libs.jakartaee-api-8.0.src" value="" />
@@ -415,10 +414,10 @@
     <property name="libs.jsp-compiler.classpath" value="C:\Program Files\Apache NetBeans\enterprise\ant\extra\jspcompile.jar" />
     <property name="libs.javaee-endorsed-api-6.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee6-endorsed\javax.annotation.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee6-endorsed\jaxb-api-osgi.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee6-endorsed\webservices-api-osgi.jar" />
   </properties>
-  <testcase classname="mka.coffeshopmanagementsystem.CoffeeShopTransactionTest" name="testFinalizeInsufficientStockThrowsException" time="0.024" />
+  <testcase classname="mka.coffeshopmanagementsystem.CoffeeShopTransactionTest" name="testFinalizeInsufficientStockThrowsException" time="0.031" />
   <testcase classname="mka.coffeshopmanagementsystem.CoffeeShopTransactionTest" name="testFinalizeRecipeAggregation" time="0.0" />
   <testcase classname="mka.coffeshopmanagementsystem.CoffeeShopTransactionTest" name="testFinalizeSuccessDeductsStock" time="0.001" />
-  <testcase classname="mka.coffeshopmanagementsystem.CoffeeShopTransactionTest" name="testFinalizeNullOrderOrPaymentThrowsException" time="0.0" />
+  <testcase classname="mka.coffeshopmanagementsystem.CoffeeShopTransactionTest" name="testFinalizeNullOrderOrPaymentThrowsException" time="0.002" />
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
