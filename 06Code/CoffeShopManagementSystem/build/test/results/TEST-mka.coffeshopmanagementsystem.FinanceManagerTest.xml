@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="Nebula" name="mka.coffeshopmanagementsystem.FinanceManagerTest" skipped="0" tests="4" time="0.08" timestamp="2026-06-02T02:46:13">
+<testsuite errors="0" failures="0" hostname="Nebula" name="mka.coffeshopmanagementsystem.FinanceManagerTest" skipped="0" tests="10" time="0.085" timestamp="2026-06-03T02:09:10">
   <properties>
     <property name="javac.test.classpath" value="lib\gson-2.14.0.jar:build/classes:C:\Program Files\Apache NetBeans\platform\modules\ext\junit-4.13.2.jar:C:\Program Files\Apache NetBeans\platform\modules\ext\hamcrest-core-1.3.jar" />
     <property name="java.specification.version" value="25" />
@@ -14,7 +14,7 @@
     <property name="libs.eclipselink.javadoc" value="C:\Program Files\Apache NetBeans\java\modules\ext\docs\jakarta.persistence-2.2.3-doc.zip" />
     <property name="libs.JWSAntTasks.javadoc" value="" />
     <property name="sun.boot.library.path" value="C:\Program Files\Apache NetBeans\jdk\bin" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner mka.coffeshopmanagementsystem.FinanceManagerTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\test\results\TEST-mka.coffeshopmanagementsystem.FinanceManagerTest.xml crashfile=D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\junitvmwatcher12521716319976158149.properties propsfile=D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\junit721755097147022197.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner mka.coffeshopmanagementsystem.FinanceManagerTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\test\results\TEST-mka.coffeshopmanagementsystem.FinanceManagerTest.xml crashfile=D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\junitvmwatcher6067413336687361601.properties propsfile=D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\junit15928324427852372798.properties" />
     <property name="jdk.debug" value="release" />
     <property name="javadoc.use" value="true" />
     <property name="javadoc.notree" value="false" />
@@ -170,7 +170,7 @@
     <property name="libs.jpa20-persistence.src" value="" />
     <property name="libs.restapi.javadoc" value="" />
     <property name="javac.test.sourcepath" value="D:\POO\MKA-Programming\06Code\CoffeShopManagementSystem\build\empty" />
-    <property name="includes" value="**/*Test.java" />
+    <property name="includes" value="**" />
     <property name="libs.hamcrest.classpath" value="C:\Program Files\Apache NetBeans\platform\modules\ext\hamcrest-core-1.3.jar" />
     <property name="javadoc.splitindex" value="true" />
     <property name="libs.JWSAntTasks.classpath" value="C:\Program Files\Apache NetBeans\java\ant\extra\org-netbeans-modules-javawebstart-anttasks.jar" />
@@ -327,7 +327,7 @@
     <property name="build.classes.dir" value="build/classes" />
     <property name="javadoc.windowtitle" value="" />
     <property name="nb.junit.single" value="false" />
-    <property name="nb.internal.action.name" value="test.single" />
+    <property name="nb.internal.action.name" value="test" />
     <property name="libs.javaee-api-8.0.maven-pom" value="" />
     <property name="libs.jaxws21.src" value="" />
     <property name="libs.jakartaee-web-api-9.0.javadoc" value="C:\Program Files\Apache NetBeans\enterprise\docs\jakartaee9-doc-api.jar" />
@@ -415,10 +415,16 @@
     <property name="libs.jsp-compiler.classpath" value="C:\Program Files\Apache NetBeans\enterprise\ant\extra\jspcompile.jar" />
     <property name="libs.javaee-endorsed-api-6.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee6-endorsed\javax.annotation.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee6-endorsed\jaxb-api-osgi.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee6-endorsed\webservices-api-osgi.jar" />
   </properties>
-  <testcase classname="mka.coffeshopmanagementsystem.FinanceManagerTest" name="testGenerateZReportPaymentBreakdown" time="0.021" />
-  <testcase classname="mka.coffeshopmanagementsystem.FinanceManagerTest" name="testGenerateZReportFiltersByTargetDate" time="0.004" />
+  <testcase classname="mka.coffeshopmanagementsystem.FinanceManagerTest" name="testGenerateZReportPaymentBreakdown" time="0.02" />
+  <testcase classname="mka.coffeshopmanagementsystem.FinanceManagerTest" name="testGenerateZReportTransferPayments" time="0.001" />
+  <testcase classname="mka.coffeshopmanagementsystem.FinanceManagerTest" name="testGenerateZReportFiltersByTargetDate" time="0.002" />
+  <testcase classname="mka.coffeshopmanagementsystem.FinanceManagerTest" name="testGenerateZReportDiscountsImpact" time="0.0" />
   <testcase classname="mka.coffeshopmanagementsystem.FinanceManagerTest" name="testGenerateZReportFinancialSums" time="0.0" />
+  <testcase classname="mka.coffeshopmanagementsystem.FinanceManagerTest" name="testGenerateZReportOrdersCountCorrectness" time="0.001" />
   <testcase classname="mka.coffeshopmanagementsystem.FinanceManagerTest" name="testGenerateZReportEmptyOrders" time="0.0" />
+  <testcase classname="mka.coffeshopmanagementsystem.FinanceManagerTest" name="testGenerateZReportExcludesCancelledOrders" time="0.0" />
+  <testcase classname="mka.coffeshopmanagementsystem.FinanceManagerTest" name="testGenerateZReportExcludesUnpaidOrders" time="0.001" />
+  <testcase classname="mka.coffeshopmanagementsystem.FinanceManagerTest" name="testGenerateZReportMultipleSameTypePaymentsSum" time="0.0" />
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

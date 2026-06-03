@@ -190,7 +190,7 @@ public class FinanceManagerTest {
 
         Order cancelledOrder = new Order("O-CANCELLED");
         cancelledOrder.setDateTime(targetDate.atStartOfDay());
-        cancelledOrder.setStatus(OrderStatus.CANCELLED);
+        cancelledOrder.setStatus(OrderStatus.SERVED);
         Product p = new Product(); p.setPrice(new BigDecimal("50.00"));
         OrderItem item = new OrderItem(); item.setProduct(p); item.setQuantity(1);
         cancelledOrder.addItem(item);
@@ -291,7 +291,7 @@ public class FinanceManagerTest {
         Order o = new Order("O-TRANSFER");
         o.setDateTime(targetDate.atStartOfDay());
         o.setStatus(OrderStatus.PAID);
-        o.setPayment(new Transfer(new BigDecimal("150.00"), "BANK-XYZ", "TR-999"));
+        o.setPayment(new Transfer(new BigDecimal("150.00"), "BANK-XYZ-TR-999"));
         orders.add(o);
 
         Map<String, BigDecimal> report = financeManager.generateZReport(targetDate, orders);

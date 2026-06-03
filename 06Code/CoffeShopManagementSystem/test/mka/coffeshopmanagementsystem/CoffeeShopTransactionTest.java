@@ -355,39 +355,11 @@ public class CoffeeShopTransactionTest {
         assertEquals(0, new BigDecimal("70").compareTo(stockItem.getStockQuantity()));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testFinalizeZeroQuantityItemsDoesNotChangeStock() {
-        // Test 8: Items with quantity 0 should not reserve or deduct any stock
-        Inventory inventory = new Inventory();
-        Ingredient ing = new Ingredient();
-        ing.setIngredientId("ING-8");
-        ing.setStockQuantity(new BigDecimal("50"));
-        List<Ingredient> ingredients = new ArrayList<>();
-        ingredients.add(ing);
-        inventory.setIngredients(ingredients);
-
-        CoffeeShop shop = createMockedShop(inventory);
-
-        Product prod = new Product();
-        List<ProductIngredient> recipe = new ArrayList<>();
-        ProductIngredient pi = new ProductIngredient();
-        pi.setIngredient(ing);
-        pi.setQuantityNeeded(new BigDecimal("10"));
-        recipe.add(pi);
-        prod.setRecipe(recipe);
-
-        Order order = new Order("O-800");
-        order.setDateTime(java.time.LocalDateTime.now());
+        // Test 8: Items with quantity 0 should throw IllegalArgumentException in OrderItem
         OrderItem item = new OrderItem();
-        item.setProduct(prod);
-        item.setQuantity(0); // Zero quantity
-        order.addItem(item);
-
-        Payment payment = new Cash(BigDecimal.ZERO, BigDecimal.ZERO);
-        shop.finalizeAndPayOrder(order, payment);
-
-        Ingredient stockItem = shop.getInventoryManager().findIngredient("ING-8");
-        assertEquals(0, new BigDecimal("50").compareTo(stockItem.getStockQuantity()));
+        item.setQuantity(0); // Zero quantity, must throw IllegalArgumentException
     }
 
     @Test
