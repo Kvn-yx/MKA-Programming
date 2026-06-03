@@ -246,21 +246,215 @@ public class CoffeeShopTransactionTest {
 
     // === PLACEHOLDERS FOR TEAM MEMBERS (6 cases remaining) ===
 
-    // TODO: Member 1 - Implement Test 5: testFinalizeFailedPaymentDoesNotDeductStock
-    // public void testFinalizeFailedPaymentDoesNotDeductStock() { ... }
+    @Test
+    public void testFinalizeFailedPaymentDoesNotDeductStock() {
+        // Test 5: If payment fails, stock must remain unchanged
+        Inventory inventory = new Inventory();
+        Ingredient ing = new Ingredient();
+        ing.setIngredientId("ING-FAIL");
+        ing.setStockQuantity(new BigDecimal("100"));
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(ing);
+        inventory.setIngredients(ingredients);
 
-    // TODO: Member 2 - Implement Test 6: testFinalizeProductWithoutRecipeSucceeds
-    // public void testFinalizeProductWithoutRecipeSucceeds() { ... }
+        CoffeeShop shop = createMockedShop(inventory);
 
-    // TODO: Member 3 - Implement Test 7: testFinalizeQuantityMultiplierEspresso
-    // public void testFinalizeQuantityMultiplierEspresso() { ... }
+        Product prod = new Product();
+        prod.setProductId("P-FAIL");
+        List<ProductIngredient> recipe = new ArrayList<>();
+        ProductIngredient pi = new ProductIngredient();
+        pi.setIngredient(ing);
+        pi.setQuantityNeeded(new BigDecimal("10"));
+        recipe.add(pi);
+        prod.setRecipe(recipe);
 
-    // TODO: Member 4 - Implement Test 8: testFinalizeZeroQuantityItemsDoesNotChangeStock
-    // public void testFinalizeZeroQuantityItemsDoesNotChangeStock() { ... }
+        Order order = new Order("O-500");
+        order.setDateTime(java.time.LocalDateTime.now());
+        OrderItem item = new OrderItem();
+        item.setProduct(prod);
+        item.setQuantity(1);
+        order.addItem(item);
 
-    // TODO: Member 5 - Implement Test 9: testFinalizeNullCustomerInOrderSucceeds
-    // public void testFinalizeNullCustomerInOrderSucceeds() { ... }
+        // Mock payment that always fails
+        Payment failedPayment = new Payment(BigDecimal.TEN, "FAIL") {
+            @Override
+            public boolean processPayment(mka.coffeshopmanagementsystem.model.payment.PaymentProcessor processor) {
+                return false;
+            }
+        };
 
-    // TODO: Member 6 - Implement Test 10: testFinalizeIntegrityOnRollbackDuringDeduction
-    // public void testFinalizeIntegrityOnRollbackDuringDeduction() { ... }
+        try {
+            shop.finalizeAndPayOrder(order, failedPayment);
+            fail("Should have thrown IllegalStateException for failed payment");
+        } catch (IllegalStateException e) {
+            // Success: Exception thrown, now check stock
+            Ingredient stockItem = shop.getInventoryManager().findIngredient("ING-FAIL");
+            assertEquals(0, new BigDecimal("100").compareTo(stockItem.getStockQuantity()));
+            assertNotEquals(OrderStatus.PAID, order.getStatus());
+        }
+    }
+
+    @Test
+    public void testFinalizeProductWithoutRecipeSucceeds() {
+        // Test 6: Products with no recipe should complete successfully without changing stock
+        Inventory inventory = new Inventory();
+        CoffeeShop shop = createMockedShop(inventory);
+
+        Product noRecipeProd = new Product();
+        noRecipeProd.setProductId("P-NO-RECIPE");
+        noRecipeProd.setPrice(new BigDecimal("5.00"));
+        noRecipeProd.setRecipe(new ArrayList<>()); // Empty recipe
+
+        Order order = new Order("O-600");
+        order.setDateTime(java.time.LocalDateTime.now());
+        OrderItem item = new OrderItem();
+        item.setProduct(noRecipeProd);
+        item.setQuantity(5);
+        order.addItem(item);
+
+        Payment payment = new Cash(new BigDecimal("25.00"), new BigDecimal("30.00"));
+
+        shop.finalizeAndPayOrder(order, payment);
+
+        assertEquals(OrderStatus.PAID, order.getStatus());
+        assertTrue(shop.getInventoryManager().getInventory().getIngredients().isEmpty());
+    }
+
+    @Test
+    public void testFinalizeQuantityMultiplierEspresso() {
+        // Test 7: Verify that ordering 3 units multiplies the ingredient deduction by 3
+        Inventory inventory = new Inventory();
+        Ingredient coffee = new Ingredient();
+        coffee.setIngredientId("ING-COFFEE");
+        coffee.setStockQuantity(new BigDecimal("100"));
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(coffee);
+        inventory.setIngredients(ingredients);
+
+        CoffeeShop shop = createMockedShop(inventory);
+
+        Product espresso = new Product();
+        List<ProductIngredient> recipe = new ArrayList<>();
+        ProductIngredient pi = new ProductIngredient();
+        pi.setIngredient(coffee);
+        pi.setQuantityNeeded(new BigDecimal("10")); // 10g per unit
+        recipe.add(pi);
+        espresso.setRecipe(recipe);
+
+        Order order = new Order("O-700");
+        order.setDateTime(java.time.LocalDateTime.now());
+        OrderItem item = new OrderItem();
+        item.setProduct(espresso);
+        item.setQuantity(3); // 3 * 10 = 30g total deduction
+        order.addItem(item);
+
+        Payment payment = new Cash(new BigDecimal("10.00"), new BigDecimal("10.00"));
+        shop.finalizeAndPayOrder(order, payment);
+
+        Ingredient stockItem = shop.getInventoryManager().findIngredient("ING-COFFEE");
+        assertEquals(0, new BigDecimal("70").compareTo(stockItem.getStockQuantity()));
+    }
+
+    @Test
+    public void testFinalizeZeroQuantityItemsDoesNotChangeStock() {
+        // Test 8: Items with quantity 0 should not reserve or deduct any stock
+        Inventory inventory = new Inventory();
+        Ingredient ing = new Ingredient();
+        ing.setIngredientId("ING-8");
+        ing.setStockQuantity(new BigDecimal("50"));
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(ing);
+        inventory.setIngredients(ingredients);
+
+        CoffeeShop shop = createMockedShop(inventory);
+
+        Product prod = new Product();
+        List<ProductIngredient> recipe = new ArrayList<>();
+        ProductIngredient pi = new ProductIngredient();
+        pi.setIngredient(ing);
+        pi.setQuantityNeeded(new BigDecimal("10"));
+        recipe.add(pi);
+        prod.setRecipe(recipe);
+
+        Order order = new Order("O-800");
+        order.setDateTime(java.time.LocalDateTime.now());
+        OrderItem item = new OrderItem();
+        item.setProduct(prod);
+        item.setQuantity(0); // Zero quantity
+        order.addItem(item);
+
+        Payment payment = new Cash(BigDecimal.ZERO, BigDecimal.ZERO);
+        shop.finalizeAndPayOrder(order, payment);
+
+        Ingredient stockItem = shop.getInventoryManager().findIngredient("ING-8");
+        assertEquals(0, new BigDecimal("50").compareTo(stockItem.getStockQuantity()));
+    }
+
+    @Test
+    public void testFinalizeNullCustomerInOrderSucceeds() {
+        // Test 9: Robustness check - order with null customer should still process
+        Inventory inventory = new Inventory();
+        CoffeeShop shop = createMockedShop(inventory);
+
+        Product p = new Product();
+        p.setRecipe(new ArrayList<>());
+        p.setPrice(new BigDecimal("2.00"));
+
+        Order order = new Order("O-900");
+        order.setDateTime(java.time.LocalDateTime.now());
+        order.setCustomer(null); // NULL customer
+        OrderItem item = new OrderItem();
+        item.setProduct(p);
+        item.setQuantity(1);
+        order.addItem(item);
+
+        Payment payment = new Cash(new BigDecimal("2.00"), new BigDecimal("2.00"));
+        shop.finalizeAndPayOrder(order, payment);
+
+        assertEquals(OrderStatus.PAID, order.getStatus());
+    }
+
+    @Test
+    public void testFinalizeIntegrityOnRollbackDuringDeduction() {
+        // Test 10: If an error occurs during stock deduction, state should remain consistent.
+        // In this implementation, pre-check happens before payment, so deduction should rarely fail.
+        // We will simulate a failure by trying to deduct more than what was pre-checked (if possible) 
+        // or just validating the pre-check prevents deduction from starting.
+        
+        Inventory inventory = new Inventory();
+        Ingredient ing = new Ingredient();
+        ing.setIngredientId("ING-10");
+        ing.setStockQuantity(new BigDecimal("5"));
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(ing);
+        inventory.setIngredients(ingredients);
+
+        CoffeeShop shop = createMockedShop(inventory);
+
+        Product p = new Product();
+        List<ProductIngredient> recipe = new ArrayList<>();
+        ProductIngredient pi = new ProductIngredient();
+        pi.setIngredient(ing);
+        pi.setQuantityNeeded(new BigDecimal("10")); // Needs 10, but only 5 in stock
+        recipe.add(pi);
+        p.setRecipe(recipe);
+
+        Order order = new Order("O-1000");
+        order.setDateTime(java.time.LocalDateTime.now());
+        OrderItem item = new OrderItem();
+        item.setProduct(p);
+        item.setQuantity(1);
+        order.addItem(item);
+
+        Payment payment = new Cash(BigDecimal.TEN, BigDecimal.TEN);
+
+        try {
+            shop.finalizeAndPayOrder(order, payment);
+            fail("Should have thrown IllegalStateException due to pre-check failure");
+        } catch (IllegalStateException e) {
+            // Verify stock is still 5
+            Ingredient stockItem = shop.getInventoryManager().findIngredient("ING-10");
+            assertEquals(0, new BigDecimal("5").compareTo(stockItem.getStockQuantity()));
+        }
+    }
 }

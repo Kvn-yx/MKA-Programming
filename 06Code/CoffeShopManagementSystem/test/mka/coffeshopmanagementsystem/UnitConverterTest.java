@@ -53,21 +53,71 @@ public class UnitConverterTest {
 
     // === PLACEHOLDERS FOR TEAM MEMBERS (6 cases remaining) ===
 
-    // TODO: Member 1 - Implement Test 5: testNormalizeGramsKeepsGrams
-    // public void testNormalizeGramsKeepsGrams() { ... }
+    @Test
+    public void testNormalizeGramsKeepsGrams() {
+        // Test 5: "g", "gramo", "gramos" should remain "g"
+        UnitConverter.ConversionResult resG = UnitConverter.normalize("g", new BigDecimal("100"));
+        assertEquals("g", resG.unit);
+        assertEquals(0, new BigDecimal("100").compareTo(resG.quantity));
 
-    // TODO: Member 2 - Implement Test 6: testNormalizePoundsToGrams (1 lb = 453.592 g)
-    // public void testNormalizePoundsToGrams() { ... }
+        UnitConverter.ConversionResult resGramo = UnitConverter.normalize("gramo", new BigDecimal("200"));
+        assertEquals("g", resGramo.unit);
+        assertEquals(0, new BigDecimal("200").compareTo(resGramo.quantity));
 
-    // TODO: Member 3 - Implement Test 7: testNormalizeMillilitersKeepsMilliliters
-    // public void testNormalizeMillilitersKeepsMilliliters() { ... }
+        UnitConverter.ConversionResult resGramos = UnitConverter.normalize("gramos", new BigDecimal("300"));
+        assertEquals("g", resGramos.unit);
+        assertEquals(0, new BigDecimal("300").compareTo(resGramos.quantity));
+    }
 
-    // TODO: Member 4 - Implement Test 8: testNormalizeOuncesToMilliliters (1 oz = 29.5735 ml)
-    // public void testNormalizeOuncesToMilliliters() { ... }
+    @Test
+    public void testNormalizePoundsToGrams() {
+        // Test 6: 2 lb should normalize to 907.184 g (2 * 453.592)
+        UnitConverter.ConversionResult res = UnitConverter.normalize("lb", new BigDecimal("2"));
+        assertEquals("g", res.unit);
+        assertEquals(0, new BigDecimal("907.184").compareTo(res.quantity));
+    }
 
-    // TODO: Member 5 - Implement Test 9: testNormalizeTrimSpaces (e.g. " kg " -> "g")
-    // public void testNormalizeTrimSpaces() { ... }
+    @Test
+    public void testNormalizeMillilitersKeepsMilliliters() {
+        // Test 7: "ml", "mililitro" should remain "ml"
+        UnitConverter.ConversionResult resMl = UnitConverter.normalize("ml", new BigDecimal("50"));
+        assertEquals("ml", resMl.unit);
+        assertEquals(0, new BigDecimal("50").compareTo(resMl.quantity));
 
-    // TODO: Member 6 - Implement Test 10: testNormalizeZeroAndNegativeQuantities
-    // public void testNormalizeZeroAndNegativeQuantities() { ... }
+        UnitConverter.ConversionResult resMililitro = UnitConverter.normalize("mililitro", new BigDecimal("150"));
+        assertEquals("ml", resMililitro.unit);
+        assertEquals(0, new BigDecimal("150").compareTo(resMililitro.quantity));
+    }
+
+    @Test
+    public void testNormalizeOuncesToMilliliters() {
+        // Test 8: 3 oz should normalize to 88.7205 ml (3 * 29.5735)
+        UnitConverter.ConversionResult res = UnitConverter.normalize("oz", new BigDecimal("3"));
+        assertEquals("ml", res.unit);
+        assertEquals(0, new BigDecimal("88.7205").compareTo(res.quantity));
+    }
+
+    @Test
+    public void testNormalizeTrimSpaces() {
+        // Test 9: Spaces should be trimmed before normalization
+        UnitConverter.ConversionResult resKg = UnitConverter.normalize(" kg ", new BigDecimal("1"));
+        assertEquals("g", resKg.unit);
+        assertEquals(0, new BigDecimal("1000").compareTo(resKg.quantity));
+
+        UnitConverter.ConversionResult resMl = UnitConverter.normalize(" ml", new BigDecimal("500"));
+        assertEquals("ml", resMl.unit);
+        assertEquals(0, new BigDecimal("500").compareTo(resMl.quantity));
+    }
+
+    @Test
+    public void testNormalizeZeroAndNegativeQuantities() {
+        // Test 10: Zero and negative quantities should be handled correctly
+        UnitConverter.ConversionResult resZero = UnitConverter.normalize("kg", BigDecimal.ZERO);
+        assertEquals("g", resZero.unit);
+        assertEquals(0, BigDecimal.ZERO.compareTo(resZero.quantity));
+
+        UnitConverter.ConversionResult resNeg = UnitConverter.normalize("l", new BigDecimal("-1"));
+        assertEquals("ml", resNeg.unit);
+        assertEquals(0, new BigDecimal("-1000").compareTo(resNeg.quantity));
+    }
 }

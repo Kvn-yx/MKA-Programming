@@ -158,21 +158,144 @@ public class FinanceManagerTest {
 
     // === PLACEHOLDERS FOR TEAM MEMBERS (6 cases remaining) ===
 
-    // TODO: Member 1 - Implement Test 5: testGenerateZReportExcludesUnpaidOrders
-    // public void testGenerateZReportExcludesUnpaidOrders() { ... }
+    @Test
+    public void testGenerateZReportExcludesUnpaidOrders() {
+        // Test 5: Only PAID orders should be included in the report
+        FinanceManager financeManager = new FinanceManager(new MockZReportRepository());
+        LocalDate targetDate = LocalDate.now();
+        List<Order> orders = new ArrayList<>();
 
-    // TODO: Member 2 - Implement Test 6: testGenerateZReportExcludesCancelledOrders
-    // public void testGenerateZReportExcludesCancelledOrders() { ... }
+        Order unpaidOrder = new Order("O-UNPAID");
+        unpaidOrder.setDateTime(targetDate.atStartOfDay());
+        unpaidOrder.setStatus(OrderStatus.PENDING);
+        Product p = new Product(); p.setPrice(new BigDecimal("10.00"));
+        OrderItem item = new OrderItem(); item.setProduct(p); item.setQuantity(1);
+        unpaidOrder.addItem(item);
+        // Even if it has a payment object, if status is not PAID, it should be ignored
+        unpaidOrder.setPayment(new Cash(new BigDecimal("10.00"), new BigDecimal("10.00")));
+        orders.add(unpaidOrder);
 
-    // TODO: Member 3 - Implement Test 7: testGenerateZReportMultipleSameTypePaymentsSum
-    // public void testGenerateZReportMultipleSameTypePaymentsSum() { ... }
+        Map<String, BigDecimal> report = financeManager.generateZReport(targetDate, orders);
 
-    // TODO: Member 4 - Implement Test 8: testGenerateZReportDiscountsImpact
-    // public void testGenerateZReportDiscountsImpact() { ... }
+        assertEquals(0, BigDecimal.ZERO.compareTo(report.get("ORDERS")));
+        assertEquals(0, BigDecimal.ZERO.compareTo(report.get("CASH")));
+    }
 
-    // TODO: Member 5 - Implement Test 9: testGenerateZReportOrdersCountCorrectness
-    // public void testGenerateZReportOrdersCountCorrectness() { ... }
+    @Test
+    public void testGenerateZReportExcludesCancelledOrders() {
+        // Test 6: CANCELLED orders must be excluded
+        FinanceManager financeManager = new FinanceManager(new MockZReportRepository());
+        LocalDate targetDate = LocalDate.now();
+        List<Order> orders = new ArrayList<>();
 
-    // TODO: Member 6 - Implement Test 10: testGenerateZReportTransferPayments
-    // public void testGenerateZReportTransferPayments() { ... }
+        Order cancelledOrder = new Order("O-CANCELLED");
+        cancelledOrder.setDateTime(targetDate.atStartOfDay());
+        cancelledOrder.setStatus(OrderStatus.CANCELLED);
+        Product p = new Product(); p.setPrice(new BigDecimal("50.00"));
+        OrderItem item = new OrderItem(); item.setProduct(p); item.setQuantity(1);
+        cancelledOrder.addItem(item);
+        orders.add(cancelledOrder);
+
+        Map<String, BigDecimal> report = financeManager.generateZReport(targetDate, orders);
+
+        assertEquals(0, BigDecimal.ZERO.compareTo(report.get("ORDERS")));
+        assertEquals(0, BigDecimal.ZERO.compareTo(report.get("SUBTOTAL")));
+    }
+
+    @Test
+    public void testGenerateZReportMultipleSameTypePaymentsSum() {
+        // Test 7: Multiple orders with same payment method should accumulate
+        FinanceManager financeManager = new FinanceManager(new MockZReportRepository());
+        LocalDate targetDate = LocalDate.now();
+        List<Order> orders = new ArrayList<>();
+
+        Product p = new Product(); p.setPrice(new BigDecimal("10.00"));
+
+        Order o1 = new Order("O-7-1");
+        o1.setDateTime(targetDate.atStartOfDay());
+        o1.setStatus(OrderStatus.PAID);
+        OrderItem item1 = new OrderItem(); item1.setProduct(p); item1.setQuantity(1);
+        o1.addItem(item1);
+        o1.setPayment(new Cash(new BigDecimal("10.00"), new BigDecimal("10.00")));
+        orders.add(o1);
+
+        Order o2 = new Order("O-7-2");
+        o2.setDateTime(targetDate.atStartOfDay());
+        o2.setStatus(OrderStatus.PAID);
+        OrderItem item2 = new OrderItem(); item2.setProduct(p); item2.setQuantity(1);
+        o2.addItem(item2);
+        o2.setPayment(new Cash(new BigDecimal("10.00"), new BigDecimal("10.00")));
+        orders.add(o2);
+
+        Map<String, BigDecimal> report = financeManager.generateZReport(targetDate, orders);
+
+        assertEquals(0, new BigDecimal("20.00").compareTo(report.get("CASH")));
+        assertEquals(0, new BigDecimal("2").compareTo(report.get("ORDERS")));
+    }
+
+    @Test
+    public void testGenerateZReportDiscountsImpact() {
+        // Test 8: Discounts should reduce the final payment amount
+        FinanceManager financeManager = new FinanceManager(new MockZReportRepository());
+        LocalDate targetDate = LocalDate.now();
+        List<Order> orders = new ArrayList<>();
+
+        Product p = new Product(); p.setPrice(new BigDecimal("100.00"));
+        Order order = new Order("O-DISCOUNT");
+        order.setDateTime(targetDate.atStartOfDay());
+        order.setStatus(OrderStatus.PAID);
+        order.setTaxRate(BigDecimal.ZERO);
+        OrderItem item = new OrderItem(); item.setProduct(p); item.setQuantity(1);
+        order.addItem(item);
+        
+        // Apply $10 discount. Total should be $90.
+        order.setDiscount(new BigDecimal("10.00"));
+        BigDecimal finalTotal = order.calculateTotal(); // 100 - 10 = 90
+        
+        order.setPayment(new Cash(finalTotal, new BigDecimal("100.00")));
+        orders.add(order);
+
+        Map<String, BigDecimal> report = financeManager.generateZReport(targetDate, orders);
+
+        // The CASH total in the report should reflect the discounted amount paid
+        assertEquals(0, new BigDecimal("90.00").compareTo(report.get("CASH")));
+    }
+
+    @Test
+    public void testGenerateZReportOrdersCountCorrectness() {
+        // Test 9: Verify ORDERS count matches the number of processed PAID orders
+        FinanceManager financeManager = new FinanceManager(new MockZReportRepository());
+        LocalDate targetDate = LocalDate.now();
+        List<Order> orders = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++) {
+            Order o = new Order("O-COUNT-" + i);
+            o.setDateTime(targetDate.atStartOfDay());
+            o.setStatus(OrderStatus.PAID);
+            o.setPayment(new Cash(BigDecimal.TEN, BigDecimal.TEN));
+            orders.add(o);
+        }
+
+        Map<String, BigDecimal> report = financeManager.generateZReport(targetDate, orders);
+
+        assertEquals(0, new BigDecimal("5").compareTo(report.get("ORDERS")));
+    }
+
+    @Test
+    public void testGenerateZReportTransferPayments() {
+        // Test 10: Validate TRANSFER payment accumulation
+        FinanceManager financeManager = new FinanceManager(new MockZReportRepository());
+        LocalDate targetDate = LocalDate.now();
+        List<Order> orders = new ArrayList<>();
+
+        Order o = new Order("O-TRANSFER");
+        o.setDateTime(targetDate.atStartOfDay());
+        o.setStatus(OrderStatus.PAID);
+        o.setPayment(new Transfer(new BigDecimal("150.00"), "BANK-XYZ", "TR-999"));
+        orders.add(o);
+
+        Map<String, BigDecimal> report = financeManager.generateZReport(targetDate, orders);
+
+        assertEquals(0, new BigDecimal("150.00").compareTo(report.get("TRANSFER")));
+    }
 }
