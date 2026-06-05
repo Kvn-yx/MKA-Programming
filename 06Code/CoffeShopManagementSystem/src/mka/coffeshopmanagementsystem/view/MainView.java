@@ -24,6 +24,9 @@ import mka.coffeshopmanagementsystem.model.order.OrderStatus;
 import mka.coffeshopmanagementsystem.model.people.Employee;
 import mka.coffeshopmanagementsystem.model.persistence.repository.JsonRepository;
 import mka.coffeshopmanagementsystem.model.persistence.repository.JsonSingleRepository;
+import mka.coffeshopmanagementsystem.model.persistence.mongodb.MongoDBConnection;
+import mka.coffeshopmanagementsystem.model.persistence.mongodb.MongoRepository;
+import mka.coffeshopmanagementsystem.model.persistence.mongodb.MongoSingleRepository;
 import mka.coffeshopmanagementsystem.utils.ConsoleTable;
 import mka.coffeshopmanagementsystem.utils.I18n;
 
@@ -289,13 +292,31 @@ public class MainView {
         CoffeeShop shop = new CoffeeShop();
         shop.setName("NebulaX Coffee");
         
-        // Initialize managers with repositories
-        shop.setOrderManager(new OrderManager(new JsonRepository<>("data/orders.json", new TypeToken<ArrayList<Order>>(){}.getType())));
-        shop.setCatalogManager(new CatalogManager(new JsonRepository<>("data/catalog.json", new TypeToken<ArrayList<Product>>(){}.getType())));
-        shop.setInventoryManager(new InventoryManager(new JsonSingleRepository<>("data/inventory.json", Inventory.class)));
-        shop.setFloorManager(new FloorManager(new JsonSingleRepository<>("data/floor.json", FloorManager.class)));
-        shop.setHrManager(new HRManager(new JsonRepository<>("data/employees.json", new TypeToken<ArrayList<Employee>>(){}.getType())));
-        shop.setFinanceManager(new FinanceManager(new JsonRepository<>("data/finance_history.json", new TypeToken<ArrayList<ZReportSnapshot>>(){}.getType())));
+        // Register shutdown hook for MongoDB connection
+        Runtime.getRuntime().addShutdownHook(new Thread(MongoDBConnection::close));
+
+        // Detect if MongoDB is running locally
+        boolean useMongo = MongoDBConnection.isMongoRunning();
+        if (useMongo) {
+            System.out.println("[Persistence] Connected to MongoDB at 157.137.223.54:27017");
+            // Catalog and Inventory use MongoDB as the reference implementations
+            shop.setCatalogManager(new CatalogManager(new MongoRepository<>("products", Product.class)));
+            shop.setInventoryManager(new InventoryManager(new MongoSingleRepository<>("inventory", Inventory.class)));
+            
+            // Other managers continue to use JSON for now (colleagues will migrate them)
+            shop.setOrderManager(new OrderManager(new JsonRepository<>("data/orders.json", new TypeToken<ArrayList<Order>>(){}.getType())));
+            shop.setFloorManager(new FloorManager(new JsonSingleRepository<>("data/floor.json", FloorManager.class)));
+            shop.setHrManager(new HRManager(new JsonRepository<>("data/employees.json", new TypeToken<ArrayList<Employee>>(){}.getType())));
+            shop.setFinanceManager(new FinanceManager(new JsonRepository<>("data/finance_history.json", new TypeToken<ArrayList<ZReportSnapshot>>(){}.getType())));
+        } else {
+            System.out.println("[Persistence] MongoDB not running on 157.137.223.54:27017. Falling back to local JSON files.");
+            shop.setOrderManager(new OrderManager(new JsonRepository<>("data/orders.json", new TypeToken<ArrayList<Order>>(){}.getType())));
+            shop.setCatalogManager(new CatalogManager(new JsonRepository<>("data/catalog.json", new TypeToken<ArrayList<Product>>(){}.getType())));
+            shop.setInventoryManager(new InventoryManager(new JsonSingleRepository<>("data/inventory.json", Inventory.class)));
+            shop.setFloorManager(new FloorManager(new JsonSingleRepository<>("data/floor.json", FloorManager.class)));
+            shop.setHrManager(new HRManager(new JsonRepository<>("data/employees.json", new TypeToken<ArrayList<Employee>>(){}.getType())));
+            shop.setFinanceManager(new FinanceManager(new JsonRepository<>("data/finance_history.json", new TypeToken<ArrayList<ZReportSnapshot>>(){}.getType())));
+        }
 
         // Load data
         shop.getOrderManager().loadData();
