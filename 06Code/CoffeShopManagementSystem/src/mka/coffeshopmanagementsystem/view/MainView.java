@@ -304,10 +304,10 @@ public class MainView {
             shop.setInventoryManager(new InventoryManager(new MongoSingleRepository<>("inventory", Inventory.class)));
             
             // Other managers continue to use JSON for now (colleagues will migrate them)
-            shop.setOrderManager(new OrderManager(new JsonRepository<>("data/orders.json", new TypeToken<ArrayList<Order>>(){}.getType())));
+            shop.setOrderManager(new OrderManager(new MongoRepository<>("orders", Order.class)));
             shop.setFloorManager(new FloorManager(new JsonSingleRepository<>("data/floor.json", FloorManager.class)));
             shop.setHrManager(new HRManager(new JsonRepository<>("data/employees.json", new TypeToken<ArrayList<Employee>>(){}.getType())));
-            shop.setFinanceManager(new FinanceManager(new JsonRepository<>("data/finance_history.json", new TypeToken<ArrayList<ZReportSnapshot>>(){}.getType())));
+            shop.setFinanceManager(new FinanceManager(new MongoRepository<>("finance_history", ZReportSnapshot.class)));
         } else {
             System.out.println("[Persistence] MongoDB not running on 157.137.223.54:27017. Falling back to local JSON files.");
             shop.setOrderManager(new OrderManager(new JsonRepository<>("data/orders.json", new TypeToken<ArrayList<Order>>(){}.getType())));
